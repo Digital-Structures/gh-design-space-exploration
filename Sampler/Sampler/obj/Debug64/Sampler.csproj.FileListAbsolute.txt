@@ -1,0 +1,5 @@
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\Sampler\Sampler\obj\Debug64\Sampler.csprojResolveAssemblyReference.cache
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\Sampler\Sampler\bin\Sampler.dll
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\Sampler\Sampler\bin\Sampler.pdb
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\Sampler\Sampler\obj\Debug64\Sampler.dll
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\Sampler\Sampler\obj\Debug64\Sampler.pdb
