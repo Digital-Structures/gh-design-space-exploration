@@ -1,0 +1,6 @@
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\ConsoleTest\bin\Debug\ConsoleTest.exe.config
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\ConsoleTest\bin\Debug\ConsoleTest.exe
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\ConsoleTest\bin\Debug\ConsoleTest.pdb
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\ConsoleTest\obj\Debug\ConsoleTest.csprojResolveAssemblyReference.cache
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\ConsoleTest\obj\Debug\ConsoleTest.exe
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\ConsoleTest\obj\Debug\ConsoleTest.pdb

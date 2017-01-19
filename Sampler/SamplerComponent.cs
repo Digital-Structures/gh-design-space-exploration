@@ -7,6 +7,7 @@ using Grasshopper.Kernel.Data;
 using Rhino.Geometry;
 using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Special;
+using DSECommon;
 
 namespace Sampler
 {

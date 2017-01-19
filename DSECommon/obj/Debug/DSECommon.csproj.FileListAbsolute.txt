@@ -1,0 +1,8 @@
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.dll
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.pdb
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.csprojResolveAssemblyReference.cache
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.dll
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.pdb
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.dll
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\zlib.net.dll
+D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.xml
