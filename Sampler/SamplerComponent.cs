@@ -20,7 +20,7 @@ namespace Sampler
         /// new tabs/panels will automatically be created.
         /// </summary>
         public SamplerComponent()
-          : base("Sampler", "Nickname",
+          : base("Sampler", "Sampler",
               "Description",
               "DSE", "Main")
         {
@@ -32,14 +32,11 @@ namespace Sampler
         }
 
         // Properties specific to this component:
-
-        //private List<Grasshopper.Kernel.Special.GH_NumberSlider> SlidersList;
         public List<DSEVariable> VarsList;
         public string Prefix, Path;
         public int Scheme, NSamples, Seed;
         public SamplerUtilities Util;
         public List<List<double>> Output;
-        //private IGH_DataAccess DAC;
         public Random MyRand;
 
         /// <summary>
