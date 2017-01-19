@@ -45,3 +45,11 @@ $RECYCLE.BIN/
 Network Trash Folder
 Temporary Items
 .apdisk
+*.suo
+Sampler/bin/Sampler.gha
+*.pdb
+Sampler/bin/test-01.csv
+Sampler/obj/Debug64/DesignTimeResolveAssemblyReferencesInput.cache
+Sampler/obj/Debug64/Sampler.csproj.FileListAbsolute.txt
+Sampler/obj/Debug64/Sampler.dll
+Sampler/obj/Debug64/Sampler.pdb

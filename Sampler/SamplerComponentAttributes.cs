@@ -27,6 +27,7 @@ namespace Sampler
         [STAThread]
         public override Grasshopper.GUI.Canvas.GH_ObjectResponse RespondToMouseDoubleClick(Grasshopper.GUI.Canvas.GH_Canvas sender, Grasshopper.GUI.GH_CanvasMouseEvent e)
         {
+            if (MyComponent.Seed != 0) { MyComponent.MyRand = new Random(MyComponent.Seed); } // reset Random to give same result each time.
             MyComponent.Util.Sample();
             MyComponent.Util.WriteOutputToFile(MyComponent.Output);
             Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
