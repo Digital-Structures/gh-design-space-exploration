@@ -63,6 +63,7 @@ namespace Sampler
             pManager.AddTextParameter("Path", "P", @"Output path. Example: 'C:\Folder\'", GH_ParamAccess.item);
 
             // TODO: Add feature to check whether user included \ at the end of path.  If yes, do nothing, if not, add \.
+            // or change to just path with filename
 
             Param_Integer param = (Param_Integer)pManager[2];
             param.AddNamedValue("Random [0]", 0);
