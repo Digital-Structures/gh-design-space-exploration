@@ -227,11 +227,11 @@ namespace Sampler
 
         private double GetPhiq(Matrix<double> X, double q)
         {
-            Tuple<List<double>, List<int>> t = MathUtility.GetDistances(X);
-            Vector<double> d = MathUtility.ListToVector(t.Item1);
-            Vector<double> J = MathUtility.ListToVector(t.Item2);
+            Tuple<List<double>, List<int>> t = MathUtilities.GetDistances(X);
+            Vector<double> d = MathUtilities.ListToVector(t.Item1);
+            Vector<double> J = MathUtilities.ListToVector(t.Item2);
 
-            double Phiq = Math.Pow(J.PointwiseMultiply(MathUtility.PointwisePower(d, (new DenseVector(d.Count, -q)))).Sum(), 1 / q);
+            double Phiq = Math.Pow(J.PointwiseMultiply(MathUtilities.PointwisePower(d, (new DenseVector(d.Count, -q)))).Sum(), 1 / q);
             return Phiq;
         }
 
@@ -348,8 +348,8 @@ namespace Sampler
             }
             else
             {
-                Tuple<List<double>, List<int>> t1 = MathUtility.GetDistances(x);
-                Tuple<List<double>, List<int>> t2 = MathUtility.GetDistances(y);
+                Tuple<List<double>, List<int>> t1 = MathUtilities.GetDistances(x);
+                Tuple<List<double>, List<int>> t2 = MathUtilities.GetDistances(y);
                 int m1 = t1.Item1.Count;
                 int m2 = t2.Item1.Count;
 

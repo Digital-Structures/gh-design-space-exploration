@@ -90,10 +90,8 @@ namespace Sampler
             // First, we need to retrieve all data from the input parameters.
             // We'll start by declaring variables and assigning them starting values.
 
-            List<double> variables = new List<double>();
             // Then we need to access the input parameters individually. 
-            // When data cannot be extracted from a parameter, we should abort this method.
-            if (!DA.GetDataList(0, variables)) return;
+            // When data cannot be extracted from a parameter, we should abort this method (TODO: this is not necessarily true.)
             if (!DA.GetData(1, ref NSamples)) return;
             if (!DA.GetData(2, ref Scheme)) return;
             if (!DA.GetData(3, ref Seed)) return;
@@ -107,13 +105,11 @@ namespace Sampler
 
         private void readSlidersList()
         {
-            //this.SlidersList.Clear();
             this.VarsList.Clear();
 
             foreach (IGH_Param param in Params.Input[0].Sources)
             {
                 GH_NumberSlider slider = param as Grasshopper.Kernel.Special.GH_NumberSlider;
-                //this.SlidersList.Add(slider);
 
                 DSEVariable newVar = new DSEVariable((double)slider.Slider.Minimum, (double)slider.Slider.Maximum, (double)slider.Slider.Value);
                 this.VarsList.Add(newVar);

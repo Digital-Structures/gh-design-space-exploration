@@ -6,7 +6,7 @@ using MathNet.Numerics.LinearAlgebra.Generic;
 
 namespace DSECommon
 {
-    public static class MathUtility
+    public static class MathUtilities
     {
         public static Vector<double> PointwisePower(Vector<double> b, Vector<double> p)
         {
