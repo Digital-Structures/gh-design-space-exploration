@@ -23,10 +23,10 @@ namespace Sampler
                     MyComponent.Output = this.RandomUniform();
                     return;
                 case 1:
-                    //MyComponent.Output = this.Grid();
+                    MyComponent.Output = this.Grid();
                     return;
                 case 2:
-                    //MyComponent.Output = this.LHC();
+                    MyComponent.Output = this.LHC();
                     return;
                 default:
                     return;
@@ -41,111 +41,109 @@ namespace Sampler
 
             for (int i = 0; i < MyComponent.NSamples; i++)
             {
-                //Console.WriteLine("echo");
                 List<double> thisSample = new List<double>();
-                for (int j = 0; j < MyComponent.VarsList.Count; j++)
+                foreach (var v in MyComponent.VarsList)
                 {
                     thisSample.Add(r.NextDouble());
                 }
                 samplesList.Add(thisSample);
             }
-            //Console.Read();
             return Scale(samplesList);
         }
 
-        //private List<List<double>> Grid()
-        //{
+        private List<List<double>> Grid()
+        {
+            double bcount = 0;
+            int N = MyComponent.VarsList.Count;
+            double stepsAux = Math.Pow(N, (1 / (double)MyComponent.NSamples));
+            int steps = (int)Math.Ceiling(stepsAux);
+            double n = Math.Pow(steps, MyComponent.NSamples);
 
-        //    double bcount = 0;
-        //    int N = this.numVar;
-        //    double stepsAux = Math.Pow(N, (1 / (double)samples));
-        //    int steps = (int)Math.Ceiling(stepsAux);
-        //    double n = Math.Pow(steps, samples);
 
+            List<List<double>> samplesList = new List<List<double>>();
+            List<double> p = new List<double>();
+            List<double> basic = new List<double>();
 
-        //    List<List<double>> a = new List<List<double>>();
-        //    List<double> p = new List<double>();
-        //    List<double> basic = new List<double>();
+            for (int i = 0; i < steps; i++)
+            {
+                basic.Add(bcount);
+                bcount = bcount++ / (steps - 1);
+            }
+            for (int i = MyComponent.NSamples; i > 0; i--)
+            {
+                p.Add(Math.Pow(steps, (i - 1)));
+            }
+            for (int i = 0; i < n; i++)
+            {
+                List<double> thisSample = new List<double>();
+                
+                for (int j = MyComponent.NSamples - 1; j > -1; j--)
+                {
+                    int ind1 = (int)Math.Floor(i / (double)p[j]);
+                    double ind = (ind1 % steps);
+                    thisSample.Add(basic[(int)ind]);
+                }
+                samplesList.Add(thisSample);
+            }
 
-        //    for (int i = 0; i < steps; i++)
-        //    {
-        //        basic.Add(bcount);
-        //        bcount = bcount + 1 / (steps - 1);
-        //    }
-        //    for (int i = samples; i > 0; i--)
-        //    {
-        //        p.Add(Math.Pow(steps, (i - 1)));
-        //    }
-        //    for (int i = 0; i < n; i++)
-        //    {
-        //        List<double> c = new List<double>();
-        //        a.Add(c);
-        //        //MessageBox.Show("i = " + i);
-        //        for (int j = samples - 1; j > -1; j--)
-        //        {
-        //            int ind1 = (int)Math.Floor(i / (double)p[j]);
-        //            double ind = (ind1 % steps);
-        //            c.Add(basic[(int)ind]);
-        //        }
-        //    }
+            return Scale(samplesList);
+        }
 
-        //    Scale(a);
-        //    return Scale(a);
-        //}
+        private List<List<double>> LHC()
+        {
+            int N = MyComponent.VarsList.Count;
+            List<List<double>> samplesList = new List<List<double>>();
+            for (int j = 0; j < MyComponent.NSamples; j++)
+            {
+                List<double> thisSample = new List<double>();
+                samplesList.Add(thisSample);
+                List<int> inds = Perms(N);
 
-        //private List<List<double>> LHC()
-        //{
-        //    List<List<double>> a = new List<List<double>>();
-        //    for (int j = 0; j < samples; j++)
-        //    {
-        //        List<double> c = new List<double>();
-        //        a.Add(c);
-        //        List<int> inds = Perms(numVar);
+                for (int i = 0; i < N; i++)
+                {
+                    samplesList[j].Add(inds[i]);
+                    samplesList[j][i] -= 1;
+                    samplesList[j][i] /= (double)(N - 1);
+                }
+            }
 
-        //        for (int i = 0; i < numVar; i++)
-        //        {
-        //            a[j].Add(inds[i]);
-        //            a[j][i] -= 1;
-        //            a[j][i] /= (double)(numVar - 1);
-        //        }
-        //    }
+            // TODO: What is the code doing below?  Should this replace what is above?
+            //List<List<double>> b = new List<List<double>>();
+            //for (int i = 0; i < N; i++)
+            //{
+            //    List<double> c = new List<double>();
+            //    b.Add(c);
+            //    for (int j = 0; j < MyComponent.NSamples; j++)
+            //    {
+            //        b[i].Add(samplesList[j][i]);
+            //    }
+            //}
 
-        //    List<List<double>> b = new List<List<double>>();
-        //    for (int i = 0; i < numVar; i++)
-        //    {
-        //        List<double> c = new List<double>();
-        //        b.Add(c);
-        //        for (int j = 0; j < samples; j++)
-        //        {
-        //            b[i].Add(a[j][i]);
-        //        }
-        //    }
-        //    Scale(a);
-        //    return Scale(a);
-        //}
+            return Scale(samplesList);
+        }
 
-        //public List<int> Perms(int n)
-        //{
-        //    List<int> indsAscend = new List<int>();
-        //    for (int i = 1; i < n + 1; i++)
-        //    {
-        //        indsAscend.Add(i);
-        //    }
+        public List<int> Perms(int n)
+        {
+            List<int> indsAscend = new List<int>();
+            for (int i = 1; i < n + 1; i++)
+            {
+                indsAscend.Add(i);
+            }
 
-        //    int count = 1;
-        //    List<int> inds = new List<int>();
+            int count = 1;
+            List<int> inds = new List<int>();
 
-        //    while (count <= n)
-        //    {
-        //        int ind = r.Next(1, n + 1);
-        //        if (!inds.Contains(ind))
-        //        {
-        //            inds.Add(ind);
-        //            count += 1;
-        //        }
-        //    }
-        //    return inds;
-        //}
+            while (count <= n)
+            {
+                int ind = MyComponent.MyRand.Next(1, n + 1);
+                if (!inds.Contains(ind))
+                {
+                    inds.Add(ind);
+                    count += 1;
+                }
+            }
+            return inds;
+        }
 
         private List<List<double>> Scale(List<List<double>> samples)
         {
@@ -191,5 +189,7 @@ namespace Sampler
             file.Write(a);
             file.Close();
         }
+
+        
     }
 }
