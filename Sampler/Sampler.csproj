@@ -32,7 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MathNet.Numerics">
+    <Reference Include="MathNet.Numerics, Version=2010.11.26.814, Culture=neutral, PublicKeyToken=cd8b63ad3d691a37, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\MathNet.Numerics\lib\Net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -56,13 +57,17 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MathUtility.cs" />
-    <Compile Include="DSEVariable.cs" />
     <Compile Include="SamplerComponent.cs" />
     <Compile Include="SamplerComponentAttributes.cs" />
     <Compile Include="SamplerInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SamplerUtilities.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DSECommon\DSECommon.csproj">
+      <Project>{f5417ba0-bb78-4130-a863-f9c1f4956841}</Project>
+      <Name>DSECommon</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
