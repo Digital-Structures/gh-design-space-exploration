@@ -53,40 +53,55 @@ namespace Sampler
 
         private List<List<double>> Grid()
         {
-            double bcount = 0;
-            int N = MyComponent.VarsList.Count;
-            double stepsAux = Math.Pow(N, (1 / (double)MyComponent.NSamples));
-            int steps = (int)Math.Ceiling(stepsAux);
-            double n = Math.Pow(steps, MyComponent.NSamples);
+            double nBinsOpt = Math.Pow(MyComponent.NSamples, (1 / (double)MyComponent.VarsList.Count));
+            int nBins = (int)Math.Ceiling(nBinsOpt);
+            int nSamplesFinal = (int)Math.Pow(nBins, MyComponent.VarsList.Count);
 
+            List<double> binValues = new List<double>();
+            double bin = (1 / (double)(nBins))/(double)2;
 
-            List<List<double>> samplesList = new List<List<double>>();
-            List<double> p = new List<double>();
-            List<double> basic = new List<double>();
+            for (int i = 0; i < nBins; i++)
+            {
+                binValues.Add(bin);
+                bin = bin + 1 / (double)(nBins);
+            }
 
-            for (int i = 0; i < steps; i++)
-            {
-                basic.Add(bcount);
-                bcount = bcount++ / (steps - 1);
-            }
-            for (int i = MyComponent.NSamples; i > 0; i--)
-            {
-                p.Add(Math.Pow(steps, (i - 1)));
-            }
-            for (int i = 0; i < n; i++)
-            {
-                List<double> thisSample = new List<double>();
-                
-                for (int j = MyComponent.NSamples - 1; j > -1; j--)
-                {
-                    int ind1 = (int)Math.Floor(i / (double)p[j]);
-                    double ind = (ind1 % steps);
-                    thisSample.Add(basic[(int)ind]);
-                }
-                samplesList.Add(thisSample);
-            }
+            List<List<double>> samplesList = this.PermsWithRep(binValues, nSamplesFinal);
 
             return Scale(samplesList);
+        }
+
+        private List<List<double>> PermsWithRep(List<double> values, int n)
+        {
+            double[] arr = new double[n];
+            IEnumerable <double[]> perms = PermsWithRepHelper(values, arr, n, 0);
+            List<List<double>> list = new List<List<double>>();
+            var listArray = perms.ToList<double[]>();
+            foreach (double[] array in listArray)
+            {
+                var l = array.ToList<double>();
+                list.Add(l);
+            }
+            return list;
+        }
+
+        private IEnumerable<double[]> PermsWithRepHelper(List<double> values, double[] arr, int n, int i)
+        {
+            foreach (double val in values)
+            {
+                arr[i] = val;
+                if (i + 1 == n)
+                {
+                    yield return arr;
+                }
+                else
+                {
+                    foreach (var r in PermsWithRepHelper(values, arr, n, i + 1))
+                    {
+                        yield return r;
+                    }
+                }
+            }
         }
 
         private List<List<double>> LHC()
@@ -122,7 +137,9 @@ namespace Sampler
             return Scale(samplesList);
         }
 
-        public List<int> Perms(int n)
+
+
+        private List<int> Perms(int n)
         {
             List<int> indsAscend = new List<int>();
             for (int i = 1; i < n + 1; i++)
