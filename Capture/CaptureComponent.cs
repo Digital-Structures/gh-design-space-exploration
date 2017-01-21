@@ -1,12 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using System.Linq;
 using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Rhino.Geometry;
 using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Special;
+using Grasshopper.Kernel.Types;
 using DSECommon;
 
 
@@ -27,25 +28,38 @@ namespace Capture
               "DSE", "Main")
         {
             this.VarsList = new List<DSEVariable>();
-            this.ObjInput = new List<List<double>>();
-            this.PropInput = new List<List<double>>();
+            this.ObjInput = new List<double>();
+            this.PropInput = new List<double>();
             this.SlidersList = new List<GH_NumberSlider>();
             this.DesignMap = new List<List<double>>();
+            this.ObjValues = new List<List<double>>();   
+            this.PropertyValues = new List<List<double>>();
+            this.FirstRead = true;
         }
 
         public bool Iterating;
+        public bool FirstRead;
         public List<List<double>> ObjValues;
         public List<DSEVariable> VarsList;
         public List<GH_NumberSlider> SlidersList;
-        public List<List<double>> ObjInput;
+        public List<double> ObjInput;
         public List<List<double>> DesignMap;
-        public enum CaptureMode {Screenshot, Evaluation, Both };
+        public enum CaptureMode {SaveCSV, SaveScreenshot, Both, Neither };
         public CaptureMode Mode;
-        public List<List<double>> PropInput;
+        public List<double> PropInput;
         public List<List<double>> PropertyValues;
-        public string Dir;
-        public string Filename;
+        public string SSDir;
+        public string SSFilename;
+        public string CSVDir;
+        public string CSVFilename;
         public int NumVars, NumObjs;
+
+        public override void CreateAttributes()
+        {
+            base.m_attributes = new CaptureComponentAttributes(this);
+        }
+
+
 
         /// <summary>
         /// Registers all the input parameters for this component.
@@ -55,17 +69,20 @@ namespace Capture
             // Check that number of sliders is equal to number of variables in DM; otherwise, throw an error.
             pManager.AddNumberParameter("Variables", "Vars", "Sliders representing variables", GH_ParamAccess.list);
             pManager.AddNumberParameter("Objectives", "Obj", "One or more performance objectives", GH_ParamAccess.list);
-            pManager.AddNumberParameter("Mode", "M", "Sampling Type. Right click to choose type.", GH_ParamAccess.item, 0);
+            pManager.AddIntegerParameter("Mode", "M", "Sampling Type. Right click to choose type.", GH_ParamAccess.item, 0);
             pManager.AddNumberParameter("Properties", "P", "One or more numerical properties to record", GH_ParamAccess.list);
-            pManager.AddNumberParameter("Design Map", "DM", "Set of design variable settings to capture", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Filename", "F", "Prefix for output files. Example: 'Design'", GH_ParamAccess.item);
-            pManager.AddTextParameter("Directory", "Dir", @"Output path. Example: 'C:\Folder\'", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Design map", "DM", "Set of design variable settings to capture", GH_ParamAccess.tree);
+            pManager.AddTextParameter(".csv filename", ".csv F", "Prefix for output files. Example: 'all-data'", GH_ParamAccess.item);
+            pManager.AddTextParameter(".csv directory", ".csv Dir", @"Output path. Example: 'C:\Folder\'", GH_ParamAccess.item);
+            pManager.AddTextParameter("Screenshot filename", "SS F", "Prefix for output files. Example: 'design'", GH_ParamAccess.item);
+            pManager.AddTextParameter("Screenshot directory", "SS Dir", @"Output path. Example: 'C:\Folder\'", GH_ParamAccess.item);
 
             // Add possible values for the mode input
             Param_Integer param = (Param_Integer)pManager[2];
-            param.AddNamedValue("Evaluation [0]", 0);
-            param.AddNamedValue("Screenshot [1]", 1);
-            param.AddNamedValue("Both [2]", 2);
+            param.AddNamedValue("Save .csv [0]", 0);
+            param.AddNamedValue("Save screenshot [1]", 1);
+            param.AddNamedValue("Save both [2]", 2);
+            param.AddNamedValue("Save neither [3]", 3);
         }
 
         /// <summary>
@@ -73,6 +90,8 @@ namespace Capture
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
+            pManager.AddTextParameter("Design Map + Objectives", "DM+O", "Set of design variables plus recorded objective(s)", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Captured Properties", "P", "Additional numerical properties (not objectives) recorded during capture", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -84,53 +103,92 @@ namespace Capture
         {
             this.readSlidersList();
 
-            var obj = new DataTree<double>();
-            if (!DA.GetData(1, ref obj)) return;
-            this.ObjInput = TreeToListOfLists<double>(obj);
+            if (!DA.GetDataList<double>(1, this.ObjInput)) return;
+            int mode = 0;
+            if (!DA.GetData(2, ref mode)) return;
+            this.Mode = (CaptureMode)mode;
+            if (!DA.GetDataList<double>(3, this.PropInput)) return;
 
-            if (!DA.GetData(2, ref Mode)) return;
+            var map = new GH_Structure<GH_Number>();
+            if (!DA.GetDataTree(4, out map)) return;
+            this.DesignMap = StructureToListOfLists(map);
+            if (FirstRead)
+            {
+                this.populateObjOutput();
+                FirstRead = false;
+            }
 
-            var prop = new DataTree<double>();
-            if (!DA.GetData(3, ref prop)) return;
-            this.PropInput = TreeToListOfLists<double>(prop);
-
-            var map = new DataTree<double>();
-            if (!DA.GetData(4, ref map)) return;
-            this.DesignMap = TreeToListOfLists<double>(map);
-
-            if (!DA.GetData(5, ref Filename)) return;
-            if (!DA.GetData(6, ref Dir)) return;
+            if (!DA.GetData(5, ref CSVFilename)) return;
+            if (!DA.GetData(6, ref CSVDir)) return;
+            if (!DA.GetData(7, ref SSFilename)) return;
+            if (!DA.GetData(8, ref SSDir)) return;
 
             if (Iterating)
             {
-                this.ObjValues = new List<List<double>>();
-                this.PropertyValues = new List<List<double>>();
                 List<double> o = new List<double>();
                 List<double> p = new List<double>();
-                if (!DA.GetData(1, ref o)) { return; }
-                if (!DA.GetData(3, ref p)) { return; }
+                if (!DA.GetDataList(1, o)) { return; }
+                if (!DA.GetDataList(3, p)) { return; }
 
-                ObjValues.Add(o);
+                for (int i = 0; i < ObjValues.Count; i++)
+                {
+                    if (ObjValues[i].Count == 0)
+                    {
+                        ObjValues[i].AddRange(o);
+                        break;
+                    }
+                }
                 PropertyValues.Add(p);
             }
 
             if (!Iterating)
             {
-                //DA.SetDataList(0, results);
+                DA.SetDataTree(0, AssembleDMOTree(this.DesignMap, this.ObjValues));
+                DA.SetDataTree(1, ListOfListsToTree<double>(this.PropertyValues));
             }
         }
 
-        private void readSlidersList()
+        private DataTree<double> AssembleDMOTree(List<List<double>> vars, List<List<double>> obj)
         {
-            this.VarsList.Clear();
-            this.SlidersList.Clear();
-            this.SlidersList = this.Params.Input[0].Sources[0] as List<GH_NumberSlider>;
+            return ListOfListsToTree<double>(AssembleDMO(vars, obj));
+        }
 
-            foreach (GH_NumberSlider slider in SlidersList)
+        public List<List<double>> AssembleDMO(List<List<double>> vars, List<List<double>> obj)
+        {
+            List<List<double>> varsCopy = new List<List<double>>();
+            foreach (List<double> list in vars)
             {
-                DSEVariable newVar = new DSEVariable((double)slider.Slider.Minimum, (double)slider.Slider.Maximum, (double)slider.Slider.Value);
-                this.VarsList.Add(newVar);
+                List<double> newList = new List<double>();
+                newList.AddRange(list);
+                varsCopy.Add(newList);
             }
+
+            int nSamples = vars.Count;
+            for (int i = 0; i < nSamples; i++)
+            {
+                List<double> l = varsCopy[i];
+                l.AddRange(obj[i]);
+            }
+
+            return varsCopy;
+        }
+
+        static List<List<double>> StructureToListOfLists(GH_Structure<GH_Number> structure)
+        {
+            List<List<double>> list = new List<List<double>>();
+            foreach (GH_Path p in structure.Paths)
+            {
+                List<GH_Number> l = (List<GH_Number>)structure.get_Branch(p);
+                List<double> doubles = new List<double>();
+                foreach (GH_Number n in l)
+                {
+                    double d = 0;
+                    n.CastTo<double>(out d);
+                    doubles.Add(d);
+                }
+                list.Add(doubles);
+            }
+            return list;
         }
 
         static DataTree<T> ListOfListsToTree<T>(List<List<T>> listofLists)
@@ -153,6 +211,32 @@ namespace Capture
             }
             return list;
         }
+
+        private void populateObjOutput()
+        {
+            foreach (List<double> l in this.DesignMap)
+            {
+                this.ObjValues.Add(new List<double>());
+            }
+        }
+
+        private void readSlidersList()
+        {
+            this.VarsList.Clear();
+            this.SlidersList = new List<GH_NumberSlider>();
+            int nVars = this.Params.Input[0].Sources.Count;
+            for (int i = 0; i < nVars; i++)
+            {
+                this.SlidersList.Add(this.Params.Input[0].Sources[i] as GH_NumberSlider);
+            }
+
+            foreach (GH_NumberSlider slider in SlidersList)
+            {
+                DSEVariable newVar = new DSEVariable((double)slider.Slider.Minimum, (double)slider.Slider.Maximum, (double)slider.Slider.Value);
+                this.VarsList.Add(newVar);
+            }
+        }
+
 
         /// <summary>
         /// Provides an Icon for every component that will be visible in the User Interface.

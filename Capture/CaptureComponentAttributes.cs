@@ -26,6 +26,8 @@ namespace Capture
         {
             // Reset list of objective values
             MyComponent.ObjValues = new List<List<double>>();
+            MyComponent.PropertyValues = new List<List<double>>();
+            MyComponent.FirstRead = true;
             MyComponent.Iterating = true;
             this.Iterate();
             MyComponent.Iterating = false;
@@ -35,25 +37,27 @@ namespace Capture
 
         private void Iterate()
         {
+            int i = 1;
+
             foreach (List<double> sample in MyComponent.DesignMap)
             {
                 GHUtilities.ChangeSliders(MyComponent.SlidersList, sample);
 
                 // If we're taking screen shots, this happens here.
-                int i = 1;
-                if (MyComponent.Mode == CaptureComponent.CaptureMode.Screenshot || MyComponent.Mode == CaptureComponent.CaptureMode.Both)
+                
+                if (MyComponent.Mode == CaptureComponent.CaptureMode.SaveScreenshot || MyComponent.Mode == CaptureComponent.CaptureMode.Both)
                 {
                     BeforeScreenShots();
                     ScreenShot(i);
                     AfterScreenShots();
-                    i++;
                 }
+                i++;
+            }
 
-                // If we're saving a CSV, this happens here.
-                if (MyComponent.Mode == CaptureComponent.CaptureMode.Evaluation || MyComponent.Mode == CaptureComponent.CaptureMode.Both)
-                {
-
-                }
+            // If we're saving a CSV, this happens here.
+            if (MyComponent.Mode == CaptureComponent.CaptureMode.SaveCSV || MyComponent.Mode == CaptureComponent.CaptureMode.Both)
+            {
+                WriteOutputToFile(MyComponent.AssembleDMO(MyComponent.DesignMap, MyComponent.ObjValues), MyComponent.CSVDir, MyComponent.CSVFilename, ".csv");
             }
 
         }
@@ -95,7 +99,7 @@ namespace Capture
                 return;
             }
 
-            string fileName = @"" + MyComponent.Dir + MyComponent.Filename + "-" + i + ".png";
+            string fileName = @"" + MyComponent.SSDir + MyComponent.SSFilename + "-" + i + ".png";
             Bitmap image = view.CaptureToBitmap();
 
             if (image == null)
@@ -105,6 +109,24 @@ namespace Capture
 
             image.Save(fileName);
             image = null;
+        }
+
+        private void WriteOutputToFile(List<List<double>> output, string path, string filename, string extension)
+        {
+            string a = null;
+            for (int i = 0; i < output.Count; i++)
+            {
+                string b = null;
+                for (int j = 0; j < output[i].Count; j++)
+                {
+                    b = b + output[i][j] + " ";
+                }
+                a = a + b + "\r\n";
+            }
+
+            System.IO.StreamWriter file = new System.IO.StreamWriter(@"" + path + filename + extension);
+            file.Write(a);
+            file.Close();
         }
 
     }

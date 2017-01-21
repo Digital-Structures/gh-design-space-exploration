@@ -301,25 +301,6 @@ namespace Sampler
             return scaledSamples;
         }
 
-        public void WriteOutputToFile(List<List<double>> output)
-        {
-            string a = null;
-            for (int i = 0; i < output.Count; i++)
-            {
-                string b = null;
-                for (int j = 0; j < output[i].Count; j++)
-                {
-                    b = b + output[i][j] + " ";
-                }
-                a = a + b + "\r\n";
-            }
-
-            System.IO.StreamWriter file = new System.IO.StreamWriter(@"" + MyComponent.Path + MyComponent.Prefix + ".csv");
-            file.Write(a);
-            file.Close();
-        }
-
-        
     }
 
     class DoubleIntComparer : IComparer<Tuple<double, int>>

@@ -15,6 +15,5 @@ namespace DSECommon
         }
 
         public double LowerBound, UpperBound, CurrentVal;
-
     }
 }

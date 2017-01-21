@@ -34,7 +34,7 @@ namespace Sampler
 
         // Properties specific to this component:
         public List<DSEVariable> VarsList;
-        public string Prefix, Path;
+        public string Filename, Dir;
         public int Scheme, NSamples, Seed;
         public SamplerUtilities Util;
         public List<List<double>> Output;
@@ -59,8 +59,8 @@ namespace Sampler
             pManager.AddIntegerParameter("Type", "T", "Sampling Type. Right click to choose type.", GH_ParamAccess.item, 0);
             pManager.AddIntegerParameter("Seed", "S", "Random Seed. Integer 0 will leave the seed unspecified.", GH_ParamAccess.item);
             if (this.Seed != 0) { this.MyRand = new Random(this.Seed); }
-            pManager.AddTextParameter("Prefix", "Pre", "Prefix for output file. Example: 'Design01'.", GH_ParamAccess.item);
-            pManager.AddTextParameter("Path", "P", @"Output path. Example: 'C:\Folder\'", GH_ParamAccess.item);
+            pManager.AddTextParameter("Filename", "F", "Filename for output .csv file. Example: 'Samples'", GH_ParamAccess.item);
+            pManager.AddTextParameter("Directory", "Dir", @"Output directory for .csv file. Example: 'C:\Folder\'", GH_ParamAccess.item);
 
             // TODO: Add feature to check whether user included \ at the end of path.  If yes, do nothing, if not, add \.
             // or change to just path with filename
@@ -95,12 +95,12 @@ namespace Sampler
             if (!DA.GetData(1, ref NSamples)) return;
             if (!DA.GetData(2, ref Scheme)) return;
             if (!DA.GetData(3, ref Seed)) return;
-            if (!DA.GetData(4, ref Prefix)) return;
-            if (!DA.GetData(5, ref Path)) return;
+            if (!DA.GetData(4, ref Filename)) return;
+            if (!DA.GetData(5, ref Dir)) return;
 
             // We should now validate the data and warn the user if invalid data is supplied.
             
-            DA.SetDataTree(0, ListOfListsToTree<double>(this.Output));
+            DA.SetDataTree(0, GHUtilities.ListOfListsToTree<double>(this.Output));
         }
 
         private void readSlidersList()
@@ -114,16 +114,6 @@ namespace Sampler
                 DSEVariable newVar = new DSEVariable((double)slider.Slider.Minimum, (double)slider.Slider.Maximum, (double)slider.Slider.Value);
                 this.VarsList.Add(newVar);
             }
-        }
-
-        static DataTree<T> ListOfListsToTree<T>(List<List<T>> listofLists)
-        {
-            DataTree<T> tree = new DataTree<T>();
-            for (int i = 0; i < listofLists.Count; i++)
-            {
-                tree.AddRange(listofLists[i], new GH_Path(i));
-            }
-            return tree;
         }
 
         /// <summary>

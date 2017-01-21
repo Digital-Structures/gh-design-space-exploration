@@ -6,6 +6,7 @@ using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Rhino.Geometry;
+using DSECommon;
 
 namespace Sampler 
 {
@@ -29,19 +30,10 @@ namespace Sampler
         {
             if (MyComponent.Seed != 0) { MyComponent.MyRand = new Random(MyComponent.Seed); } // reset Random to give same result each time.
             MyComponent.Util.Sample();
-            MyComponent.Util.WriteOutputToFile(MyComponent.Output);
+            GHUtilities.WriteOutputToFile(MyComponent.Output, MyComponent.Dir, MyComponent.Filename, ".csv");
             Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
             return base.RespondToMouseDoubleClick(sender, e);
         }
 
-        static DataTree<T> ListOfListsToTree<T>(List<List<T>> listofLists)
-        {
-            DataTree<T> tree = new DataTree<T>();
-            for (int i = 0; i < listofLists.Count; i++)
-            {
-                tree.AddRange(listofLists[i], new GH_Path(i));
-            }
-            return tree;
-        }
     }
 }

@@ -47,6 +47,5 @@ Temporary Items
 .apdisk
 *.pdb
 */bin/
-*/obj/Debug64/
+*/obj/Debug64/*
 *.suo
-
