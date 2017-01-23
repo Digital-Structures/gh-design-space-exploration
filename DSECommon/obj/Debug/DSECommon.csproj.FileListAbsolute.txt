@@ -6,3 +6,24 @@ D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\obj\D
 D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.dll
 D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\zlib.net.dll
 D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.xml
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.pdb
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\GH_IO.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\Grasshopper.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\RhinoCommon.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\GH_Util.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\QWhale.Syntax.Parsers.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\QWhale.Editor.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\Mono.Cecil.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\QWhale.Syntax.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\QWhale.Common.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\zlib.net.dll
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\GH_IO.xml
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\Grasshopper.pdb
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\Grasshopper.xml
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.xml
+C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\RhinoCommon.xml
+C:\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.csprojResolveAssemblyReference.cache
+C:\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.dll
+C:\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.pdb
