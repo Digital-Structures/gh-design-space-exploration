@@ -58,7 +58,7 @@ namespace Writer
         protected override void SolveInstance(IGH_DataAccess DA)
         {
 
-
+          
             var map = new GH_Structure<GH_Number>();
             if (!DA.GetDataTree(0, out map)) return;
             if (!DA.GetData(1, ref CSVFilename)) return;
@@ -66,6 +66,11 @@ namespace Writer
             WriteOutputToFile(Writer.StructureToListOfLists(map), CSVFilename);
 
         }
+
+
+       
+
+
 
         static List<List<double>> StructureToListOfLists(GH_Structure<GH_Number> structure)
         {
@@ -103,7 +108,6 @@ namespace Writer
             file.Close();
         }
 
-    
 
         /// <summary>
         /// Provides an Icon for every component that will be visible in the User Interface.
