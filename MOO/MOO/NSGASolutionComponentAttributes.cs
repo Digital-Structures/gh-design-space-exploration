@@ -15,13 +15,6 @@ namespace MOO
 
         MOO MyComponent;
 
-        // Variables
-        List<GH_NumberSlider> variablesSliders = new List<GH_NumberSlider>();
-        int solutionsCounter; // Count designs evaluated
-        
-
-
-
         public NSGASolutionComponentAttributes(IGH_Component component)
             : base(component)
         {
@@ -30,6 +23,10 @@ namespace MOO
 
         }
 
+        
+        // Variables
+        List<GH_NumberSlider> variablesSliders = new List<GH_NumberSlider>();
+        public int solutionsCounter = 0; // Count designs evaluated
         public List<List<double>> allSolutionsTrack = new List<List<double>>();
 
         [STAThread]
@@ -42,9 +39,15 @@ namespace MOO
             
             MyComponent.FirstRead = true;
             MyComponent.Iterating = true;
-            this.Iterate();
 
-            
+            variablesSliders = MyComponent.readSlidersList();
+            NSGAIIProblem problem = new NSGAIIProblem("ArrayReal", MyComponent, solutionsCounter);
+            NSGAIIRunner runner = new NSGAIIRunner(null, problem, null, MyComponent);
+            allSolutionsTrack = problem.allSolutions;
+            problem.PrintAllSolutions();
+            problem.PrintLogFile();
+            solutionsCounter++;
+
 
             MyComponent.Iterating = false;
 
@@ -57,28 +60,11 @@ namespace MOO
             return base.RespondToMouseDoubleClick(sender, e);
         }
 
-        private void Iterate()
-        {
-            
-
-            for (int i = 0; i < 1; i++)
-            {
-
-                variablesSliders = MyComponent.readSlidersList();
-                NSGAIIProblem problem = new NSGAIIProblem("ArrayReal", MyComponent, solutionsCounter);
-                NSGAIIRunner runner = new NSGAIIRunner(null, problem, null, MyComponent);
-                allSolutionsTrack = problem.allSolutions;
-                problem.PrintAllSolutions();
-                problem.PrintLogFile();
-
-
-                i++;
-            }
+       
 
             
 
         }
-
     }
-}
+
 

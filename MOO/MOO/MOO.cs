@@ -72,7 +72,7 @@ namespace MOO
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
 
-            pManager.AddTextParameter("Pareto Front", "Pareto", "The last NSGA-II generation, approximating the Pareto Front", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Pareto Front", "Pareto", "The last NSGA-II generation, approximating the Pareto Front", GH_ParamAccess.item);
             pManager.AddTextParameter("Evaluations", "Evals", "Record of all designs and their performance recorded while the algorithm was running", GH_ParamAccess.tree);
 
         }
@@ -136,8 +136,12 @@ namespace MOO
 
             if (!Iterating)
             {
-                DA.SetDataTree(1, AssembleDMOTree(this.VarValues, this.ObjValues));
-                
+
+
+              //  DA.SetDataTree(0, (((NSGASolutionComponentAttributes)this.m_attributes).solutionsCounter));
+                DA.SetDataTree(1, ListOfListsToTree<double>(((NSGASolutionComponentAttributes)this.m_attributes).allSolutionsTrack));
+
+
             }
 
 
