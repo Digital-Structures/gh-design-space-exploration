@@ -1,0 +1,5 @@
+C:\Code\gh-design-space-exploration\Writer\Writer\obj\Debug32\Writer.csprojResolveAssemblyReference.cache
+C:\Code\gh-design-space-exploration\Writer\Writer\bin\Writer.dll
+C:\Code\gh-design-space-exploration\Writer\Writer\bin\Writer.pdb
+C:\Code\gh-design-space-exploration\Writer\Writer\obj\Debug32\Writer.dll
+C:\Code\gh-design-space-exploration\Writer\Writer\obj\Debug32\Writer.pdb
