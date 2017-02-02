@@ -31,6 +31,7 @@ namespace Writer
 
 
         public string CSVFilename;
+        public bool WriterDone;
 
         /// <summary>
         /// Registers all the input parameters for this component.
@@ -58,17 +59,21 @@ namespace Writer
         protected override void SolveInstance(IGH_DataAccess DA)
         {
 
-          
+
             var map = new GH_Structure<GH_Number>();
             if (!DA.GetDataTree(0, out map)) return;
             if (!DA.GetData(1, ref CSVFilename)) return;
 
-            WriteOutputToFile(Writer.StructureToListOfLists(map), CSVFilename);
+            //if (WriterDone)
+            //{
 
+                WriteOutputToFile(Writer.StructureToListOfLists(map), CSVFilename);
+            //}
+
+                
+
+        
         }
-
-
-       
 
 
 
@@ -107,6 +112,9 @@ namespace Writer
             file.Write(a);
             file.Close();
         }
+
+
+
 
 
         /// <summary>

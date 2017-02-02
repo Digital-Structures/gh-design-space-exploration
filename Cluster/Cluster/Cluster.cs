@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 using Grasshopper.Kernel;
 using Rhino.Geometry;
@@ -31,16 +32,27 @@ namespace Cluster
 
             this.VarsList = new List<DSEVariable>();
             this.SlidersList = new List<GH_NumberSlider>();
-
+            this.DesignMapSorted = new List<List<List<double>>>();
+            this.ClusterAves = new List<List<double>>();
+            this.DesignMap = new List<List<double>>();
+            this.ClusterMaxs = new List<List<double>>();
+            this.ClusterMins = new List<List<double>>();
         }
 
         // Properties specific to this component:
         public List<DSEVariable> VarsList;
         public List<List<double>> DesignMap;
+        public int numVars;
         public int numClusters;
         public List<GH_NumberSlider> SlidersList;
-        public bool Iterating = false;
-        public bool FirstRead;
+        public bool ClusterDone;
+
+        List<List<List<double>>> DesignMapSorted; 
+        List<List<double>> ClusterAves;
+        List<List<double>> ClusterMaxs;
+        List<List<double>> ClusterMins;
+        List<int> ClusterLabelsList;
+
 
 
         /// <summary>
@@ -74,6 +86,9 @@ namespace Cluster
         {
 
             pManager.AddTextParameter("Cluster List", "ClusterL", "The Cluster number of each Design", GH_ParamAccess.tree);
+            pManager.AddTextParameter("ClusterAvs", "ClusterAv", "Average variable values of each cluster", GH_ParamAccess.tree);
+            pManager.AddTextParameter("ClusterMins", "ClusterMins", "Average variable values of each cluster", GH_ParamAccess.tree);
+
         }
 
         /// <summary>
@@ -90,15 +105,10 @@ namespace Cluster
             // We'll start by declaring variables and assigning them starting values.
 
 
+            List<double> variables = new List<double>();
+            if (!DA.GetDataList(0, variables)) return;
 
-            
-
-           
-            if (FirstRead)
-            {
-                FirstRead = false;
-                
-            }
+            numVars = variables.Count;
 
             var map = new GH_Structure<GH_Number>();
             if (!DA.GetDataTree(1, out map)) return;
@@ -107,18 +117,106 @@ namespace Cluster
             if (!DA.GetData(2, ref numClusters)) return;
 
             List<List<int>> labelstree = new List<List<int>>();
+            List<List<double>> averageTree = new List<List<Double>>();
 
-            if (Iterating)
-            {
-   
-                labelstree.Add(((ClusterComponentAttributes)this.m_attributes).labelsList);
+            ClusterLabelsList = ((ClusterComponentAttributes)this.m_attributes).LabelsList;
 
-            }
 
-            if (!Iterating)
+
+            if (ClusterDone)
             {
 
+                labelstree.Add(((ClusterComponentAttributes)this.m_attributes).LabelsList);
                 DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
+
+
+                /// <summary>
+                /// 
+                /// </summary>
+
+
+                for (int i = 0; i < numClusters; i++)
+                {
+
+                    DesignMapSorted.Add(new List<List<double>>());
+                    for (int j = 0; j < DesignMap.Count; j++)
+                    {
+
+                        if (ClusterLabelsList[j] == i)
+                        {
+
+                            DesignMapSorted[i].Add(DesignMap[j]);
+
+                        }
+                    }
+                }
+
+
+                for (int i = 0; i < numClusters; i++)
+                {
+                    
+
+                    ClusterAves.Add(new List<double>());
+                    ClusterMaxs.Add(new List<double>());
+                    ClusterMins.Add(new List<double>());
+
+                    double[] sum = new double[numVars];
+                    double[] average = new double[numVars];
+                    double[] max = new double[numVars];
+                    double[] min = new double[numVars];
+
+                    for (int l = 0; l < numVars; l++)
+
+                    {
+                        sum[l] = 0;
+                        max[l] = double.MinValue;
+                        min[l] = double.MaxValue;
+                    }
+
+                    for (int j = 0; j < DesignMapSorted[i].Count; j++)
+
+                    {
+
+                        
+                        for (int k = 0; k < numVars; k++)
+
+                        {
+                            sum[k] = sum[k] + DesignMapSorted[i][j][k];
+
+                            if (DesignMapSorted[i][j][k] > max[k])
+
+                            {
+                                max[k] = DesignMapSorted[i][j][k];
+                            }
+                            else if (DesignMapSorted[i][j][k] < min[k])
+
+                            {
+
+                                min[k] = DesignMapSorted[i][j][k];
+                            }
+
+                            average[k] = sum[k] / DesignMapSorted[i].Count;
+    
+                        }
+    
+
+                    }
+
+                    for (int k = 0; k < numVars; k++)
+                    {
+                        ClusterAves[i].Add(average[k]);
+                        ClusterMaxs[i].Add(max[k]);
+                        ClusterMins[i].Add(min[k]);
+                    }
+                }
+
+
+                ////////////
+
+
+                DA.SetDataTree(1, ListOfListsToTree<Double>(ClusterAves));
+                DA.SetDataTree(2, ListOfListsToTree<Double>(ClusterMins));
+
 
             }
 

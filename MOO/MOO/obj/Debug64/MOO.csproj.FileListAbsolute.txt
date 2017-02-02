@@ -1,0 +1,9 @@
+C:\Code\gh-design-space-exploration\MOO\MOO\bin\MOO.dll
+C:\Code\gh-design-space-exploration\MOO\MOO\bin\MOO.pdb
+C:\Code\gh-design-space-exploration\MOO\MOO\bin\JMetalCSharp.dll
+C:\Code\gh-design-space-exploration\MOO\MOO\bin\log4net.dll
+C:\Code\gh-design-space-exploration\MOO\MOO\bin\JMetalCSharp.pdb
+C:\Code\gh-design-space-exploration\MOO\MOO\bin\log4net.xml
+C:\Code\gh-design-space-exploration\MOO\MOO\obj\Debug64\MOO.csprojResolveAssemblyReference.cache
+C:\Code\gh-design-space-exploration\MOO\MOO\obj\Debug64\MOO.dll
+C:\Code\gh-design-space-exploration\MOO\MOO\obj\Debug64\MOO.pdb

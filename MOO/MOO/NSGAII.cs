@@ -67,7 +67,7 @@ namespace MOO
             //J* !!! INITIALIZING PARAMETERS - start !!!
 
             //Read the parameters
-            JMetalCSharp.Utils.Utils.GetIntValueFromParameter(this.InputParameters, "maxEvals", ref maxEvaluations);  //J* required
+            JMetalCSharp.Utils.Utils.GetIntValueFromParameter(this.InputParameters, "maxEvaluations", ref maxEvaluations);  //J* required
             JMetalCSharp.Utils.Utils.GetIntValueFromParameter(this.InputParameters, "populationSize", ref populationSize);  //J* required
             JMetalCSharp.Utils.Utils.GetIndicatorsFromParameters(this.InputParameters, "indicators", ref indicators);       //J* optional
 

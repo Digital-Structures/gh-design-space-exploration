@@ -65,6 +65,7 @@
     <Compile Include="Writer.cs" />
     <Compile Include="MyProject1Info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WriterComponentUtilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

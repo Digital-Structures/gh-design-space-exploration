@@ -30,7 +30,7 @@ namespace MOO
         {
             this.ObjValues = new List<List<double>>();
             this.VarValues = new List<List<double>>();
-            this.FirstRead = true;
+            this.comparer = new ObjectiveComparer();
 
         }
 
@@ -40,8 +40,8 @@ namespace MOO
         }
 
 
-        public bool Iterating;
-        public bool FirstRead;
+        public bool MooDone;
+
         public List<List<double>> ObjValues;
         public List<List<double>> VarValues;
         public List<double> objectives;
@@ -49,6 +49,7 @@ namespace MOO
         public int popSize = 0, maxEvals = 0;
         public string directory = null, fileName = null;
         public string log = null;
+        private ObjectiveComparer comparer;
         
 
 
@@ -98,48 +99,21 @@ namespace MOO
             if (!DA.GetData(5, ref fileName)) return;
 
 
-            if (FirstRead)
-            {
-                this.populateObjOutput();
-                FirstRead = false;
-            }
+        
 
-
-
-            if (Iterating)
-            {
-                List<double> v = new List<double>();
-                List<double> o = new List<double>();
-                if (!DA.GetDataList(0, v)) { return; }
-                if (!DA.GetDataList(1, o)) { return; }
-
-                for (int i = 0; i < ObjValues.Count; i++)
-                {
-                    if (VarValues[i].Count == 0)
-                    {
-                        VarValues[i].AddRange(v);
-                        break;
-                    }
-                }
-
-
-                for (int i = 0; i < ObjValues.Count; i++)
-                {
-                    if (ObjValues[i].Count == 0)
-                    {
-                        ObjValues[i].AddRange(o);
-                        break;
-                    }
-                }
-              
-            }
-
-            if (!Iterating)
+            if (MooDone)
             {
 
 
-              //  DA.SetDataTree(0, (((NSGASolutionComponentAttributes)this.m_attributes).solutionsCounter));
-                DA.SetDataTree(1, ListOfListsToTree<double>(((NSGASolutionComponentAttributes)this.m_attributes).allSolutionsTrack));
+                var solutions = ((NSGASolutionComponentAttributes)this.m_attributes).allSolutionsTrack;
+                var paretoSolutions = solutions.GetRange(solutions.Count - 1 - this.popSize, this.popSize);
+
+                this.comparer.NumVars = variables.Count;
+                paretoSolutions.Sort(this.comparer);
+
+                DA.SetDataTree(0, ListOfListsToTree<double>(paretoSolutions));
+
+                DA.SetDataTree(1, ListOfListsToTree<double>(solutions));
 
 
             }
@@ -214,6 +188,8 @@ namespace MOO
             return slidersList;
         }
 
+
+
         /// <summary>
         /// Provides an Icon for every component that will be visible in the User Interface.
         /// Icons need to be 24x24 pixels.
@@ -238,4 +214,22 @@ namespace MOO
             get { return new Guid("{bb604608-8f85-4c53-b8b0-cbc9dd4654ee}"); }
         }
     }
+
+    public class ObjectiveComparer : IComparer<List<double>>
+    {
+
+        public int NumVars;
+        public int Compare(List<double> x, List<double> y)
+        {
+            if(x[NumVars] >= y[NumVars])
+            {
+                return 1;
+            } else
+            {
+                return -1;
+            }
+        }
+
+    }
+
 }

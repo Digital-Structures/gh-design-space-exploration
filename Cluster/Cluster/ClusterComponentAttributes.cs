@@ -10,6 +10,10 @@ using DSECommon;
 using System.Drawing;
 using Accord.MachineLearning;
 
+
+
+
+
 namespace Cluster
 {
     class ClusterComponentAttributes : Grasshopper.Kernel.Attributes.GH_ComponentAttributes
@@ -22,16 +26,15 @@ namespace Cluster
             MyComponent = (ClusterComponent)component;
         }
 
-        public List<int> labelsList;
+        public List<int> LabelsList;
+        
 
         [STAThread]
         public override Grasshopper.GUI.Canvas.GH_ObjectResponse RespondToMouseDoubleClick(Grasshopper.GUI.Canvas.GH_Canvas sender, Grasshopper.GUI.GH_CanvasMouseEvent e)
         {
 
 
-            // Reset list of objective values
-            
-            MyComponent.Iterating = true;
+         
            
             KMeans kmeans = new KMeans(MyComponent.numClusters);
             double[][] data = MyComponent.DesignMap.Select(a => a.ToArray()).ToArray();
@@ -41,16 +44,28 @@ namespace Cluster
 
             int[] labels = kmeans.Compute(data);
 
-            labelsList = labels.OfType<int>().ToList();
+            LabelsList = labels.OfType<int>().ToList();
 
-            
-           
-            MyComponent.Iterating = false;
+
+
+
+
+
+
+
+            MyComponent.ClusterDone = true;
             Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
 
             return base.RespondToMouseDoubleClick(sender, e);
         }
       
 
+
+
     }
-}
+
+   
+
+    }
+
+

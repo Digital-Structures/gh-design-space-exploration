@@ -37,8 +37,8 @@ namespace MOO
             MyComponent.ObjValues = new List<List<double>>();
             MyComponent.ObjValues = new List<List<double>>();
             
-            MyComponent.FirstRead = true;
-            MyComponent.Iterating = true;
+
+           
 
             variablesSliders = MyComponent.readSlidersList();
             NSGAIIProblem problem = new NSGAIIProblem("ArrayReal", MyComponent, solutionsCounter);
@@ -49,8 +49,8 @@ namespace MOO
             solutionsCounter++;
 
 
-            MyComponent.Iterating = false;
-
+            MyComponent.MooDone = true;
+            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
             MessageBox.Show("Finished");
 
             //System.IO.StreamWriter file = new System.IO.StreamWriter(@"C:\New folder\123d.txt");
