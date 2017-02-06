@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{85EF32D2-CECF-47E8-B954-0165670686B6}</ProjectGuid>
+    <ProjectGuid>{91EAD66C-FCFE-4F66-B95D-3A9ED9C4A074}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Capture</RootNamespace>
-    <AssemblyName>Capture</AssemblyName>
+    <RootNamespace>Writer</RootNamespace>
+    <AssemblyName>Writer</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -53,30 +53,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CaptureComponent.cs" />
-    <Compile Include="CaptureComponentAttributes.cs" />
-    <Compile Include="CaptureInfo.cs" />
-    <Compile Include="CaptureUtilities.cs" />
+    <Compile Include="MyComponent1.cs" />
+    <Compile Include="MyProject1Info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DSECommon\DSECommon.csproj">
-      <Project>{b5a7edb7-dbe4-40ed-91c8-14182779b7ae}</Project>
-      <Name>DSECommon</Name>
-      <Private>True</Private>
-    </ProjectReference>
+    <Compile Include="Writer.cs" />
+    <Compile Include="WriterComponentUtilities.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>MOVE /Y "$(TargetPath)" "$(TargetDir)$(ProjectName).gha" &amp;&amp; XCOPY /Y /F "$(TargetDir)*" "$(ProjectDir)..\Output\"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartAction>Program</StartAction>
-    <StartProgram>$(RHINO)</StartProgram>
-    <StartArguments>
-    </StartArguments>
-    <StartWorkingDirectory>
-    </StartWorkingDirectory>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

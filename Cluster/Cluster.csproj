@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{85EF32D2-CECF-47E8-B954-0165670686B6}</ProjectGuid>
+    <ProjectGuid>{B2B7712E-A25D-4DA1-9DE7-9B5144696000}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Capture</RootNamespace>
-    <AssemblyName>Capture</AssemblyName>
+    <RootNamespace>Cluster</RootNamespace>
+    <AssemblyName>Cluster</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Accord.MachineLearning">
+      <HintPath>..\Libraries\Accord\Accord.MachineLearning.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="GH_IO">
       <HintPath>..\Libraries\Grasshopper\0.9.76.0\x64\GH_IO.dll</HintPath>
       <Private>False</Private>
@@ -53,10 +57,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CaptureComponent.cs" />
-    <Compile Include="CaptureComponentAttributes.cs" />
-    <Compile Include="CaptureInfo.cs" />
-    <Compile Include="CaptureUtilities.cs" />
+    <Compile Include="Cluster.cs" />
+    <Compile Include="ClusterComponentAttributes.cs" />
+    <Compile Include="ClusterInfo.cs" />
+    <Compile Include="MyComponent1.cs" />
+    <Compile Include="MyProject1Info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -69,14 +74,6 @@
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>MOVE /Y "$(TargetPath)" "$(TargetDir)$(ProjectName).gha" &amp;&amp; XCOPY /Y /F "$(TargetDir)*" "$(ProjectDir)..\Output\"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartAction>Program</StartAction>
-    <StartProgram>$(RHINO)</StartProgram>
-    <StartArguments>
-    </StartArguments>
-    <StartWorkingDirectory>
-    </StartWorkingDirectory>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

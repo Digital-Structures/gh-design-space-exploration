@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{85EF32D2-CECF-47E8-B954-0165670686B6}</ProjectGuid>
+    <ProjectGuid>{A1B73D41-129B-49D8-B9DC-39685AD0991E}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Capture</RootNamespace>
-    <AssemblyName>Capture</AssemblyName>
+    <RootNamespace>MOO</RootNamespace>
+    <AssemblyName>MOO</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -45,6 +45,7 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -53,30 +54,23 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CaptureComponent.cs" />
-    <Compile Include="CaptureComponentAttributes.cs" />
-    <Compile Include="CaptureInfo.cs" />
-    <Compile Include="CaptureUtilities.cs" />
+    <Compile Include="MOO.cs" />
+    <Compile Include="MOOInfo.cs" />
+    <Compile Include="NSGAII.cs" />
+    <Compile Include="NSGAIIProblem.cs" />
+    <Compile Include="NSGAIIRunner.cs" />
+    <Compile Include="NSGASolutionComponentAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DSECommon\DSECommon.csproj">
-      <Project>{b5a7edb7-dbe4-40ed-91c8-14182779b7ae}</Project>
-      <Name>DSECommon</Name>
-      <Private>True</Private>
+    <ProjectReference Include="..\JMetalCSharp\JMetalCSharp.csproj">
+      <Project>{88b27c90-4c97-43d5-99d2-e1437da8d154}</Project>
+      <Name>JMetalCSharp</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>MOVE /Y "$(TargetPath)" "$(TargetDir)$(ProjectName).gha" &amp;&amp; XCOPY /Y /F "$(TargetDir)*" "$(ProjectDir)..\Output\"</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <StartAction>Program</StartAction>
-    <StartProgram>$(RHINO)</StartProgram>
-    <StartArguments>
-    </StartArguments>
-    <StartWorkingDirectory>
-    </StartWorkingDirectory>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

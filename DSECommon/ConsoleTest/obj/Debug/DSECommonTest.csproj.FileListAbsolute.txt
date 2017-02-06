@@ -1,0 +1,11 @@
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\ConsoleTest\bin\Debug\ConsoleTest.exe.config
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\ConsoleTest\bin\Debug\ConsoleTest.exe
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\ConsoleTest\bin\Debug\ConsoleTest.pdb
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\ConsoleTest\obj\Debug\DSECommonTest.csprojResolveAssemblyReference.cache
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\ConsoleTest\obj\Debug\ConsoleTest.exe
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\ConsoleTest\obj\Debug\ConsoleTest.pdb
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\ConsoleTest\bin\Debug\DSECommon.dll
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\ConsoleTest\bin\Debug\MathNet.Numerics.dll
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\ConsoleTest\bin\Debug\zlib.net.dll
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\ConsoleTest\bin\Debug\DSECommon.pdb
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\ConsoleTest\bin\Debug\MathNet.Numerics.xml

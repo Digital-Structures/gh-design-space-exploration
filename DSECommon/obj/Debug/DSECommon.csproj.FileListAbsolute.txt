@@ -1,16 +1,8 @@
-D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.dll
-D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.pdb
-D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.csprojResolveAssemblyReference.cache
-D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.dll
-D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.pdb
-D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.dll
-D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\zlib.net.dll
-D:\CTMueller\Digital Structures\Code\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.xml
-C:\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.csprojResolveAssemblyReference.cache
-C:\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.dll
-C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.dll
-C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.pdb
-C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.dll
-C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\zlib.net.dll
-C:\Code\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.xml
-C:\Code\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.pdb
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.dll
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.pdb
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.dll
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\bin\Debug\zlib.net.dll
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.xml
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.dll
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.pdb
+E:\Caitlin\github\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.csprojResolveAssemblyReference.cache

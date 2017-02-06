@@ -1,5 +1,0 @@
-C:\Code\gh-design-space-exploration\Reader\Reader\bin\Reader.dll
-C:\Code\gh-design-space-exploration\Reader\Reader\bin\Reader.pdb
-C:\Code\gh-design-space-exploration\Reader\Reader\obj\Debug64\Reader.csprojResolveAssemblyReference.cache
-C:\Code\gh-design-space-exploration\Reader\Reader\obj\Debug64\Reader.dll
-C:\Code\gh-design-space-exploration\Reader\Reader\obj\Debug64\Reader.pdb
