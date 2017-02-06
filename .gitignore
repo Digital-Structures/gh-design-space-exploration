@@ -52,3 +52,5 @@ Temporary Items
 */bin/*
 */obj/*
 
+Output/
+packages/
