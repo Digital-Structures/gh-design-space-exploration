@@ -79,4 +79,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(RHINO)</StartProgram>
+    <StartArguments />
+    <StartWorkingDirectory />
+  </PropertyGroup>
 </Project>
