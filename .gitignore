@@ -75,5 +75,9 @@ bld/
 
 # Special output folder
 Output/
+
+# Temp files
+~*
+
 Documentation/~$ols_readme.docx
 Documentation/~$ols_readme.docx
