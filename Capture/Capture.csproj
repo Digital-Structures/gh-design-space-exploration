@@ -70,14 +70,6 @@
   <PropertyGroup>
     <PostBuildEvent>MOVE /Y "$(TargetPath)" "$(TargetDir)$(ProjectName).gha" &amp;&amp; XCOPY /Y /F "$(TargetDir)*" "$(ProjectDir)..\Output\"</PostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup>
-    <StartAction>Program</StartAction>
-    <StartProgram>$(RHINO)</StartProgram>
-    <StartArguments>
-    </StartArguments>
-    <StartWorkingDirectory>
-    </StartWorkingDirectory>
-  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">
@@ -85,4 +77,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(RHINO)</StartProgram>
+    <StartArguments />
+    <StartWorkingDirectory />
+  </PropertyGroup>
 </Project>

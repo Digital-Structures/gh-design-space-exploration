@@ -66,4 +66,10 @@
   <Target Name="AfterBuild">
   </Target>
   -->
+  <PropertyGroup>
+    <StartAction>Project</StartAction>
+    <StartProgram />
+    <StartArguments />
+    <StartWorkingDirectory />
+  </PropertyGroup>
 </Project>

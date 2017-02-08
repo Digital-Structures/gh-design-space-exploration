@@ -1,8 +1,0 @@
-E:\Caitlin\github\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.dll
-E:\Caitlin\github\gh-design-space-exploration\DSECommon\bin\Debug\DSECommon.pdb
-E:\Caitlin\github\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.dll
-E:\Caitlin\github\gh-design-space-exploration\DSECommon\bin\Debug\zlib.net.dll
-E:\Caitlin\github\gh-design-space-exploration\DSECommon\bin\Debug\MathNet.Numerics.xml
-E:\Caitlin\github\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.dll
-E:\Caitlin\github\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.pdb
-E:\Caitlin\github\gh-design-space-exploration\DSECommon\obj\Debug\DSECommon.csprojResolveAssemblyReference.cache
