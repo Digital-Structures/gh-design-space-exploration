@@ -60,8 +60,6 @@
     <Compile Include="Cluster.cs" />
     <Compile Include="ClusterComponentAttributes.cs" />
     <Compile Include="ClusterInfo.cs" />
-    <Compile Include="MyComponent1.cs" />
-    <Compile Include="MyProject1Info.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
