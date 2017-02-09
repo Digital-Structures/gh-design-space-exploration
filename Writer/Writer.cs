@@ -22,8 +22,8 @@ namespace Writer
         /// </summary>
         public Writer()
           : base("Writer", "Writer",
-              "Description",
-              "DSE", "Main")
+              "Writes a nested list to a .csv file in the specified directory.",
+              "DSE", "Catalog")
         {
 
 
@@ -127,7 +127,7 @@ namespace Writer
             {
                 // You can add image files to your project resources and access them like this:
                 //return Resources.IconForThisComponent;
-                return null;
+                return Properties.Resources.Writer1; ;
             }
         }
 

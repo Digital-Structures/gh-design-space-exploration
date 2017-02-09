@@ -22,8 +22,8 @@ namespace MOO
         /// </summary>
         public MOO()
           : base("MOO", "MOO",
-              "Executes the NSGA-II multi-objective optimization algorithm",
-              "DSE", "Main")
+              "Executes the NSGA-II multi-objective optimization algorithm.",
+              "DSE", "Catalog")
         {
             this.ObjValues = new List<List<double>>();
             this.VarValues = new List<List<double>>();
@@ -59,9 +59,10 @@ namespace MOO
             pManager.AddNumberParameter("Variables", "Var", "Design Variables", GH_ParamAccess.list); // Variables
             pManager.AddNumberParameter("Objectives", "Obj", "Design Objectives", GH_ParamAccess.list); // Objectives
             pManager.AddIntegerParameter("Population Size", "Pop", "Population Size: number of solutions for each interation", GH_ParamAccess.item); // Population size
-            pManager.AddIntegerParameter("Max Evaluations", "MaxEval", "Max number of function evaluations", GH_ParamAccess.item); // Max number of iterations
-            pManager.AddTextParameter("Directory", "Dir", "Address of output file", GH_ParamAccess.item); // Output destination
+            pManager.AddIntegerParameter("Max Evaluations", "MaxEvals", "Max number of function evaluations", GH_ParamAccess.item); // Max number of iterations
             pManager.AddTextParameter("Filename", "F", "File name + extension ('output.csv')", GH_ParamAccess.item); // FIle name
+            pManager.AddTextParameter("Directory", "Dir", "Address of output file", GH_ParamAccess.item); // Output destination
+           
         }
 
         /// <summary>
@@ -71,7 +72,7 @@ namespace MOO
         {
 
             pManager.AddTextParameter("Pareto Front", "Pareto", "The last NSGA-II generation, approximating the Pareto Front", GH_ParamAccess.item);
-            pManager.AddTextParameter("Evaluations", "Evals", "Record of all designs and their performance recorded while the algorithm was running", GH_ParamAccess.tree);
+            pManager.AddTextParameter("All Solutions", "All Solutions", "Record of all designs and their performance recorded while the algorithm was running", GH_ParamAccess.tree);
 
         }
 
@@ -92,8 +93,8 @@ namespace MOO
             if (!DA.GetDataList(1, objectives)) return;
             if (!DA.GetData(2, ref popSize)) return;
             if (!DA.GetData(3, ref maxEvals)) return;
-            if (!DA.GetData(4, ref directory)) return;
-            if (!DA.GetData(5, ref fileName)) return;
+            if (!DA.GetData(4, ref fileName)) return;
+            if (!DA.GetData(5, ref directory)) return;
 
 
         
@@ -196,8 +197,8 @@ namespace MOO
             get
             {
                 // You can add image files to your project resources and access them like this:
-                //return Resources.IconForThisComponent;
-                return null;
+                //return this.res;
+                return Properties.Resources.MOO1;
             }
         }
 

@@ -21,8 +21,8 @@ namespace Reader
         /// </summary>
         public ReaderComponent()
           : base("Reader", "Reader",
-              "Reads in .CSV files as nested lists",
-              "DSE", "Main")
+              "Reads in .csv files as nested lists.",
+              "DSE", "Catalog")
         {
         }
 
@@ -112,7 +112,7 @@ namespace Reader
             {
                 // You can add image files to your project resources and access them like this:
                 //return Resources.IconForThisComponent;
-                return null;
+                return Reader.Properties.Resources.Reader1;
             }
         }
 

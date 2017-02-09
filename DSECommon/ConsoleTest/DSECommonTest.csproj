@@ -72,4 +72,8 @@
     <StartArguments />
     <StartWorkingDirectory />
   </PropertyGroup>
+  <PropertyGroup>
+    <PostBuildEvent>
+    </PostBuildEvent>
+  </PropertyGroup>
 </Project>

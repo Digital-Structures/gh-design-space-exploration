@@ -24,8 +24,8 @@ namespace Capture
         /// </summary>
         public CaptureComponent()
           : base("Capture", "Capture",
-              "Description",
-              "DSE", "Main")
+              "A general iterator that automatically generates many different design options and records an image, performance score, and/or other properties of each design",
+              "DSE", "Catalog")
         {
             this.VarsList = new List<DSEVariable>();
             this.ObjInput = new List<double>();
@@ -67,10 +67,10 @@ namespace Capture
         protected override void RegisterInputParams(GH_Component.GH_InputParamManager pManager)
         {
             // Check that number of sliders is equal to number of variables in DM; otherwise, throw an error.
-            pManager.AddNumberParameter("Variables", "Vars", "Sliders representing variables", GH_ParamAccess.list);
+            pManager.AddNumberParameter("Variables", "Var", "Sliders representing variables", GH_ParamAccess.list);
             pManager.AddNumberParameter("Objectives", "Obj", "One or more performance objectives", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Mode", "M", "Sampling Type. Right click to choose type.", GH_ParamAccess.item, 0);
-            pManager.AddNumberParameter("Properties", "P", "One or more numerical properties to record", GH_ParamAccess.list);
+            pManager.AddNumberParameter("Properties", "Prop", "One or more numerical properties to record", GH_ParamAccess.list);
             pManager.AddNumberParameter("Design map", "DM", "Set of design variable settings to capture", GH_ParamAccess.tree);
             pManager.AddTextParameter(".csv filename", ".csv F", "Prefix for output files. Example: 'all-data'", GH_ParamAccess.item);
             pManager.AddTextParameter(".csv directory", ".csv Dir", @"Output path. Example: 'C:\Folder\'", GH_ParamAccess.item);
@@ -91,7 +91,7 @@ namespace Capture
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddTextParameter("Design Map + Objectives", "DM+O", "Set of design variables plus recorded objective(s)", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Captured Properties", "P", "Additional numerical properties (not objectives) recorded during capture", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Captured Properties", "Prop", "Additional numerical properties (not objectives) recorded during capture", GH_ParamAccess.tree);
         }
 
         /// <summary>
@@ -248,7 +248,7 @@ namespace Capture
             {
                 // You can add image files to your project resources and access them like this:
                 //return Resources.IconForThisComponent;
-                return null;
+                return Properties.Resources.Capture1;
             }
         }
 
