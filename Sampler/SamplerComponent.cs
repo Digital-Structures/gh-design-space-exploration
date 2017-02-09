@@ -22,8 +22,8 @@ namespace Sampler
         /// </summary>
         public SamplerComponent()
           : base("Sampler", "Sampler",
-              "Description",
-              "DSE", "Main")
+              "Generates a list of parametric design vectors, called a “Design Map”, based on user-defined variable properties.",
+              "DSE", "Catalog")
         {
             this.Util = new SamplerUtilities(this);
             this.MyRand = new Random();
@@ -125,8 +125,7 @@ namespace Sampler
             get
             {
                 // You can add image files to your project resources and access them like this:
-                //return Resources.IconForThisComponent;
-                return null;
+                return Sampler.Properties.Resources.Sampler1;
             }
         }
 
