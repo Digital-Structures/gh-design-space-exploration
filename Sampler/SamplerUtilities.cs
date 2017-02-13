@@ -109,7 +109,7 @@ namespace Sampler
 
         private List<List<double>> LHC()
         {
-            Matrix<double> samplesMatrix = BestLatinHypercube(MyComponent.NSamples);
+            Matrix<double> samplesMatrix = RandLatinHypercube(MyComponent.NSamples, MyComponent.VarsList.Count);
 
             List<List<double>> samplesList = new List<List<double>>();
             for (int i = 0; i < samplesMatrix.RowCount; i ++)
