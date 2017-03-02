@@ -28,7 +28,7 @@ namespace MOO
             this.ObjValues = new List<List<double>>();
             this.VarValues = new List<List<double>>();
             this.comparer = new ObjectiveComparer();
-
+            this.MyRand = new Random();
         }
 
         public override void CreateAttributes()
@@ -47,7 +47,10 @@ namespace MOO
         public string directory = null, fileName = null;
         public string log = null;
         private ObjectiveComparer comparer;
-        
+        public Random MyRand;
+        public int Seed;
+
+
 
 
         /// <summary>
@@ -62,7 +65,9 @@ namespace MOO
             pManager.AddIntegerParameter("Max Evaluations", "MaxEvals", "Max number of function evaluations", GH_ParamAccess.item); // Max number of iterations
             pManager.AddTextParameter("Filename", "F", "File name + extension ('output.csv')", GH_ParamAccess.item); // FIle name
             pManager.AddTextParameter("Directory", "Dir", "Address of output file", GH_ParamAccess.item); // Output destination
-           
+            pManager.AddIntegerParameter("Seed", "S", "Random Seed. Integer 0 will leave the seed unspecified.", GH_ParamAccess.item);
+            if (this.Seed != 0) { this.MyRand = new Random(this.Seed); }
+
         }
 
         /// <summary>
@@ -95,9 +100,10 @@ namespace MOO
             if (!DA.GetData(3, ref maxEvals)) return;
             if (!DA.GetData(4, ref fileName)) return;
             if (!DA.GetData(5, ref directory)) return;
+            if (!DA.GetData(6, ref Seed)) return;
 
 
-        
+
 
             if (MooDone)
             {

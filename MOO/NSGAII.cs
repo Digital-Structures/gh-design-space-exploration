@@ -86,9 +86,9 @@ namespace MOO
 
 
             //J* !!! Creating first population !!!
-            Random random = new Random(2);
-            JMetalRandom.SetRandom(random);
-            comp.LogAddMessage("Random seed = " + 2);
+
+            JMetalRandom.SetRandom(comp.MyRand);
+            comp.LogAddMessage("Random seed = " + comp.Seed);
 
             // Create the initial solutionSet
             Solution newSolution;
