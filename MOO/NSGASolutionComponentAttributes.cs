@@ -32,6 +32,7 @@ namespace MOO
         [STAThread]
         public override Grasshopper.GUI.Canvas.GH_ObjectResponse RespondToMouseDoubleClick(Grasshopper.GUI.Canvas.GH_Canvas sender, Grasshopper.GUI.GH_CanvasMouseEvent e)
         {
+            if (MyComponent.Seed != 0) { MyComponent.MyRand = new Random(MyComponent.Seed); } // reset Random to give same result each time.
 
             // Reset list of objective values
             MyComponent.ObjValues = new List<List<double>>();
