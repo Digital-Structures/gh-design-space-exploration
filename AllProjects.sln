@@ -23,7 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMetalCSharp", "JMetalCShar
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JMetalRunners", "JMetalRunners\JMetalRunners.csproj", "{A744DD16-A7BB-45B9-B53D-365AEA33D1F4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sift", "MyProject1\Sift.csproj", "{86EB5801-99E9-4668-AA52-86366AA632B1}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sift", "Sift\Sift.csproj", "{86EB5801-99E9-4668-AA52-86366AA632B1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -24,11 +24,9 @@ namespace Sift
         [STAThread]
         public override Grasshopper.GUI.Canvas.GH_ObjectResponse RespondToMouseDoubleClick(Grasshopper.GUI.Canvas.GH_Canvas sender, Grasshopper.GUI.GH_CanvasMouseEvent e)
         {
-
-            //GHUtilities.ChangeSliders(MyComponent.SlidersList, MyComponent.DesignMap[MyComponent.Index]);
-            
-
-         return base.RespondToMouseDoubleClick(sender, e);
+            GHUtilities.ChangeSliders(MyComponent.SlidersList, MyComponent.DesignMap[MyComponent.Index]);
+            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
+            return base.RespondToMouseDoubleClick(sender, e);
         }
 
 

@@ -84,7 +84,7 @@ namespace Sift
 
 
             //Take in inputs
-            //this.readSlidersList();
+            this.readSlidersList();
 
             if (!DA.GetDataList<double>(1, this.ObjInput)) return;
 
