@@ -63,10 +63,11 @@ namespace MOO
             pManager.AddNumberParameter("Objectives", "Obj", "Design Objectives", GH_ParamAccess.list); // Objectives
             pManager.AddIntegerParameter("Population Size", "Pop", "Population Size: number of solutions for each interation", GH_ParamAccess.item); // Population size
             pManager.AddIntegerParameter("Max Evaluations", "MaxEvals", "Max number of function evaluations", GH_ParamAccess.item); // Max number of iterations
-            pManager.AddTextParameter("Filename", "F", "File name + extension ('output.csv')", GH_ParamAccess.item); // FIle name
-            pManager.AddTextParameter("Directory", "Dir", "Address of output file", GH_ParamAccess.item); // Output destination
             pManager.AddIntegerParameter("Seed", "S", "Random Seed. Integer 0 will leave the seed unspecified.", GH_ParamAccess.item);
             if (this.Seed != 0) { this.MyRand = new Random(this.Seed); }
+            pManager.AddTextParameter("Filename", "F", "File name + extension ('output.csv')", GH_ParamAccess.item); // FIle name
+            pManager.AddTextParameter("Directory", "Dir", "Address of output file", GH_ParamAccess.item); // Output destination
+            
 
         }
 
@@ -98,9 +99,10 @@ namespace MOO
             if (!DA.GetDataList(1, objectives)) return;
             if (!DA.GetData(2, ref popSize)) return;
             if (!DA.GetData(3, ref maxEvals)) return;
-            if (!DA.GetData(4, ref fileName)) return;
-            if (!DA.GetData(5, ref directory)) return;
-            if (!DA.GetData(6, ref Seed)) return;
+            if (!DA.GetData(4, ref Seed)) return;
+            if (!DA.GetData(5, ref fileName)) return;
+            if (!DA.GetData(6, ref directory)) return;
+            
 
 
 

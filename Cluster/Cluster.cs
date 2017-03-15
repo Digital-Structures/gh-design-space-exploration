@@ -13,6 +13,8 @@ using Grasshopper.Kernel.Special;
 using Grasshopper.Kernel.Types;
 using Accord.MachineLearning;
 
+
+
 namespace Cluster
 {
     public class ClusterComponent : GH_Component
@@ -37,6 +39,8 @@ namespace Cluster
             this.DesignMap = new List<List<double>>();
             this.ClusterMaxs = new List<List<double>>();
             this.ClusterMins = new List<List<double>>();
+            this.newVars = new List<double>();
+            
         }
 
         // Properties specific to this component:
@@ -46,13 +50,16 @@ namespace Cluster
         public int numClusters;
         public List<GH_NumberSlider> SlidersList;
         public bool ClusterDone;
+        public int index;
+        public List<double> newVars;
+        public bool live;
 
-        List<List<List<double>>> DesignMapSorted; 
-        List<List<double>> ClusterAves;
-        List<List<double>> ClusterMaxs;
-        List<List<double>> ClusterMins;
-        List<int> ClusterLabelsList;
-
+        public List<List<List<double>>> DesignMapSorted; 
+        public List<List<double>> ClusterAves;
+        public List<List<double>> ClusterMaxs;
+        public List<List<double>> ClusterMins;
+        public List<int> ClusterLabelsList;
+        
 
 
         /// <summary>
@@ -76,6 +83,16 @@ namespace Cluster
             pManager.AddIntegerParameter("Number of Clusters", "#Clust", "The objective being considered for cluster ranking", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Obj Number", "Obj#", "The objective being considered for cluster ranking", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Cluster Index", "Index", "The index of the cluster being explored", GH_ParamAccess.item);
+            pManager.AddNumberParameter("New Variables", "NewVar", "Variables for the specific cluster", GH_ParamAccess.list, 0);
+
+            pManager[5].Optional = true;
+
+            //double trick = 0;
+             
+            Param_Number param5 = (Param_Number)pManager[5];
+            
+         
+
 
         }
 
@@ -116,6 +133,9 @@ namespace Cluster
 
             if (!DA.GetData(2, ref numClusters)) return;
 
+            if (!DA.GetData(4, ref index)) return;
+
+
             List<List<int>> labelstree = new List<List<int>>();
             List<List<double>> averageTree = new List<List<Double>>();
 
@@ -151,6 +171,10 @@ namespace Cluster
                     }
                 }
 
+
+                ClusterAves.Clear();
+                ClusterMaxs.Clear();
+                ClusterMins.Clear();
 
                 for (int i = 0; i < numClusters; i++)
                 {
@@ -211,11 +235,81 @@ namespace Cluster
                 }
 
 
-                ////////////
+
+                // Change sliders
+                if (ClusterDone)
+                {
+
+                    if (!DA.GetDataList<double>(5, this.newVars)) return;
+
+
+                    //                    this.newVars.Clear();
+                    //            for (int i = 0; i < numVars; i++)
+                    //            {
+                    //                this.newVars.Add(this.Params.Input[5].Sources[i]);
+                    //            }
+
+
+
+                    List<IGH_Param> sliderList = new List<IGH_Param>();
+
+                        foreach (IGH_Param src in Params.Input[0].Sources)
+                        {
+                            sliderList.Add(src);
+                        }
+
+                    for (int i = 0; i < numVars; i++)
+                        {
+                                Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider) sliderList[i];
+
+                                nslider.TrySetSliderValue((decimal) newVars[i]);
+                            }
+                        
+                    }
+
+                if (this.newVars.Count > 1)
+                {
+
+                    Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
+
+                    List<IGH_Param> sliderList = new List<IGH_Param>();
+
+                    foreach (IGH_Param src in Params.Input[0].Sources)
+                    {
+                        sliderList.Add(src);
+                    }
+
+                    for (int i = 0; i < numVars; i++)
+                    {
+                        Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderList[i];
+
+                        nslider.TrySetSliderValue((decimal)newVars[i]);
+                    }
+
+
+                }
+
+
+
+              
+
+
+                    //Params.Input[5].Sources.ElementAt(1)
+
+                    ////////////
 
 
                 DA.SetDataTree(1, ListOfListsToTree<Double>(ClusterAves));
                 DA.SetDataTree(2, ListOfListsToTree<Double>(ClusterMins));
+
+
+            }
+
+
+            if (live)
+
+            {
+
 
 
             }

@@ -58,7 +58,6 @@ namespace Sift
 
             // Check that number of sliders is equal to number of variables in DM; otherwise, throw an error.
             pManager.AddNumberParameter("Variables", "Var", "Sliders representing variables", GH_ParamAccess.list);
-            pManager.AddNumberParameter("Objectives", "Obj", "One or more performance objectives", GH_ParamAccess.list);
             pManager.AddNumberParameter("Design map", "DM", "Set of design variable settings", GH_ParamAccess.tree);
             pManager.AddIntegerParameter("Index", "I", "Index in design map of desired design", GH_ParamAccess.item);
 
@@ -70,7 +69,6 @@ namespace Sift
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
             pManager.AddNumberParameter("Design Vector", "DesVec", "Design vector of sifted design", GH_ParamAccess.tree);
-            pManager.AddNumberParameter("Objectives", "Obj", "Objective of sifted design", GH_ParamAccess.tree);
 
         }
 
@@ -86,37 +84,25 @@ namespace Sift
             //Take in inputs
             this.readSlidersList();
 
-            if (!DA.GetDataList<double>(1, this.ObjInput)) return;
-
             var map = new GH_Structure<GH_Number>();
-            if (!DA.GetDataTree(2, out map)) return;
+            if (!DA.GetDataTree(1, out map)) return;
             this.DesignMap = StructureToListOfLists(map);
 
-            if (!DA.GetData(3, ref Index)) return;
+            if (!DA.GetData(2, ref Index)) return;
 
 
             //Set Current slider list
-           
-            //GHUtilities.ChangeSliders(this.SlidersList, this.DesignMap[Index]);
-                
+
+            //Set Outputs
+            var designVector = new List<double>();
+            for (int i = 0; i < this.DesignMap[Index].Count; i++)
+            {
+               designVector.Add(this.DesignMap[Index][i]);
+            }
+          
+            DA.SetDataTree(0, ListToTree<double>(designVector));
             
-
-            //Set Outpus
-            //var designVector = new List<double>();
-            //for (int i = 0; i < this.DesignMap[Index].Count; i++)
-            //{
-             //   designVector[i] = this.DesignMap[Index][i];
-            //}
-
-
-          
-
-            var objective = this.ObjInput;
-
-          
-            //DA.SetDataTree(0, ListToTree<double>(designVector));
-            //DA.SetDataTree(1, ListToTree<double>(designVector));
-            //DA.SetDataTree(1, tree.AddRange(listofLists[i], new GH_Path(i)));
+            
 
 
         }
@@ -154,7 +140,7 @@ namespace Sift
             DataTree<T> tree = new DataTree<T>();
             for (int i = 0; i < List.Count; i++)
             {
-                tree.Add(List[i], new GH_Path(i));
+                tree.Add(List[i]);
             }
             return tree;
         }
@@ -199,7 +185,7 @@ namespace Sift
             {
                 // You can add image files to your project resources and access them like this:
                 //return Resources.IconForThisComponent;
-                return null;
+                return Sift.Properties.Resources.sift1; ;
             }
         }
 
