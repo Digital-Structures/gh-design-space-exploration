@@ -33,6 +33,9 @@ namespace Cluster
         {
 
             this.VarsList = new List<DSEVariable>();
+            this.VarsVals = new List<double>();
+            this.MinVals = new List<double>();
+            this.MaxVals = new List<double>();
             this.SlidersList = new List<GH_NumberSlider>();
             this.DesignMapSorted = new List<List<List<double>>>();
             this.ClusterAves = new List<List<double>>();
@@ -45,6 +48,9 @@ namespace Cluster
 
         // Properties specific to this component:
         public List<DSEVariable> VarsList;
+        public List<double> VarsVals;
+        public List<double> MinVals;
+        public List<double> MaxVals;
         public List<List<double>> DesignMap;
         public int numVars;
         public int numClusters;
@@ -53,6 +59,8 @@ namespace Cluster
         public int index;
         public List<double> newVars;
         public bool live;
+        bool indexShifted;
+
 
         public List<List<List<double>>> DesignMapSorted; 
         public List<List<double>> ClusterAves;
@@ -82,16 +90,7 @@ namespace Cluster
             pManager.AddNumberParameter("Design map", "DM(+O)", "Data used to perform clustering", GH_ParamAccess.tree);
             pManager.AddIntegerParameter("Number of Clusters", "#Clust", "The objective being considered for cluster ranking", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Obj Number", "Obj#", "The objective being considered for cluster ranking", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Cluster Index", "Index", "The index of the cluster being explored", GH_ParamAccess.item);
-            pManager.AddNumberParameter("New Variables", "NewVar", "Variables for the specific cluster", GH_ParamAccess.list, 0);
-
-            pManager[5].Optional = true;
-
-            //double trick = 0;
-             
-            Param_Number param5 = (Param_Number)pManager[5];
-            
-         
+            pManager.AddIntegerParameter("Cluster Index", "Index", "The index of the cluster being explored; 0 is entire dataset", GH_ParamAccess.item);
 
 
         }
@@ -147,7 +146,8 @@ namespace Cluster
             {
 
                 labelstree.Add(((ClusterComponentAttributes)this.m_attributes).LabelsList);
-                DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
+
+
 
 
                 /// <summary>
@@ -178,7 +178,7 @@ namespace Cluster
 
                 for (int i = 0; i < numClusters; i++)
                 {
-                    
+
 
                     ClusterAves.Add(new List<double>());
                     ClusterMaxs.Add(new List<double>());
@@ -201,7 +201,7 @@ namespace Cluster
 
                     {
 
-                        
+
                         for (int k = 0; k < numVars; k++)
 
                         {
@@ -220,9 +220,9 @@ namespace Cluster
                             }
 
                             average[k] = sum[k] / DesignMapSorted[i].Count;
-    
+
                         }
-    
+
 
                     }
 
@@ -237,86 +237,30 @@ namespace Cluster
 
 
                 // Change sliders
-                if (ClusterDone)
+                if (ClusterDone && !indexShifted)
+
+
                 {
 
-                    if (!DA.GetDataList<double>(5, this.newVars)) return;
-
-
-                    //                    this.newVars.Clear();
-                    //            for (int i = 0; i < numVars; i++)
-                    //            {
-                    //                this.newVars.Add(this.Params.Input[5].Sources[i]);
-                    //            }
-
-
-
-                    List<IGH_Param> sliderList = new List<IGH_Param>();
-
-                        foreach (IGH_Param src in Params.Input[0].Sources)
-                        {
-                            sliderList.Add(src);
-                        }
-
-                    for (int i = 0; i < numVars; i++)
-                        {
-                                Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider) sliderList[i];
-
-                                nslider.TrySetSliderValue((decimal) newVars[i]);
-                            }
-                        
-                    }
-
-                if (this.newVars.Count > 1)
-                {
-
-                    Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
-
-                    List<IGH_Param> sliderList = new List<IGH_Param>();
-
-                    foreach (IGH_Param src in Params.Input[0].Sources)
+                    for (int i = 0; i < labelstree[0].Count; i++)
                     {
-                        sliderList.Add(src);
+                        labelstree[0][i] = labelstree[0][i] + 1;
                     }
 
-                    for (int i = 0; i < numVars; i++)
-                    {
-                        Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderList[i];
-
-                        nslider.TrySetSliderValue((decimal)newVars[i]);
-                    }
-
+                    indexShifted = true;
 
                 }
 
-
-
-              
-
-
-                    //Params.Input[5].Sources.ElementAt(1)
-
-                    ////////////
-
-
+                if (ClusterDone)
+                { 
+                DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
                 DA.SetDataTree(1, ListOfListsToTree<Double>(ClusterAves));
                 DA.SetDataTree(2, ListOfListsToTree<Double>(ClusterMins));
-
-
+                }
             }
-
-
-            if (live)
-
-            {
-
-
-
-            }
-
-
 
         }
+
 
         static List<List<double>> StructureToListOfLists(GH_Structure<GH_Number> structure)
         {
@@ -350,9 +294,13 @@ namespace Cluster
             {
                 DSEVariable newVar = new DSEVariable((double)slider.Slider.Minimum, (double)slider.Slider.Maximum, (double)slider.Slider.Value);
                 this.VarsList.Add(newVar);
+
+                VarsVals.Add((double)slider.Slider.Value);
+                MinVals.Add((double)slider.Slider.Minimum);
+                MaxVals.Add((double)slider.Slider.Maximum);
+
             }
         }
-
 
         static DataTree<T> ListOfListsToTree<T>(List<List<T>> listofLists)
         {

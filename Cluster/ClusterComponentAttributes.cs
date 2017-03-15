@@ -91,7 +91,6 @@ namespace Cluster
                 for (int i = 0; i < MyComponent.numClusters; i++)
                 {
 
-
                     ClusterAves.Add(new List<double>());
                     ClusterMaxs.Add(new List<double>());
                     ClusterMins.Add(new List<double>());
@@ -147,66 +146,47 @@ namespace Cluster
                 }
 
 
-            }
-
-            //this.MyComponent.Params.Input[5].RemoveAllSources();
-        
-            // Find sliders.
-            var localSliders = new List<Grasshopper.Kernel.Special.GH_NumberSlider>();
-
-            // Remove old sliders
-
-            for (int i = 0; i < numVars; i++)
-            {
-
-                foreach (IGH_DocumentObject obj in Grasshopper.Instances.ActiveCanvas.Document.Objects)
-                {
-                    var slider = obj as Grasshopper.Kernel.Special.GH_NumberSlider;
-                    if (slider == null)
-                        continue;
-                    if (slider.NickName.Contains("Variable_"))
-                    {
-                        Grasshopper.Instances.ActiveCanvas.Document.RemoveObject(slider, true);
-                        break;
-                     
-                    }
-                }
+                ClusterAves.Insert(0, MyComponent.VarsVals);
+                ClusterMaxs.Insert(0, MyComponent.MaxVals);
+                ClusterMins.Insert(0, MyComponent.MinVals);
 
 
-            }
+                //for (int i = 0; i < DesignMapSorted.Count; i++)
 
-            //add new sliders
-
-            for (int i = 0; i < numVars; i++)
-
-            {
-
-                //instantiate  new slider
-                Grasshopper.Kernel.Special.GH_NumberSlider slid = new Grasshopper.Kernel.Special.GH_NumberSlider();
-                slid.CreateAttributes(); //sets up default values, and makes sure your slider doesn't crash rhino
-
-                //customise slider (position, ranges etc)
-                int inputcount = this.MyComponent.Params.Input[0].SourceCount;
-                slid.Attributes.Pivot = new PointF((float)this.MyComponent.Attributes.DocObject.Attributes.Bounds.Left - slid.Attributes.Bounds.Width - 30, (float)this.MyComponent.Params.Input[1].Attributes.Bounds.Y + inputcount * 30);
-                slid.Slider.Maximum = Convert.ToDecimal(ClusterMaxs[MyComponent.index][i]);
-                slid.Slider.Minimum = Convert.ToDecimal(ClusterMins[MyComponent.index][i]); 
-                slid.Slider.DecimalPlaces = 2;
-
-                int id = i + 1;
-                slid.NickName = "Variable_" + id.ToString();  
-                slid.SetSliderValue((decimal)((ClusterAves[MyComponent.index][i])));
-
-
-                //Until now, the slider is a hypothetical object.
-                // This command makes it 'real' and adds it to the canvas.
-                Grasshopper.Instances.ActiveCanvas.Document.AddObject(slid, false);
-
+                //{
+                //LabelsList[i] = LabelsList[i] + 1;
+                //}
                 
 
-                //Connect the new slider to this component
-                this.MyComponent.Params.Input[5].AddSource(slid);
+            }
+
+
+
+
+            List<IGH_Param> sliderList = new List<IGH_Param>();
+
+            foreach (IGH_Param src in MyComponent.Params.Input[0].Sources)
+            {
+                sliderList.Add(src);
+            }
+
+            for (int i = 0; i < numVars; i++)
+            {
+                Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderList[i];
+
+                nslider.TrySetSliderValue((decimal)ClusterAves[MyComponent.index][i]);
+                nslider.Slider.Minimum = (decimal)ClusterMins[MyComponent.index][i];
+                nslider.Slider.Maximum = (decimal)ClusterMaxs[MyComponent.index][i];
 
             }
+
+        
+
+                
+                
+
+                   
+
 
 
 
