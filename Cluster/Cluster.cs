@@ -60,7 +60,8 @@ namespace Cluster
         public List<double> newVars;
         public bool live;
         bool indexShifted;
-
+        public double flexibility;
+        public bool propCalculated;
 
         public List<List<List<double>>> DesignMapSorted; 
         public List<List<double>> ClusterAves;
@@ -89,7 +90,7 @@ namespace Cluster
             pManager.AddNumberParameter("Variables", "Var", "Variables that define the design space", GH_ParamAccess.list);
             pManager.AddNumberParameter("Design map", "DM(+O)", "Data used to perform clustering", GH_ParamAccess.tree);
             pManager.AddIntegerParameter("Number of Clusters", "#Clust", "The objective being considered for cluster ranking", GH_ParamAccess.item);
-            pManager.AddIntegerParameter("Obj Number", "Obj#", "The objective being considered for cluster ranking", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Flexibility", "Flex", "Number between 0-1 that sets the flexibility of each cluster's design space", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Cluster Index", "Index", "The index of the cluster being explored; 0 is entire dataset", GH_ParamAccess.item);
 
 
@@ -103,7 +104,8 @@ namespace Cluster
 
             pManager.AddTextParameter("Cluster List", "ClusterL", "The Cluster number of each Design", GH_ParamAccess.tree);
             pManager.AddTextParameter("ClusterAvs", "ClusterAv", "Average variable values of each cluster", GH_ParamAccess.tree);
-            pManager.AddTextParameter("ClusterMins", "ClusterMins", "Average variable values of each cluster", GH_ParamAccess.tree);
+            pManager.AddTextParameter("ClusterMins", "ClusterMins", "Minimum values for each cluster", GH_ParamAccess.tree);
+            pManager.AddTextParameter("ClusterMaxs", "ClusterMaxs", "Maximum values for each cluster", GH_ParamAccess.tree);
 
         }
 
@@ -132,6 +134,8 @@ namespace Cluster
 
             if (!DA.GetData(2, ref numClusters)) return;
 
+            if (!DA.GetData(3, ref flexibility)) return;
+
             if (!DA.GetData(4, ref index)) return;
 
 
@@ -142,18 +146,14 @@ namespace Cluster
 
 
 
-            if (ClusterDone)
+            if (ClusterDone & !propCalculated)
             {
 
                 labelstree.Add(((ClusterComponentAttributes)this.m_attributes).LabelsList);
 
-
-
-
                 /// <summary>
                 /// 
                 /// </summary>
-
 
                 for (int i = 0; i < numClusters; i++)
                 {
@@ -178,7 +178,6 @@ namespace Cluster
 
                 for (int i = 0; i < numClusters; i++)
                 {
-
 
                     ClusterAves.Add(new List<double>());
                     ClusterMaxs.Add(new List<double>());
@@ -232,6 +231,8 @@ namespace Cluster
                         ClusterMaxs[i].Add(max[k]);
                         ClusterMins[i].Add(min[k]);
                     }
+
+
                 }
 
 
@@ -248,16 +249,22 @@ namespace Cluster
                     }
 
                     indexShifted = true;
-
+                    
                 }
 
-                if (ClusterDone)
-                { 
-                DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
+                propCalculated = true;
+            }
+
+
+            if (ClusterDone)
+            {
+                
                 DA.SetDataTree(1, ListOfListsToTree<Double>(ClusterAves));
                 DA.SetDataTree(2, ListOfListsToTree<Double>(ClusterMins));
-                }
+                DA.SetDataTree(3, ListOfListsToTree<Double>(ClusterMaxs));
             }
+
+            DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
 
         }
 
