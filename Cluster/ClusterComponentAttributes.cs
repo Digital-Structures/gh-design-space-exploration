@@ -179,8 +179,8 @@ namespace Cluster
 
                     Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderList[i];
 
-                    double adjmin = ClusterMins[MyComponent.index][i]; // + (1 - MyComponent.flexibility) * (ClusterAves[MyComponent.index][i] - ClusterMins[MyComponent.index][i]);
-                    double adjmax = ClusterMaxs[MyComponent.index][i]; // - (1 - MyComponent.flexibility) * (ClusterAves[MyComponent.index][i] - ClusterMaxs[MyComponent.index][i]);
+                    double adjmin = ClusterMins[MyComponent.index][i] + (1 - MyComponent.flexibility) * (ClusterAves[MyComponent.index][i] - ClusterMins[MyComponent.index][i]);
+                    double adjmax = ClusterMaxs[MyComponent.index][i] - (1 - MyComponent.flexibility) * (ClusterMaxs[MyComponent.index][i] - ClusterAves[MyComponent.index][i]);
 
                     nslider.TrySetSliderValue((decimal)ClusterAves[MyComponent.index][i]);
                     nslider.Slider.Minimum = ((decimal)adjmin);

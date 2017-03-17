@@ -42,6 +42,7 @@ namespace Cluster
             this.DesignMap = new List<List<double>>();
             this.ClusterMaxs = new List<List<double>>();
             this.ClusterMins = new List<List<double>>();
+            this.labelstree = new List<List<int>>();
             this.newVars = new List<double>();
             
         }
@@ -67,6 +68,7 @@ namespace Cluster
         public List<List<double>> ClusterAves;
         public List<List<double>> ClusterMaxs;
         public List<List<double>> ClusterMins;
+        public List<List<int>> labelstree;
         public List<int> ClusterLabelsList;
         
 
@@ -139,12 +141,15 @@ namespace Cluster
             if (!DA.GetData(4, ref index)) return;
 
 
-            List<List<int>> labelstree = new List<List<int>>();
-            List<List<double>> averageTree = new List<List<Double>>();
+            
 
-            ClusterLabelsList = ((ClusterComponentAttributes)this.m_attributes).LabelsList;
+            
+                
+                List<List<double>> averageTree = new List<List<Double>>();
 
+                ClusterLabelsList = ((ClusterComponentAttributes)this.m_attributes).LabelsList;
 
+            
 
             if (ClusterDone & !propCalculated)
             {
@@ -249,22 +254,24 @@ namespace Cluster
                     }
 
                     indexShifted = true;
-                    
+                    DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
+
                 }
 
                 propCalculated = true;
             }
 
 
-            if (ClusterDone)
+            if (ClusterDone & propCalculated)
             {
                 
                 DA.SetDataTree(1, ListOfListsToTree<Double>(ClusterAves));
                 DA.SetDataTree(2, ListOfListsToTree<Double>(ClusterMins));
                 DA.SetDataTree(3, ListOfListsToTree<Double>(ClusterMaxs));
+                DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
             }
 
-            DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
+            
 
         }
 
