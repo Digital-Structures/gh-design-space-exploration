@@ -50,6 +50,15 @@ namespace Cluster
         {
 
 
+            // Read in Cluster number slider
+           List<IGH_Param> sliderListClust = new List<IGH_Param>();
+           foreach (IGH_Param src2 in MyComponent.Params.Input[4].Sources)
+            {
+                sliderListClust.Add(src2);
+            }
+            Grasshopper.Kernel.Special.GH_NumberSlider clusterSlider = (Grasshopper.Kernel.Special.GH_NumberSlider) sliderListClust[0];
+
+
 
             if (!MyComponent.ClusterDone)
 
@@ -65,6 +74,11 @@ namespace Cluster
 
                 LabelsList = labels.OfType<int>().ToList();
 
+
+                // Set cluster slider bounds, values to default while clustering is run
+                clusterSlider.TrySetSliderValue((decimal) 0);
+                clusterSlider.Slider.Minimum = ((decimal) 0);
+                clusterSlider.Slider.Maximum = ((decimal) MyComponent.numClusters);
 
 
                 // list management    
@@ -162,6 +176,9 @@ namespace Cluster
 
 
 
+            
+
+
 
             List<IGH_Param> sliderList = new List<IGH_Param>();
 
@@ -197,18 +214,6 @@ namespace Cluster
                 }
 
             }
-
-        
-
-                
-                
-
-                   
-
-
-
-
-
 
             MyComponent.ClusterDone = true;
             Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
