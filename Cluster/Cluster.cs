@@ -42,6 +42,7 @@ namespace Cluster
             this.DesignMap = new List<List<double>>();
             this.ClusterMaxs = new List<List<double>>();
             this.ClusterMins = new List<List<double>>();
+            this.ClusterObjs = new List<List<double>>();
             this.labelstree = new List<List<int>>();
             this.newVars = new List<double>();
             
@@ -53,7 +54,9 @@ namespace Cluster
         public List<double> MinVals;
         public List<double> MaxVals;
         public List<List<double>> DesignMap;
+        public List<List<double>> DesignMapNoObj;
         public int numVars;
+        public int numObjs;
         public int numClusters;
         public List<GH_NumberSlider> SlidersList;
         public bool ClusterDone;
@@ -68,6 +71,7 @@ namespace Cluster
         public List<List<double>> ClusterAves;
         public List<List<double>> ClusterMaxs;
         public List<List<double>> ClusterMins;
+        public List<List<double>> ClusterObjs;
         public List<List<int>> labelstree;
         public List<int> ClusterLabelsList;
         
@@ -108,6 +112,7 @@ namespace Cluster
             pManager.AddTextParameter("ClusterAvs", "ClusterAv", "Average variable values of each cluster", GH_ParamAccess.tree);
             pManager.AddTextParameter("ClusterMins", "ClusterMins", "Minimum values for each cluster", GH_ParamAccess.tree);
             pManager.AddTextParameter("ClusterMaxs", "ClusterMaxs", "Maximum values for each cluster", GH_ParamAccess.tree);
+            pManager.AddTextParameter("ClusterObjs", "ClusterObj", "Average objective values for each cluster", GH_ParamAccess.tree);
 
         }
 
@@ -129,10 +134,14 @@ namespace Cluster
             if (!DA.GetDataList(0, variables)) return;
 
             numVars = variables.Count;
+            
+
 
             var map = new GH_Structure<GH_Number>();
             if (!DA.GetDataTree(1, out map)) return;
             this.DesignMap = StructureToListOfLists(map);
+
+            numObjs = DesignMap[0].Count - numVars;
 
             if (!DA.GetData(2, ref numClusters)) return;
 
@@ -180,6 +189,7 @@ namespace Cluster
                 ClusterAves.Clear();
                 ClusterMaxs.Clear();
                 ClusterMins.Clear();
+                ClusterObjs.Clear();
 
                 for (int i = 0; i < numClusters; i++)
                 {
@@ -187,19 +197,40 @@ namespace Cluster
                     ClusterAves.Add(new List<double>());
                     ClusterMaxs.Add(new List<double>());
                     ClusterMins.Add(new List<double>());
+                    ClusterObjs.Add(new List<double>());
 
                     double[] sum = new double[numVars];
                     double[] average = new double[numVars];
                     double[] max = new double[numVars];
                     double[] min = new double[numVars];
 
+                    double[] sumObj = new double[numObjs];
+                    double[] averageObj = new double[numObjs];
+                    double[] maxObj = new double[numObjs];
+                    double[] minObj = new double[numObjs];
+                    
+
+                    // Capture average, max, min for variables
                     for (int l = 0; l < numVars; l++)
 
                     {
                         sum[l] = 0;
                         max[l] = double.MinValue;
                         min[l] = double.MaxValue;
+                        
+
                     }
+
+                    for (int l = 0; l < numObjs; l++)
+
+                    {
+                        sumObj[l] = 0;
+                        maxObj[l] = double.MinValue;
+                        minObj[l] = double.MaxValue;
+                    }
+
+                    
+
 
                     for (int j = 0; j < DesignMapSorted[i].Count; j++)
 
@@ -230,6 +261,41 @@ namespace Cluster
 
                     }
 
+                    // Capture objective value averages
+
+                    for (int j = 0; j < DesignMapSorted[i].Count; j++)
+
+                    {
+
+
+                        for (int k = 0; k < numObjs; k++)
+
+                        {
+                            sumObj[k] = sumObj[k] + DesignMapSorted[i][j][k+numVars];
+
+                            if (DesignMapSorted[i][j][k+numVars] > maxObj[k])
+
+                            {
+                                maxObj[k] = DesignMapSorted[i][j][k+numVars];
+                            }
+                            else if (DesignMapSorted[i][j][k+numVars] < minObj[k])
+
+                            {
+
+                                minObj[k] = DesignMapSorted[i][j][k+numVars];
+                            }
+
+                            averageObj[k] = sumObj[k] / DesignMapSorted[i].Count;
+
+                        }
+
+
+                    }
+
+
+
+
+
                     for (int k = 0; k < numVars; k++)
                     {
                         ClusterAves[i].Add(average[k]);
@@ -237,6 +303,10 @@ namespace Cluster
                         ClusterMins[i].Add(min[k]);
                     }
 
+                    for (int k = 0; k < numObjs; k++)
+                    {
+                        ClusterObjs[i].Add(averageObj[k]);
+                    }
 
                 }
 
@@ -254,7 +324,7 @@ namespace Cluster
                     }
 
                     indexShifted = true;
-                    DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
+                    //DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
 
                 }
 
@@ -264,11 +334,13 @@ namespace Cluster
 
             if (ClusterDone & propCalculated)
             {
-                
+
+                DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
                 DA.SetDataTree(1, ListOfListsToTree<Double>(ClusterAves));
                 DA.SetDataTree(2, ListOfListsToTree<Double>(ClusterMins));
                 DA.SetDataTree(3, ListOfListsToTree<Double>(ClusterMaxs));
-                DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
+                DA.SetDataTree(4, ListOfListsToTree<Double>(ClusterObjs));
+
             }
 
             

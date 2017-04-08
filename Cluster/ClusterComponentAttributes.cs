@@ -65,10 +65,18 @@ namespace Cluster
             {
                 //run clustering process
                 KMeans kmeans = new KMeans(MyComponent.numClusters);
+
+
                 double[][] data = MyComponent.DesignMap.Select(a => a.ToArray()).ToArray();
                 double[] weights = null;
 
                 // int[] labels = kmeans.Learn(data,weights);
+
+                for (int i = 0; i < data.Count(); i++)
+                {
+                    data[i] = data[i].Take(data[i].Count() - MyComponent.numObjs).ToArray();
+                }      
+
 
                 int[] labels = kmeans.Compute(data);
 
