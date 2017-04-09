@@ -38,18 +38,22 @@ namespace Effects
 
             this.ObjInput = new List<double>();
             this.LevelSettings = new List<double>();
-
+            this.ObjValues = new List<List<double>>();
         }
 
         // Properties specific to this component:
         public List<DSEVariable> VarsList;
         public List<double> ObjInput;
+
         public List<double> LevelSettings;
         public List<double> MinVals;
         public List<double> MaxVals;
         public List<double> VarsVals;
         public List<List<double>> DesignMap;
         public List<List<double>> DesignMapNoObj;
+        public List<List<double>> ObjValues;
+        public bool Iterating;
+        public bool FirstRead;
         public int numVars;
         public int numObjs;
         public int numLevels;
@@ -57,11 +61,9 @@ namespace Effects
         public bool EffectsDone;
         public int index;
         public List<double> newVars;
-        public bool live;
-        bool indexShifted;
-        public double flexibility;
-        public bool propCalculated;
-
+        
+             
+        
         public override void CreateAttributes()
         {
             base.m_attributes = new EffectsComponentAttributes(this);
@@ -89,6 +91,7 @@ namespace Effects
 
             pManager.AddTextParameter("Average Effects", "AvgEff", "The magnitude of the average effects for each variable", GH_ParamAccess.tree);
             pManager.AddTextParameter("Raw Effects", "RawEff", "Raw effects of each variable setting", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Sampled Designs", "S", "Samples taken during effects calculation", GH_ParamAccess.tree);
 
 
         }
@@ -118,17 +121,30 @@ namespace Effects
 
             if (!DA.GetDataList<double>(3, this.LevelSettings)) return;
 
-            
+
+            if (Iterating)
+            {
+                List<double> o = new List<double>();
+               
+                if (!DA.GetDataList(1, o)) { return; }
+               
+                ObjValues.Add(o);
+            }
 
 
 
 
-            if (EffectsDone)
+
+            if (EffectsDone && !Iterating)
 
             {
 
-                DA.SetDataTree(0, ListOfListsToTree<int>(((EffectsComponentAttributes)this.m_attributes).EffectIndicesList));
+
+                //List<List<double>> DMEffects = ListOfListsToTree<double>(((EffectsComponentAttributes)this.m_attributes).DesignMapEffects);
+
+                DA.SetDataTree(0, AssembleDMOTree(((EffectsComponentAttributes)this.m_attributes).DesignMapEffects, this.ObjValues));
                 DA.SetDataTree(1, ListOfListsToTree<int>(((EffectsComponentAttributes)this.m_attributes).EffectIndicesList));
+                DA.SetDataTree(2, ListOfListsToTree<double>(((EffectsComponentAttributes)this.m_attributes).DesignMapEffects));
 
 
             }
@@ -185,6 +201,32 @@ namespace Effects
                 tree.AddRange(listofLists[i], new GH_Path(i));
             }
             return tree;
+        }
+
+
+        private DataTree<double> AssembleDMOTree(List<List<double>> vars, List<List<double>> obj)
+        {
+            return ListOfListsToTree<double>(AssembleDMO(vars, obj));
+        }
+
+        public List<List<double>> AssembleDMO(List<List<double>> vars, List<List<double>> obj)
+        {
+            List<List<double>> varsCopy = new List<List<double>>();
+            foreach (List<double> list in vars)
+            {
+                List<double> newList = new List<double>();
+                newList.AddRange(list);
+                varsCopy.Add(newList);
+            }
+
+            int nSamples = ((EffectsComponentAttributes)this.m_attributes).numRows;
+            for (int i = 0; i < nSamples; i++)
+            {
+                List<double> l = varsCopy[i];
+                l.AddRange(obj[i]);
+            }
+
+            return varsCopy;
         }
 
 

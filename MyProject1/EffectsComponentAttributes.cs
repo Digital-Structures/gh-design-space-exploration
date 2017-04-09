@@ -27,31 +27,29 @@ namespace Effects
 
 
             this.EffectIndicesList = new List<List<int>>();
-            
+            this.DesignMapEffects = new List<List<double>>();
 
         }
 
 
         // Create variables
-        Array[][] EffectIndices;
+        
         public List<List<int>> EffectIndicesList;
+        public List<List<double>> DesignMapEffects;
+        public int numRows;
 
         int numVars;
         int numLevels;
         int numFactors;
-        int j;
-        int n;
-        int q;
-        int dimx;
-        int dimy;
+       
 
         [STAThread]
         public override Grasshopper.GUI.Canvas.GH_ObjectResponse RespondToMouseDoubleClick(Grasshopper.GUI.Canvas.GH_Canvas sender, Grasshopper.GUI.GH_CanvasMouseEvent e)
         {
 
-
+            // Convert orthogonal matrix to list
             numFactors = 4;
-            int numRows = 9;
+            numRows = 9;
 
             int[,] EffectIndices = new int[,] { { 0, 0, 0, 0 }, { 0, 1, 1, 1 }, { 0, 2, 2, 2 }, { 1, 0, 1, 2 }, { 1, 1, 2, 0 }, { 1, 2, 0, 1 }, { 2, 0, 2, 1 }, { 2, 1, 0, 2 }, { 2, 2, 1, 0 } };
 
@@ -64,71 +62,33 @@ namespace Effects
             for (int i = 1; i < numRows + 1; i++)
             {
                 for (int j = 1; j < numFactors + 1; j++)
-
-
                 {
                     EffectIndicesList[i - 1].Add(EffectIndices[i - 1, j - 1]);
+                }
+            }
 
+            // Create Design Map of levels samples 
+            for (int i = 0; i < numRows; i++)
+            {
+                DesignMapEffects.Add(new List<double>());
+            }
+
+            for (int k = 0; k < numRows; k++)
+            {
+                for (int j = 0; j < MyComponent.numVars; j++)
+                {
+                        double setting = MyComponent.MinVals[j] + (MyComponent.LevelSettings[EffectIndices[k, j]] * (MyComponent.MaxVals[j] - MyComponent.MinVals[j]));
+                        DesignMapEffects[k].Add(setting);
                 }
             }
 
 
-        //    numLevels = MyComponent.numLevels;
-        //    j = 2;
-        //    n = 4;
-        //    q = numLevels;
+            // Reset list of objective values
+            MyComponent.ObjValues = new List<List<double>>();
 
-        //    dimx = q ^ j;
-        //    dimy = (q ^ j - 1) / (q - 1);
-
-        //    //Initialize Effects Indices lists
-        //    for (int i = 0; i < dimx; i++)
-        //    {
-        //        for (int j = 0; j < dimy; j++)
-        //        {
-        //            EffectIndices[i].Add((double) 0);
-        //        }
-        //    }
-
-        //    //for (int i = 0; i < MyComponent.numClusters; i++)
-
-        //    // Compute the basic columns
-        //    for (int k = 1; k < j + 1; k++)
-
-        //    {
-        //        int capJ = ((q ^ (k - 1) - 1) / (q - 1)) + 1;
-
-
-        //        for (int i = 1; i < dimx + 1; i++)
-        //        { 
-
-        //        EffectIndices[i][capJ] = Math.Floor(((i - 1) / (q ^ (j - k))));
-        //        }
-        //}
-
-        //    // Compute the non basic columns
-
-        //    for (int k = 2; k < j + 1; k++)
-        //    {
-        //        int capJ = ((q ^ (k - 1) - 1) / (q - 1)) + 1;
-
-        //        for (int s = 1; s < capJ - 1; s++)
-        //        {
-
-        //            for (int t = 1; t < q - 1; t++)
-        //            {
-
-        //                int x = capJ + (s - 1) * (q - 1) + t;
-
-        //                EffectIndices[x] = Math.mod(EffectIndices[s] * t + EffectIndices(:, capJ), q);
-
-        //            }
-        //        }
-        //    }
-
-        //    A = mod(A, q);
-
-
+            MyComponent.Iterating = true;
+            this.Iterate();
+            MyComponent.Iterating = false;
 
 
 
@@ -140,10 +100,26 @@ namespace Effects
                 return base.RespondToMouseDoubleClick(sender, e);
             }
 
+        private void Iterate()
+        {
+            int i = 1;
 
+            foreach (List<double> sample in this.DesignMapEffects)
+            {
+                GHUtilities.ChangeSliders(MyComponent.SlidersList, sample);
 
+                // If we're taking screen shots, this happens here.
+
+                
+                i++;
+            }
+
+           
 
         }
+
+
+    }
 
     }
 
