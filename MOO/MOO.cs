@@ -33,7 +33,7 @@ namespace MOO
 
         public override void CreateAttributes()
         {
-            base.m_attributes = new NSGASolutionComponentAttributes(this);
+            base.m_attributes = new MOOComponentAttributes(this);
         }
 
 
@@ -111,7 +111,7 @@ namespace MOO
             {
 
 
-                var solutions = ((NSGASolutionComponentAttributes)this.m_attributes).allSolutionsTrack;
+                var solutions = ((MOOComponentAttributes)this.m_attributes).allSolutionsTrack;
                 var paretoSolutions = solutions.GetRange(solutions.Count - 1 - this.popSize, this.popSize);
 
                 this.comparer.NumVars = variables.Count;

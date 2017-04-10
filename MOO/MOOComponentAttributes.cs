@@ -10,12 +10,12 @@ using System.Windows.Forms;
 
 namespace MOO
 {
-    class NSGASolutionComponentAttributes : Grasshopper.Kernel.Attributes.GH_ComponentAttributes
+    class MOOComponentAttributes : Grasshopper.Kernel.Attributes.GH_ComponentAttributes
     {
 
         MOO MyComponent;
 
-        public NSGASolutionComponentAttributes(IGH_Component component)
+        public MOOComponentAttributes(IGH_Component component)
             : base(component)
         {
             MyComponent = (MOO)component;

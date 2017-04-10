@@ -38,6 +38,14 @@
       <HintPath>..\Libraries\Grasshopper\0.9.76.0\x64\Grasshopper.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="JMetalCSharp, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\jMetal\4.5\JMetalCSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.13.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Libraries\jMetal\4.5\log4net.dll</HintPath>
+    </Reference>
     <Reference Include="RhinoCommon">
       <HintPath>..\Libraries\Rhino\5.1.3\x64\RhinoCommon.dll</HintPath>
       <Private>False</Private>
@@ -56,22 +64,16 @@
   <ItemGroup>
     <Compile Include="MOO.cs" />
     <Compile Include="MOOInfo.cs" />
+    <Compile Include="MOOComponentAttributes.cs" />
     <Compile Include="NSGAII.cs" />
     <Compile Include="NSGAIIProblem.cs" />
     <Compile Include="NSGAIIRunner.cs" />
-    <Compile Include="NSGASolutionComponentAttributes.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\JMetalCSharp\JMetalCSharp.csproj">
-      <Project>{88b27c90-4c97-43d5-99d2-e1437da8d154}</Project>
-      <Name>JMetalCSharp</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
