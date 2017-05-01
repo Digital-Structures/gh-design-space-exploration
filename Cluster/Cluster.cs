@@ -150,24 +150,14 @@ namespace Cluster
             if (!DA.GetData(4, ref index)) return;
 
 
-            
-
-            
-                
                 List<List<double>> averageTree = new List<List<Double>>();
 
                 ClusterLabelsList = ((ClusterComponentAttributes)this.m_attributes).LabelsList;
-
-            
 
             if (ClusterDone & !propCalculated)
             {
 
                 labelstree.Add(((ClusterComponentAttributes)this.m_attributes).LabelsList);
-
-                /// <summary>
-                /// 
-                /// </summary>
 
                 for (int i = 0; i < numClusters; i++)
                 {
@@ -184,7 +174,6 @@ namespace Cluster
                         }
                     }
                 }
-
 
                 ClusterAves.Clear();
                 ClusterMaxs.Clear();
@@ -217,8 +206,6 @@ namespace Cluster
                         sum[l] = 0;
                         max[l] = double.MinValue;
                         min[l] = double.MaxValue;
-                        
-
                     }
 
                     for (int l = 0; l < numObjs; l++)
@@ -229,29 +216,19 @@ namespace Cluster
                         minObj[l] = double.MaxValue;
                     }
 
-                    
-
-
                     for (int j = 0; j < DesignMapSorted[i].Count; j++)
-
                     {
-
-
                         for (int k = 0; k < numVars; k++)
-
                         {
                             sum[k] = sum[k] + DesignMapSorted[i][j][k];
 
                             if (DesignMapSorted[i][j][k] > max[k])
-
                             {
                                 max[k] = DesignMapSorted[i][j][k];
                             }
                             else if (DesignMapSorted[i][j][k] < min[k])
-
                             {
-
-                                min[k] = DesignMapSorted[i][j][k];
+                               min[k] = DesignMapSorted[i][j][k];
                             }
 
                             average[k] = sum[k] / DesignMapSorted[i].Count;
@@ -266,8 +243,7 @@ namespace Cluster
                     for (int j = 0; j < DesignMapSorted[i].Count; j++)
 
                     {
-
-
+                        
                         for (int k = 0; k < numObjs; k++)
 
                         {
@@ -292,10 +268,6 @@ namespace Cluster
 
                     }
 
-
-
-
-
                     for (int k = 0; k < numVars; k++)
                     {
                         ClusterAves[i].Add(average[k]);
@@ -311,10 +283,8 @@ namespace Cluster
                 }
 
 
-
                 // Change sliders
                 if (ClusterDone && !indexShifted)
-
 
                 {
 

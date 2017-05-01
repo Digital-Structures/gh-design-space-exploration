@@ -54,6 +54,7 @@ namespace Effects
         public List<List<double>> ObjValues;
         public bool Iterating;
         public bool FirstRead;
+        public bool ObjCalculated;
         public int numVars;
         public int numObjs;
         public int numLevels;
@@ -80,6 +81,7 @@ namespace Effects
             pManager.AddNumberParameter("Objectives", "Obj", "One or more performance objectives", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Levels", "Lev", "Number of levels.  Must be 2 or 3.", GH_ParamAccess.item, 2);
             pManager.AddNumberParameter("Level Settings", "LevSet", "Variable settings of the levels being considered", GH_ParamAccess.list);
+            pManager.AddIntegerParameter("Number of Objectives", "#Obj", "Number of objectives.  Must match length of 'Obj' input.", GH_ParamAccess.item,1);
 
         }
 
@@ -91,8 +93,8 @@ namespace Effects
 
             pManager.AddTextParameter("Average Effects", "AvgEff", "The magnitude of the average effects for each variable", GH_ParamAccess.tree);
             pManager.AddTextParameter("Raw Effects", "RawEff", "Raw effects of each variable setting", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Sampled Designs", "S", "Samples taken during effects calculation", GH_ParamAccess.tree);
-
+            pManager.AddTextParameter("Design map", "DM", "Set of design variable settings to capture", GH_ParamAccess.tree);
+            
 
         }
 
@@ -117,9 +119,14 @@ namespace Effects
 
             if (!DA.GetDataList<double>(1, this.ObjInput)) return;
 
+            //HARDCODE
+            numObjs = ObjInput.Count;
+
             if (!DA.GetData(2, ref this.numLevels)) return;
 
             if (!DA.GetDataList<double>(3, this.LevelSettings)) return;
+
+            if (!DA.GetData(4, ref this.numObjs)) return;
 
 
             if (Iterating)
@@ -142,10 +149,18 @@ namespace Effects
 
                 //List<List<double>> DMEffects = ListOfListsToTree<double>(((EffectsComponentAttributes)this.m_attributes).DesignMapEffects);
 
-                DA.SetDataTree(0, AssembleDMOTree(((EffectsComponentAttributes)this.m_attributes).DesignMapEffects, this.ObjValues));
-                DA.SetDataTree(1, ListOfListsToTree<int>(((EffectsComponentAttributes)this.m_attributes).EffectIndicesList));
-                DA.SetDataTree(2, ListOfListsToTree<double>(((EffectsComponentAttributes)this.m_attributes).DesignMapEffects));
+                
+                DA.SetDataTree(0, ListOfListsToTree<double>(((EffectsComponentAttributes)this.m_attributes).OverallEff));
 
+                for (int i = 0; i < numObjs; i++)
+                {
+                    DA.SetDataTree(1, ListOfListsToTree<double>(((EffectsComponentAttributes)this.m_attributes).IndEffectsAvg[i]));
+                }
+
+                DA.SetDataTree(2, AssembleDMOTree(((EffectsComponentAttributes)this.m_attributes).DesignMapEffects, this.ObjValues));
+
+
+                //DA.SetDataTree(2, ListOfListsToTree<double>(((EffectsComponentAttributes)this.m_attributes).DesignMapEffects));
 
             }
 

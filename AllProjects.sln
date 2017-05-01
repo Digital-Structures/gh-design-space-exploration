@@ -21,7 +21,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Capture", "Capture\Capture.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sift", "Sift\Sift.csproj", "{86EB5801-99E9-4668-AA52-86366AA632B1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Effects", "MyProject1\Effects.csproj", "{D18B6E0E-D22A-4A10-90E0-4DDEC4F740A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Effects", "Effects\Effects.csproj", "{D18B6E0E-D22A-4A10-90E0-4DDEC4F740A2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
