@@ -112,7 +112,17 @@ namespace Diversity
 
                 distances.Add(new List<double>());
 
-                distances[0].Add(Accord.Math.Distance.Euclidean(point1, point2));
+                List<double> coorddif = new List<double>();
+               
+                for (int j = 0; j < dimension; j++)
+                { 
+                    coorddif.Add((DesignMap[i][j] - centroid[j])* (DesignMap[i][j] - centroid[j]));
+                }
+
+                double sum = coorddif.Sum(x => Convert.ToDouble(x)); ;
+
+                distances[0].Add(Math.Sqrt(sum));
+                //distances[0].Add(Accord.Math.Distance.Euclidean(point1, point2));
             }
 
 
