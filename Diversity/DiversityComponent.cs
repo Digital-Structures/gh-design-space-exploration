@@ -8,6 +8,7 @@ using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Types;
 using Accord.Math;
+using Microsoft.DirectX.Direct3D;
 
 
 namespace Diversity
@@ -29,6 +30,7 @@ namespace Diversity
 
             this.DesignMap = new List<List<double>>();
             this.centroid = new List<double>();
+            this.median = new List<double>();
             this.distances = new List<List<double>>();
             this.diversity = new List<double>();
 
@@ -37,8 +39,11 @@ namespace Diversity
 
         public List<List<double>> DesignMap;
         public List<double> centroid;
+        public List<double> median;
         public List<List<double>> distances;
         public List<double> diversity;
+        public double[] diversityfin = new double[6];
+
 
         /// <summary>
         /// Registers all the input parameters for this component.
@@ -100,6 +105,8 @@ namespace Diversity
                 } 
             
                 centroid.Add(coordlist.Average());
+                coordlist.Sort();
+                median.Add(coordlist[coordlist.Count / 2]);
             }
 
             distances.Add(new List<double>());
@@ -107,35 +114,48 @@ namespace Diversity
             // Compare distance
             for (int i = 0; i < DesignMap.Count; i++)
             {
-                double[] point1 = centroid.ToArray();
-                double[] point2 = DesignMap[i].ToArray();
-
+               
                 distances.Add(new List<double>());
 
                 List<double> coorddif = new List<double>();
-               
+                List<double> coorddif2 = new List<double>();
+
                 for (int j = 0; j < dimension; j++)
                 { 
                     coorddif.Add((DesignMap[i][j] - centroid[j])* (DesignMap[i][j] - centroid[j]));
+                    coorddif2.Add((DesignMap[i][j] - median[j]) * (DesignMap[i][j] - median[j]));
                 }
 
-                double sum = coorddif.Sum(x => Convert.ToDouble(x)); ;
+                double sum = coorddif.Sum(x => Convert.ToDouble(x));
+                double sumcent = coorddif2.Sum(x => Convert.ToDouble(x));
 
                 distances[0].Add(Math.Sqrt(sum));
-                //distances[0].Add(Accord.Math.Distance.Euclidean(point1, point2));
+                distances[1].Add(Math.Sqrt(sumcent));
+             
             }
 
+            
 
+            // Microsoft.DirectX.Direct3D.
 
             DataTree<double> tree = new DataTree<double>();
             DataTree<double> tree2 = new DataTree<double>();
 
             diversity.Add(this.distances[0].Average());
+       
+            // add distance calculations to diversity list
+            diversityfin[1] = this.distances[0].Max();
+            diversityfin[2] = this.distances[0].Average();
+            diversityfin[3] = this.distances[1].Average();
 
-            
-            
+            double divsum = 0;
+            for (int i = 1; i < 4; i++)
+            { divsum = divsum + diversityfin[i]; }
+
+            diversityfin[0] = divsum / 3;
+
             tree.Add(diversity[mode], new GH_Path());
-            tree2.AddRange(distances[0], new GH_Path());
+            tree2.AddRange(diversityfin, new GH_Path());
 
 
             DA.SetDataTree(0, tree);

@@ -23,6 +23,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Sift", "Sift\Sift.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Effects", "Effects\Effects.csproj", "{D18B6E0E-D22A-4A10-90E0-4DDEC4F740A2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diversity", "Diversity\Diversity.csproj", "{EFAA8161-69E4-4E91-8C15-591750E8D75D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -112,6 +113,14 @@ Global
 		{D18B6E0E-D22A-4A10-90E0-4DDEC4F740A2}.Debug64|Any CPU.Build.0 = Debug64|Any CPU
 		{D18B6E0E-D22A-4A10-90E0-4DDEC4F740A2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D18B6E0E-D22A-4A10-90E0-4DDEC4F740A2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EFAA8161-69E4-4E91-8C15-591750E8D75D}.Debug|Any CPU.ActiveCfg = Debug64|Any CPU
+		{EFAA8161-69E4-4E91-8C15-591750E8D75D}.Debug|Any CPU.Build.0 = Debug64|Any CPU
+		{EFAA8161-69E4-4E91-8C15-591750E8D75D}.Debug32|Any CPU.ActiveCfg = Debug32|Any CPU
+		{EFAA8161-69E4-4E91-8C15-591750E8D75D}.Debug32|Any CPU.Build.0 = Debug32|Any CPU
+		{EFAA8161-69E4-4E91-8C15-591750E8D75D}.Debug64|Any CPU.ActiveCfg = Debug64|Any CPU
+		{EFAA8161-69E4-4E91-8C15-591750E8D75D}.Debug64|Any CPU.Build.0 = Debug64|Any CPU
+		{EFAA8161-69E4-4E91-8C15-591750E8D75D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EFAA8161-69E4-4E91-8C15-591750E8D75D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
