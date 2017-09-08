@@ -72,16 +72,24 @@ namespace Effects
 
             //2 level matrices
             int[,] EffectIndicesOpt3 = new int[,] { { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 1, 1, 1, 1 }, { 0, 1, 1, 0, 0, 1, 1 }, { 0, 1, 1, 1, 1, 0, 0 }, { 1, 0, 1, 0, 1, 0, 1 }, { 1, 0, 1, 1, 0, 1, 0 }, { 1, 1, 0, 0, 1, 1, 0 }, { 1, 1, 0, 1, 0, 0, 1 }};
-
+            int[,] EffectIndicesOpt4 = new int[,] { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0,0,0,0,0,0,0,1,1,1,1,1,1,1,1},{ 0,0,0,1,1,1,1,0,0,0,0,1,1,1,1},{ 0,0,0,1,1,1,1,1,1,1,1,0,0,0,0},{ 0,1,1,0,0,1,1,0,0,1,1,0,0,1,1},{ 0,1,1,0,0,1,1,1,1,0,0,1,1,0,0},{ 0,1,1,1,1,0,0,0,0,1,1,1,1,0,0},{ 0,1,1,1,1,0,0,1,1,0,0,0,0,1,1},{ 1,0,1,0,1,0,1,0,1,0,1,0,1,0,1},{ 1,0,1,0,1,0,1,1,0,1,0,1,0,1,0},{ 1,0,1,1,0,1,0,0,1,0,1,1,0,1,0},{ 1,0,1,1,0,1,0,1,0,1,0,0,1,0,1},{ 1,1,0,0,1,1,0,0,1,1,0,0,1,1,0},{ 1,1,0,0,1,1,0,1,0,0,1,1,0,0,1},{ 1,1,0,1,0,0,1,0,1,1,0,1,0,0,1},{ 1,1,0,1,0,0,1,1,0,0,1,0,1,1,0} };
 
 
 
             if (MyComponent.numLevels == 2)
             {
-                EffectIndices = EffectIndicesOpt3;
-                numFactors = MyComponent.numVars;
-                numRows = 8;
-
+                if (MyComponent.numVars < 7)
+                {
+                    EffectIndices = EffectIndicesOpt3;
+                    numFactors = MyComponent.numVars;
+                    numRows = 8;
+                }
+                else
+                {
+                    EffectIndices = EffectIndicesOpt4;
+                    numFactors = MyComponent.numVars;
+                    numRows = 16;
+                }
             }
 
                 if (MyComponent.numLevels == 3)
