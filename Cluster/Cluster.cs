@@ -28,7 +28,7 @@ namespace Cluster
         /// </summary>
         public ClusterComponent()
           : base("Cluster", "Cluster",
-              "Clusters designs using the K-means algorithm and adjusts variable bounds based on each cluster",
+              "Clusters designs using the K-means algorithm and adjusts variable bounds based on each cluster. WORKS ON DOUBLECLICK",
               "DSE", "Simplify")
         {
 

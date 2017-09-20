@@ -24,7 +24,7 @@ namespace Capture
         /// </summary>
         public CaptureComponent()
           : base("Capture", "Capture",
-              "A general iterator that automatically generates many different design options and records an image, performance score, and/or other properties of each design",
+              "A general iterator that automatically generates many different design options and records an image, performance score, and/or other properties of each design. WORKS ON DOUBLECLICK",
               "DSE", "Catalog")
         {
             this.VarsList = new List<DSEVariable>();
@@ -53,6 +53,8 @@ namespace Capture
         public string CSVDir;
         public string CSVFilename;
         public int NumVars, NumObjs;
+        public string DataWritten;
+        public string ImagesWritten;
 
         public override void CreateAttributes()
         {
@@ -70,12 +72,12 @@ namespace Capture
             pManager.AddNumberParameter("Variables", "Var", "Sliders representing variables", GH_ParamAccess.list);
             pManager.AddNumberParameter("Objectives", "Obj", "One or more performance objectives", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Mode", "M", "Sampling Type. Right click to choose type.", GH_ParamAccess.item, 0);
-            pManager.AddNumberParameter("Properties", "Prop", "One or more numerical properties to record", GH_ParamAccess.list);
+            pManager.AddNumberParameter("Properties", "Prop", "One or more numerical properties to record", GH_ParamAccess.list, 0.0);
             pManager.AddNumberParameter("Design map", "DM", "Set of design variable settings to capture", GH_ParamAccess.tree);
             pManager.AddTextParameter(".csv filename", ".csv F", "Prefix for output files. Example: 'all-data'", GH_ParamAccess.item);
-            pManager.AddTextParameter(".csv directory", ".csv Dir", @"Output path. Example: 'C:\Folder\'", GH_ParamAccess.item);
+            pManager.AddTextParameter(".csv directory", ".csv Dir", @"Output path. Example: 'C:\Folder or C:\Folder\", GH_ParamAccess.item, "None");
             pManager.AddTextParameter("Screenshot filename", "SS F", "Prefix for output files. Example: 'design'", GH_ParamAccess.item);
-            pManager.AddTextParameter("Screenshot directory", "SS Dir", @"Output path. Example: 'C:\Folder\'", GH_ParamAccess.item);
+            pManager.AddTextParameter("Screenshot directory", "SS Dir", @"Output path. Example: 'C:\Folder or C:\Folder\", GH_ParamAccess.item, "None");
 
             // Add possible values for the mode input
             Param_Integer param = (Param_Integer)pManager[2];
@@ -83,6 +85,13 @@ namespace Capture
             param.AddNamedValue("Save screenshot [1]", 1);
             param.AddNamedValue("Save both [2]", 2);
             param.AddNamedValue("Save neither [3]", 3);
+
+            pManager[3].Optional = true;
+            pManager[5].Optional = true;
+            pManager[6].Optional = true;
+            pManager[7].Optional = true;
+            pManager[8].Optional = true;
+
         }
 
         /// <summary>
@@ -92,6 +101,8 @@ namespace Capture
         {
             pManager.AddTextParameter("Design Map + Objectives", "DM+O", "Set of design variables plus recorded objective(s)", GH_ParamAccess.tree);
             pManager.AddTextParameter("Captured Properties", "Prop", "Additional numerical properties (not objectives) recorded during capture", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Data", "CSV?", "Data written?", GH_ParamAccess.item);
+            pManager.AddTextParameter("Images", "PNGs?", "Images written?", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -107,7 +118,9 @@ namespace Capture
             int mode = 0;
             if (!DA.GetData(2, ref mode)) return;
             this.Mode = (CaptureMode)mode;
-            if (!DA.GetDataList<double>(3, this.PropInput)) return;
+            //if (!DA.GetDataList<double>(3, this.PropInput)) return;
+
+            DA.GetDataList(3, this.PropInput);
 
             var map = new GH_Structure<GH_Number>();
             if (!DA.GetDataTree(4, out map)) return;
@@ -118,10 +131,35 @@ namespace Capture
                 FirstRead = false;
             }
 
-            if (!DA.GetData(5, ref CSVFilename)) return;
-            if (!DA.GetData(6, ref CSVDir)) return;
-            if (!DA.GetData(7, ref SSFilename)) return;
-            if (!DA.GetData(8, ref SSDir)) return;
+            // Activate if file writting should be required
+            //if (!DA.GetData(5, ref CSVFilename)) return;
+            //if (!DA.GetData(6, ref CSVDir)) return;
+            //if (!DA.GetData(7, ref SSFilename)) return;
+            //if (!DA.GetData(8, ref SSDir)) return;
+
+            DA.GetData(5, ref CSVFilename);
+            DA.GetData(6, ref CSVDir);
+            DA.GetData(7, ref SSFilename);
+            DA.GetData(8, ref SSDir);
+
+
+            // Make sure directories can be accepted with or without slashes
+
+            // Make sure there is backslash on directory
+            char lastc = CSVDir[CSVDir.Length - 1];
+            char lasts = SSDir[SSDir.Length - 1];
+
+            if (!lastc.Equals('\\') && CSVDir != "None")
+            {
+                CSVDir = @CSVDir + @"\";
+            }
+
+            if (!lasts.Equals('\\') && SSDir != "None")
+            {
+                SSDir = @SSDir + @"\";
+            }
+
+
 
             if (Iterating)
             {
@@ -145,6 +183,8 @@ namespace Capture
             {
                 DA.SetDataTree(0, AssembleDMOTree(this.DesignMap, this.ObjValues));
                 DA.SetDataTree(1, ListOfListsToTree<double>(this.PropertyValues));
+                DA.SetData(2, DataWritten);
+                DA.SetData(3, ImagesWritten);
             }
         }
 

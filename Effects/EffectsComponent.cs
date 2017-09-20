@@ -26,7 +26,7 @@ namespace Effects
         /// </summary>
         public EffectsComponent()
           : base("Effects", "Effects",
-              "Calculates the average effect of each variable on performance ",
+              "Calculates the average effect of each variable on performance. WORKS ON DOUBLECLICK ",
               "DSE", "Simplify")
         {
 
@@ -93,7 +93,7 @@ namespace Effects
 
             pManager.AddTextParameter("Average Effects", "AvgEff", "The magnitude of the average effects for each variable", GH_ParamAccess.tree);
             pManager.AddTextParameter("Raw Effects", "RawEff", "Raw effects of each variable setting", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Design map", "DM", "Set of design variable settings to capture", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Design Map + Objectives", "DM+O", "Set of design variables plus objective(s) recorded during calculations", GH_ParamAccess.tree);
             
 
         }
