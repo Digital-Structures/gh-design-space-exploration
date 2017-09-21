@@ -30,7 +30,13 @@ namespace Sampler
         {
             if (MyComponent.Seed != 0) { MyComponent.MyRand = new Random(MyComponent.Seed); } // reset Random to give same result each time.
             MyComponent.Util.Sample();
-            GHUtilities.WriteOutputToFile(MyComponent.Output, MyComponent.Dir, MyComponent.Filename, ".csv");
+
+            if (MyComponent.Dir != "None")
+           
+            {
+                GHUtilities.WriteOutputToFile(MyComponent.Output, MyComponent.Dir, MyComponent.Filename, ".csv");
+                MyComponent.FilesWritten = "Yes";
+            }
             Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
             return base.RespondToMouseDoubleClick(sender, e);
         }

@@ -22,7 +22,7 @@ namespace Sampler
         /// </summary>
         public SamplerComponent()
           : base("Sampler", "Sampler",
-              "Generates a list of parametric design vectors, called a “Design Map”, based on user-defined variable properties.",
+              "Generates a list of parametric design vectors, called a “Design Map”, based on user-defined variable properties. WORKS ON DOUBLECLICK",
               "DSE", "Catalog")
         {
             this.Util = new SamplerUtilities(this);
@@ -39,6 +39,7 @@ namespace Sampler
         public SamplerUtilities Util;
         public List<List<double>> Output;
         public Random MyRand;
+        public string FilesWritten;
 
         /// <summary>
         /// Creates custom attributes for this component.
@@ -60,7 +61,7 @@ namespace Sampler
             pManager.AddIntegerParameter("Seed", "S", "Random Seed. Integer 0 will leave the seed unspecified.", GH_ParamAccess.item);
             if (this.Seed != 0) { this.MyRand = new Random(this.Seed); }
             pManager.AddTextParameter("Filename", "F", "Filename for output .csv file. Example: 'Samples'", GH_ParamAccess.item);
-            pManager.AddTextParameter("Directory", "Dir", @"Output directory for .csv file. Example: 'C:\Folder\'", GH_ParamAccess.item);
+            pManager.AddTextParameter("Directory", "Dir", @"Output directory for .csv file. Example: 'C:\Folder or C:\Folder\", GH_ParamAccess.item, "None");
 
             // TODO: Add feature to check whether user included \ at the end of path.  If yes, do nothing, if not, add \.
             // or change to just path with filename
@@ -69,6 +70,10 @@ namespace Sampler
             param.AddNamedValue("Random [0]", 0);
             param.AddNamedValue("Grid [1]", 1);
             param.AddNamedValue("Latin Hypercube [2]", 2);
+
+            pManager[4].Optional = true;
+            pManager[5].Optional = true;
+
         }
 
         /// <summary>
@@ -76,7 +81,8 @@ namespace Sampler
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
-            pManager.AddNumberParameter("Output", "Out", "output data", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("Design Map", "DM", "Set of design variables", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Data", "CSV?", "Data written?", GH_ParamAccess.item);
         }
 
         /// <summary>
@@ -95,12 +101,26 @@ namespace Sampler
             if (!DA.GetData(1, ref NSamples)) return;
             if (!DA.GetData(2, ref Scheme)) return;
             if (!DA.GetData(3, ref Seed)) return;
-            if (!DA.GetData(4, ref Filename)) return;
-            if (!DA.GetData(5, ref Dir)) return;
+            // if (!DA.GetData(4, ref Filename)) return;
+            // if (!DA.GetData(5, ref Dir)) return;
+            DA.GetData(4, ref Filename);
+            DA.GetData(5, ref Dir);
+
+            // Make sure there is backslash on directory
+            char last = Dir[Dir.Length - 1];
+
+            if (!last.Equals('\\') && Dir != "None")
+            {
+                Dir = @Dir + @"\";
+            }
+
 
             // We should now validate the data and warn the user if invalid data is supplied.
-            
+
             DA.SetDataTree(0, GHUtilities.ListOfListsToTree<double>(this.Output));
+
+            DA.SetData(1, FilesWritten);
+
         }
 
         private void readSlidersList()
@@ -115,6 +135,17 @@ namespace Sampler
                 this.VarsList.Add(newVar);
             }
         }
+
+        static DataTree<T> ListToTree<T>(List<T> List)
+        {
+            DataTree<T> tree = new DataTree<T>();
+            for (int i = 0; i < List.Count; i++)
+            {
+                tree.Add(List[i]);
+            }
+            return tree;
+        }
+
 
         /// <summary>
         /// Provides an Icon for every component that will be visible in the User Interface.

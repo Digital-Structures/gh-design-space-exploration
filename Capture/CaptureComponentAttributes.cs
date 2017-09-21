@@ -50,16 +50,21 @@ namespace Capture
                     BeforeScreenShots();
                     ScreenShot(i);
                     AfterScreenShots();
+                    MyComponent.ImagesWritten = "Yes";
                 }
                 i++;
             }
+
+            
 
             // If we're saving a CSV, this happens here.
             if (MyComponent.Mode == CaptureComponent.CaptureMode.SaveCSV || MyComponent.Mode == CaptureComponent.CaptureMode.Both)
             {
                 WriteOutputToFile(MyComponent.AssembleDMO(MyComponent.DesignMap, MyComponent.ObjValues), MyComponent.CSVDir, MyComponent.CSVFilename, ".csv");
+                MyComponent.DataWritten = "Yes";
             }
 
+            
         }
 
         private Color currentColor;

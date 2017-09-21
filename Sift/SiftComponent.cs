@@ -23,7 +23,7 @@ namespace Sift
         /// </summary>
         public SiftComponent()
           : base("Sift", "Sift",
-              "Selects specific designs from a design map",
+              "Selects specific designs from a design map. WORKS ON DOUBLECLICK",
               "DSE", "Catalog")
         {
             this.VarsList = new List<DSEVariable>();

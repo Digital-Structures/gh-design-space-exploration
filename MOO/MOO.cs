@@ -22,7 +22,7 @@ namespace MOO
         /// </summary>
         public MOO()
           : base("MOO", "MOO",
-              "Executes the NSGA-II multi-objective optimization algorithm.",
+              "Executes the NSGA-II multi-objective optimization algorithm. WORKS ON DOUBLECLICK",
               "DSE", "Catalog")
         {
             this.ObjValues = new List<List<double>>();
@@ -65,7 +65,7 @@ namespace MOO
             pManager.AddIntegerParameter("Max Evaluations", "MaxEvals", "Max number of function evaluations", GH_ParamAccess.item); // Max number of iterations
             pManager.AddIntegerParameter("Seed", "S", "Random Seed. Integer 0 will leave the seed unspecified.", GH_ParamAccess.item);
             if (this.Seed != 0) { this.MyRand = new Random(this.Seed); }
-            pManager.AddTextParameter("Filename", "F", "File name + extension ('output.csv')", GH_ParamAccess.item); // FIle name
+            pManager.AddTextParameter("Filename", "F", "File name + extension ('output.csv') MUST INCLUDE EXTENSION", GH_ParamAccess.item); // FIle name
             pManager.AddTextParameter("Directory", "Dir", "Address of output file", GH_ParamAccess.item); // Output destination
             
 
@@ -102,7 +102,14 @@ namespace MOO
             if (!DA.GetData(4, ref Seed)) return;
             if (!DA.GetData(5, ref fileName)) return;
             if (!DA.GetData(6, ref directory)) return;
-            
+
+            // Make sure there is backslash on directory
+            char last = directory[directory.Length - 1];
+
+            if (!last.Equals('\\'))
+            {
+                directory = directory + @"\";
+            }
 
 
 
