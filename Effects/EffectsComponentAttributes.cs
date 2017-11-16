@@ -265,9 +265,6 @@ namespace Effects
             {
                 GHUtilities.ChangeSliders(MyComponent.SlidersList, sample);
 
-                // If we're taking screen shots, this happens here.
-
-                
                 i++;
             }
 

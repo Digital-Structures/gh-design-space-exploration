@@ -43,7 +43,7 @@ namespace MOO
         public List<List<double>> VarValues;
         public List<double> objectives;
         public List<GH_NumberSlider> slidersList = new List<GH_NumberSlider>();
-        public int popSize = 0, maxEvals = 0;
+        public int popSize = 0, maxEvals = 0, gen = 0;
         public string directory = null, fileName = null;
         public string log = null;
         private ObjectiveComparer comparer;
@@ -62,7 +62,8 @@ namespace MOO
             pManager.AddNumberParameter("Variables", "Var", "Design Variables", GH_ParamAccess.list); // Variables
             pManager.AddNumberParameter("Objectives", "Obj", "Design Objectives", GH_ParamAccess.list); // Objectives
             pManager.AddIntegerParameter("Population Size", "Pop", "Population Size: number of solutions for each interation", GH_ParamAccess.item); // Population size
-            pManager.AddIntegerParameter("Max Evaluations", "MaxEvals", "Max number of function evaluations", GH_ParamAccess.item); // Max number of iterations
+            //pManager.AddIntegerParameter("Max Evaluations", "MaxEvals", "Max number of function evaluations", GH_ParamAccess.item); // Max number of iterations
+            pManager.AddIntegerParameter("Generations", "Gen", "Max number of generations", GH_ParamAccess.item); // Max number of iterations
             pManager.AddIntegerParameter("Seed", "S", "Random Seed. Integer 0 will leave the seed unspecified.", GH_ParamAccess.item);
             if (this.Seed != 0) { this.MyRand = new Random(this.Seed); }
             pManager.AddTextParameter("Filename", "F", "File name + extension ('output.csv') MUST INCLUDE EXTENSION", GH_ParamAccess.item); // FIle name
@@ -78,7 +79,7 @@ namespace MOO
         {
 
             pManager.AddTextParameter("Pareto Front", "Pareto", "The last NSGA-II generation, approximating the Pareto Front", GH_ParamAccess.item);
-            pManager.AddTextParameter("All Solutions", "All Solutions", "Record of all designs and their performance recorded while the algorithm was running", GH_ParamAccess.tree);
+            pManager.AddTextParameter("All Solutions", "All Solutions", "Record of all designs and their performance recorded while the algorithm was running. IF SLIDERS MOVE BUT THERE IS NO OUTPUT, CHECK DIRECTORY", GH_ParamAccess.tree);
 
         }
 
@@ -98,10 +99,12 @@ namespace MOO
             if (!DA.GetDataList(0, variables)) return;
             if (!DA.GetDataList(1, objectives)) return;
             if (!DA.GetData(2, ref popSize)) return;
-            if (!DA.GetData(3, ref maxEvals)) return;
+            if (!DA.GetData(3, ref gen)) return;
             if (!DA.GetData(4, ref Seed)) return;
             if (!DA.GetData(5, ref fileName)) return;
             if (!DA.GetData(6, ref directory)) return;
+
+            maxEvals = gen * popSize;
 
             // Make sure there is backslash on directory
             char last = directory[directory.Length - 1];

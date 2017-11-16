@@ -131,7 +131,7 @@ namespace Capture
                 FirstRead = false;
             }
 
-            // Activate if file writting should be required
+            // Activate if file writing should be required; currently, possible to capture without directory
             //if (!DA.GetData(5, ref CSVFilename)) return;
             //if (!DA.GetData(6, ref CSVDir)) return;
             //if (!DA.GetData(7, ref SSFilename)) return;

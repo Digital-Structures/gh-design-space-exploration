@@ -97,7 +97,7 @@ namespace Sampler
             // We'll start by declaring variables and assigning them starting values.
 
             // Then we need to access the input parameters individually. 
-            // When data cannot be extracted from a parameter, we should abort this method (TODO: this is not necessarily true.)
+            // When data cannot be extracted from required parameters, abort this method 
             if (!DA.GetData(1, ref NSamples)) return;
             if (!DA.GetData(2, ref Scheme)) return;
             if (!DA.GetData(3, ref Seed)) return;
