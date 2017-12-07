@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using Grasshopper;
@@ -10,6 +11,7 @@ using DSECommon;
 using System.Drawing;
 using Grasshopper.GUI.Canvas;
 using System.Windows.Forms;
+using MathNet.Numerics;
 
 namespace Stepper
 {
@@ -32,7 +34,8 @@ namespace Stepper
             this.DesignMapStepperCombined = new List<List<double>>();
             this.ObjValsOne = new List<List<double>>();
             this.ObjValsTwo = new List<List<double>>();
-        
+            this.IsoPerf = new List<double>();
+
 
         }
 
@@ -49,7 +52,9 @@ namespace Stepper
         public List<List<double>> DesignMapStepperCombined;
         public List<List<double>> ObjValsOne;
         public List<List<double>> ObjValsTwo;
+        public List<double> IsoPerf;
         double stepSizeNorm;
+        
        
 
         [STAThread]
@@ -150,16 +155,88 @@ namespace Stepper
                         //Gradient[j].Add((double) maxObj);
                     }
 
-                //Normalize by max/min difference 
+                //Normalize by max/min difference
+
+                double maxAbs = double.MinValue;
+                double vecLength = 0;
+
+                if (Math.Abs(maxObj) > maxAbs) { maxAbs = Math.Abs(maxObj); }
+                if (Math.Abs(minObj) > maxAbs) { maxAbs = Math.Abs(minObj); }
+
                 for (int i = 0; i < numVars; i++)
                 {
-                    Gradient[j][i] = (Gradient[j][i] - minObj) / (maxObj - minObj);
+                    Gradient[j][i] = (Gradient[j][i] / maxAbs);
+                    vecLength = vecLength + Gradient[j][i] * Gradient[j][i];
                 }
 
+                for (int i = 0; i < numVars; i++)
+                {
+                    Gradient[j][i] = (Gradient[j][i] / Math.Sqrt(vecLength));
+                }
 
             }
 
-            // find the orthogonal vectors
+            //// FIND THE ORTHOGONAL VECTORS
+
+            ////double[][] gradientArray = Gradient.Select(a => a.ToArray()).ToArray();
+
+            List<List<string>> lst = new List<List<string>>();
+            double[,] gradientArray = new double[Gradient.Count, Gradient[0].Count];
+
+            for (int j = 0; j < Gradient.Count; j++)
+            {
+                for (int i = 0; i < Gradient[j].Count; i++)
+                {
+                    gradientArray[j, i] = Gradient[j][i];
+                }
+            }
+
+            var matrixGrad = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix.OfArray(gradientArray);
+
+            var matrixGradT = matrixGrad.Transpose();
+            var nullspace = matrixGradT.Kernel();
+
+
+            // STRATEGY 1: Direct to Array
+
+            double[] nullspaceArray;
+
+            for (int i = 1; i < 2; i++)
+            {
+                nullspaceArray = nullspace[i].ToArray();
+            }
+
+            // STRATEGY 2: One Line to Array
+            //double[] IsoPerfDir = nullspace.ToArray()[1].ToArray();
+
+            double[] IsoPerfDir2 = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+            //STRATEGY 3: STRING IN THE MIDDLE
+            //string IsoPerfDir = nullspace.ToArray()[0].ToString();
+
+            //List<double> IsoPerfDir3 = (List<double>)StringToDoubleList(IsoPerfDir);
+
+
+            //var IsoPerfMatrix = nullspace;
+
+            //IsoPerf.Add(IsoPerfMatrix[1]);
+
+            //// Randomly assign coefficient, create isoperformance direction
+            //Random rnd = new Random();
+            //int isoDir = rnd.Next(0, numVars - 1);
+
+
+
+
+            //// Convert array to List
+
+
+            for (int i = 0; i < numVars; i++)
+            {
+                IsoPerf.Add(IsoPerfDir2[i]);
+            }
+
+
 
 
             // step in the right direction based on the gradient vector
@@ -192,7 +269,22 @@ namespace Stepper
                         nslider.TrySetSliderValue((decimal)SteppedSlider);
                     }
 
-                }
+                     /// TAKE STEP IN ORTHOGONAL DIRECTION
+
+                    //if (MyComponent.Direction == 0)
+                    //{
+
+                    //Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderlist[i];
+
+                    //double SteppedSlider = MyComponent.VarsVals[i] - IsoPerf[i] * MyComponent.StepSize;
+
+                    //nslider.TrySetSliderValue((decimal)SteppedSlider);
+
+                    //}
+
+
+
+            }
 
                 Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
 
@@ -200,7 +292,19 @@ namespace Stepper
 
             return base.RespondToMouseDoubleClick(sender, e);
         }
-        
+
+        public static IEnumerable<double> StringToDoubleList(string str)
+        {
+            if (String.IsNullOrEmpty(str))
+                yield break;
+
+            foreach (var s in str.Split(' '))
+            {
+                double num;
+                if (double.TryParse(s, out num))
+                    yield return num;
+            }
+        }
 
         private void Iterate()
         {

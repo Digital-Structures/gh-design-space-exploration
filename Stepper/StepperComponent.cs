@@ -155,7 +155,7 @@ namespace Stepper
             DA.SetDataTree(0, ListOfListsToTree<double>(((StepperComponentAttributes)this.m_attributes).DesignMapStepperCombined));
             DA.SetDataTree(1, ListOfListsToTree<double>(((StepperComponentAttributes)this.m_attributes).ObjValsOne));
             DA.SetDataTree(2, ListOfListsToTree<double>(((StepperComponentAttributes)this.m_attributes).Gradient));
-            DA.SetDataTree(3, ListOfListsToTree<double>(((StepperComponentAttributes)this.m_attributes).DesignMapStepperTwo));
+            DA.SetDataTree(3, ListToTree<double>(((StepperComponentAttributes)this.m_attributes).IsoPerf));
 
         }
 
@@ -210,6 +210,15 @@ namespace Stepper
             return tree;
         }
 
+        static DataTree<T> ListToTree<T>(List<T> List)
+        {
+            DataTree<T> tree = new DataTree<T>();
+            for (int i = 0; i < List.Count; i++)
+            {
+                tree.Add(List[i], new GH_Path(i));
+            }
+            return tree;
+        }
 
         /// <summary>
         /// Provides an Icon for every component that will be visible in the User Interface.
