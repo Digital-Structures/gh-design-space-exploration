@@ -35,7 +35,6 @@ namespace Cluster
 
 
         // Create variables
-        public List<int> LabelsList;
         List<List<double>> DesignMap;
         List<List<List<double>>> DesignMapSorted;
         List<List<double>> ClusterAves;
@@ -50,6 +49,7 @@ namespace Cluster
         {
 
 
+
             // Read in Cluster number slider
            List<IGH_Param> sliderListClust = new List<IGH_Param>();
            foreach (IGH_Param src2 in MyComponent.Params.Input[4].Sources)
@@ -58,137 +58,19 @@ namespace Cluster
             }
             Grasshopper.Kernel.Special.GH_NumberSlider clusterSlider = (Grasshopper.Kernel.Special.GH_NumberSlider) sliderListClust[0];
 
+            //Set all cluster values
 
-
-            if (!MyComponent.ClusterDone)
+            if(MyComponent.ClusterDone)
 
             {
-                //run clustering process
-                KMeans kmeans = new KMeans(MyComponent.numClusters);
+                DesignMapSorted = MyComponent.DesignMapSorted;
+                ClusterAves = MyComponent.ClusterAves;
+                ClusterMaxs = MyComponent.ClusterMaxs;
+                ClusterMins = MyComponent.ClusterMins;
+                ClusterLabelsList = MyComponent.ClusterLabelsList;
+                int numVars = MyComponent.numVars;
 
-
-                double[][] data = MyComponent.DesignMap.Select(a => a.ToArray()).ToArray();
-                double[] weights = null;
-
-                // int[] labels = kmeans.Learn(data,weights);
-
-                for (int i = 0; i < data.Count(); i++)
-                {
-                    data[i] = data[i].Take(data[i].Count() - MyComponent.numObjs).ToArray();
-                }      
-
-
-                int[] labels = kmeans.Compute(data);
-
-                LabelsList = labels.OfType<int>().ToList();
-
-
-                // Set cluster slider bounds, values to default while clustering is run
-                clusterSlider.TrySetSliderValue((decimal) 0);
-                clusterSlider.Slider.Minimum = ((decimal) 0);
-                clusterSlider.Slider.Maximum = ((decimal) MyComponent.numClusters);
-
-
-                // list management    
-                this.DesignMap = MyComponent.DesignMap;
-                this.numVars = MyComponent.numVars;
-
-                // create Sorted list
-                for (int i = 0; i < MyComponent.numClusters; i++)
-                {
-
-                    DesignMapSorted.Add(new List<List<double>>());
-                    for (int j = 0; j < DesignMap.Count; j++)
-                    {
-
-                        if (LabelsList[j] == i)
-                        {
-
-                            DesignMapSorted[i].Add(DesignMap[j]);
-
-                        }
-                    }
-                }
-
-                for (int i = 0; i < MyComponent.numClusters; i++)
-                {
-
-                    ClusterAves.Add(new List<double>());
-                    ClusterMaxs.Add(new List<double>());
-                    ClusterMins.Add(new List<double>());
-
-                    double[] sum = new double[numVars];
-                    double[] average = new double[numVars];
-                    double[] max = new double[numVars];
-                    double[] min = new double[numVars];
-
-                    for (int l = 0; l < numVars; l++)
-
-                    {
-                        sum[l] = 0;
-                        max[l] = double.MinValue;
-                        min[l] = double.MaxValue;
-                    }
-
-                    for (int j = 0; j < DesignMapSorted[i].Count; j++)
-
-                    {
-
-
-                        for (int k = 0; k < numVars; k++)
-
-                        {
-                            sum[k] = sum[k] + DesignMapSorted[i][j][k];
-
-                            if (DesignMapSorted[i][j][k] > max[k])
-
-                            {
-                                max[k] = DesignMapSorted[i][j][k];
-                            }
-                            else if (DesignMapSorted[i][j][k] < min[k])
-
-                            {
-
-                                min[k] = DesignMapSorted[i][j][k];
-                            }
-
-                            average[k] = sum[k] / DesignMapSorted[i].Count;
-
-                        }
-
-
-                    }
-
-                    for (int k = 0; k < numVars; k++)
-                    {
-                        ClusterAves[i].Add(average[k]);
-                        ClusterMaxs[i].Add(max[k]);
-                        ClusterMins[i].Add(min[k]);
-                    }
-                }
-
-
-                ClusterAves.Insert(0, MyComponent.VarsVals);
-                ClusterMaxs.Insert(0, MyComponent.MaxVals);
-                ClusterMins.Insert(0, MyComponent.MinVals);
-
-
-                //for (int i = 0; i < DesignMapSorted.Count; i++)
-
-                //{
-                //LabelsList[i] = LabelsList[i] + 1;
-                //}
-                
-
-            }
-
-
-
-            
-
-
-
-            List<IGH_Param> sliderList = new List<IGH_Param>();
+                List<IGH_Param> sliderList = new List<IGH_Param>();
 
             foreach (IGH_Param src in MyComponent.Params.Input[0].Sources)
             {
@@ -220,6 +102,8 @@ namespace Cluster
                     nslider.Slider.Maximum = ((decimal)ClusterMaxs[MyComponent.index][i]);
 
                 }
+
+            }
 
             }
 

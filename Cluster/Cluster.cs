@@ -74,7 +74,7 @@ namespace Cluster
         public List<List<double>> ClusterObjs;
         public List<List<int>> labelstree;
         public List<int> ClusterLabelsList;
-        
+        public List<int> LabelsList;
 
 
         /// <summary>
@@ -98,6 +98,7 @@ namespace Cluster
             pManager.AddIntegerParameter("Number of Clusters", "#Clust", "The objective being considered for cluster ranking", GH_ParamAccess.item);
             pManager.AddNumberParameter("Flexibility", "Flex", "Number between 0-1 that sets the flexibility of each cluster's design space", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Cluster Index", "Index", "The index of the cluster being explored; 0 is entire dataset", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Run", "Run", "Seperate DM into clusters", GH_ParamAccess.item);
 
 
         }
@@ -149,15 +150,141 @@ namespace Cluster
 
             if (!DA.GetData(4, ref index)) return;
 
+            //ADD Clustering HERE
 
-                List<List<double>> averageTree = new List<List<Double>>();
+            if (Run(DA,5))
 
-                ClusterLabelsList = ((ClusterComponentAttributes)this.m_attributes).LabelsList;
+            {
+                //run clustering process
+                KMeans kmeans = new KMeans(numClusters);
+
+
+                double[][] data = DesignMap.Select(a => a.ToArray()).ToArray();
+                double[] weights = null;
+
+                // int[] labels = kmeans.Learn(data,weights);
+
+                for (int i = 0; i < data.Count(); i++)
+                {
+                    data[i] = data[i].Take(data[i].Count() - numObjs).ToArray();
+                }
+
+
+                int[] labels = kmeans.Compute(data);
+
+                LabelsList = labels.OfType<int>().ToList();
+
+                // create Sorted list
+                for (int i = 0; i < numClusters; i++)
+                {
+
+                    DesignMapSorted.Add(new List<List<double>>());
+                    for (int j = 0; j < DesignMap.Count; j++)
+                    {
+
+                        if (LabelsList[j] == i)
+                        {
+
+                            DesignMapSorted[i].Add(DesignMap[j]);
+
+                        }
+                    }
+                }
+
+
+                ///PUT LABELSSLIST_ADJUSTMENT HERE
+
+
+
+
+                for (int i = 0; i < numClusters; i++)
+                {
+
+                    ClusterAves.Add(new List<double>());
+                    ClusterMaxs.Add(new List<double>());
+                    ClusterMins.Add(new List<double>());
+
+                    double[] sum = new double[numVars];
+                    double[] average = new double[numVars];
+                    double[] max = new double[numVars];
+                    double[] min = new double[numVars];
+
+                    for (int l = 0; l < numVars; l++)
+
+                    {
+                        sum[l] = 0;
+                        max[l] = double.MinValue;
+                        min[l] = double.MaxValue;
+                    }
+
+                    for (int j = 0; j < DesignMapSorted[i].Count; j++)
+
+                    {
+
+
+                        for (int k = 0; k < numVars; k++)
+
+                        {
+                            sum[k] = sum[k] + DesignMapSorted[i][j][k];
+
+                            if (DesignMapSorted[i][j][k] > max[k])
+
+                            {
+                                max[k] = DesignMapSorted[i][j][k];
+                            }
+                            else if (DesignMapSorted[i][j][k] < min[k])
+
+                            {
+
+                                min[k] = DesignMapSorted[i][j][k];
+                            }
+
+                            average[k] = sum[k] / DesignMapSorted[i].Count;
+
+                        }
+
+
+                    }
+
+                    for (int k = 0; k < numVars; k++)
+                    {
+                        ClusterAves[i].Add(average[k]);
+                        ClusterMaxs[i].Add(max[k]);
+                        ClusterMins[i].Add(min[k]);
+                    }
+                }
+
+
+                ClusterAves.Insert(0, VarsVals);
+                ClusterMaxs.Insert(0, MaxVals);
+                ClusterMins.Insert(0, MinVals);
+
+                ClusterDone = true;
+
+                //for (int i = 0; i < DesignMapSorted.Count; i++)
+
+                //{
+                //LabelsList[i] = LabelsList[i] + 1;
+                //}
+
+
+            }
+
+
+
+
+
+            ////END NEW CLUSTER
+
+
+            List<List<double>> averageTree = new List<List<Double>>();
+
+            ClusterLabelsList = LabelsList;
 
             if (ClusterDone & !propCalculated)
             {
 
-                labelstree.Add(((ClusterComponentAttributes)this.m_attributes).LabelsList);
+                labelstree.Add(LabelsList);
 
                 for (int i = 0; i < numClusters; i++)
                 {
@@ -173,6 +300,20 @@ namespace Cluster
 
                         }
                     }
+                }
+
+                if (ClusterDone && !indexShifted)
+
+                {
+
+                    for (int i = 0; i < labelstree[0].Count; i++)
+                    {
+                        labelstree[0][i] = labelstree[0][i] + 1;
+                    }
+
+                    indexShifted = true;
+                    //DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
+
                 }
 
                 ClusterAves.Clear();
@@ -284,19 +425,8 @@ namespace Cluster
 
 
                 // Change sliders
-                if (ClusterDone && !indexShifted)
 
-                {
-
-                    for (int i = 0; i < labelstree[0].Count; i++)
-                    {
-                        labelstree[0][i] = labelstree[0][i] + 1;
-                    }
-
-                    indexShifted = true;
-                    //DA.SetDataTree(0, ListOfListsToTree<int>(labelstree));
-
-                }
+                //WHERE INDEXSHIFTED WAS
 
                 propCalculated = true;
             }
@@ -317,6 +447,12 @@ namespace Cluster
 
         }
 
+        public static bool Run(Grasshopper.Kernel.IGH_DataAccess DA, int index)
+        {
+            bool run = false;
+            DA.GetData<bool>(index, ref run);
+            return run;
+        }
 
         static List<List<double>> StructureToListOfLists(GH_Structure<GH_Number> structure)
         {
