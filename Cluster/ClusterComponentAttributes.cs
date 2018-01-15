@@ -89,19 +89,21 @@ namespace Cluster
                     double adjmin = ClusterMins[MyComponent.index][i] + (1 - MyComponent.flexibility) * (ClusterAves[MyComponent.index][i] - ClusterMins[MyComponent.index][i]);
                     double adjmax = ClusterMaxs[MyComponent.index][i] - (1 - MyComponent.flexibility) * (ClusterMaxs[MyComponent.index][i] - ClusterAves[MyComponent.index][i]);
 
-                    nslider.TrySetSliderValue((decimal)ClusterAves[MyComponent.index][i]);
+                    
                     nslider.Slider.Minimum = ((decimal)adjmin);
                     nslider.Slider.Maximum = ((decimal)adjmax);
+                    nslider.TrySetSliderValue((decimal)ClusterAves[MyComponent.index][i]);
 
-                } else
+                    } else
                 {
                     Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderList[i];
 
-                    nslider.TrySetSliderValue((decimal)ClusterAves[MyComponent.index][i]);
+                    
                     nslider.Slider.Minimum = ((decimal)ClusterMins[MyComponent.index][i]);
                     nslider.Slider.Maximum = ((decimal)ClusterMaxs[MyComponent.index][i]);
+                    nslider.TrySetSliderValue((decimal)ClusterAves[MyComponent.index][i]);
 
-                }
+                    }
 
             }
 

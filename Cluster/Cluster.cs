@@ -321,6 +321,23 @@ namespace Cluster
                 ClusterMins.Clear();
                 ClusterObjs.Clear();
 
+
+
+                // ADD CURRENT VALUES
+
+                ClusterAves.Add(new List<double>());
+                ClusterMaxs.Add(new List<double>());
+                ClusterMins.Add(new List<double>());
+
+                for (int k = 0; k < numVars; k++)
+                {
+                    ClusterAves[0].Add(VarsVals[k]);
+                    ClusterMaxs[0].Add(MaxVals[k]);
+                    ClusterMins[0].Add(MinVals[k]);
+                }
+
+
+
                 for (int i = 0; i < numClusters; i++)
                 {
 
@@ -379,6 +396,8 @@ namespace Cluster
 
                     }
 
+                  
+
                     // Capture objective value averages
 
                     for (int j = 0; j < DesignMapSorted[i].Count; j++)
@@ -411,9 +430,9 @@ namespace Cluster
 
                     for (int k = 0; k < numVars; k++)
                     {
-                        ClusterAves[i].Add(average[k]);
-                        ClusterMaxs[i].Add(max[k]);
-                        ClusterMins[i].Add(min[k]);
+                        ClusterAves[i+1].Add(average[k]);
+                        ClusterMaxs[i+1].Add(max[k]);
+                        ClusterMins[i+1].Add(min[k]);
                     }
 
                     for (int k = 0; k < numObjs; k++)
