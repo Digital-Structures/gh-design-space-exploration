@@ -67,6 +67,7 @@ namespace Cluster
         public double flexibility;
         public bool propCalculated;
 
+        // Lists for keeping track of design data
         public List<List<List<double>>> DesignMapSorted; 
         public List<List<double>> ClusterAves;
         public List<List<double>> ClusterMaxs;
@@ -125,39 +126,30 @@ namespace Cluster
         protected override void SolveInstance(IGH_DataAccess DA)
         {
 
-
+            // Read in slider properties
             readSlidersList();
-            // First, we need to retrieve all data from the input parameters.
-            // We'll start by declaring variables and assigning them starting values.
-
-
             List<double> variables = new List<double>();
             if (!DA.GetDataList(0, variables)) return;
-
             numVars = variables.Count;
-            
 
-
+            // Read in design map
             var map = new GH_Structure<GH_Number>();
             if (!DA.GetDataTree(1, out map)) return;
             this.DesignMap = StructureToListOfLists(map);
 
             numObjs = DesignMap[0].Count - numVars;
 
+            // Take in other inputs
             if (!DA.GetData(2, ref numClusters)) return;
-
             if (!DA.GetData(3, ref flexibility)) return;
-
             if (!DA.GetData(4, ref index)) return;
 
-            //ADD Clustering HERE
-
+            // If button is clicked, run clustering
             if (Run(DA,5))
 
             {
                 //run clustering process
                 KMeans kmeans = new KMeans(numClusters);
-
 
                 double[][] data = DesignMap.Select(a => a.ToArray()).ToArray();
                 double[] weights = null;
@@ -191,12 +183,7 @@ namespace Cluster
                     }
                 }
 
-
-                ///PUT LABELSSLIST_ADJUSTMENT HERE
-
-
-
-
+                // Calculate min/max/average for each cluster
                 for (int i = 0; i < numClusters; i++)
                 {
 
@@ -220,7 +207,6 @@ namespace Cluster
                     for (int j = 0; j < DesignMapSorted[i].Count; j++)
 
                     {
-
 
                         for (int k = 0; k < numVars; k++)
 
@@ -258,15 +244,7 @@ namespace Cluster
                 ClusterAves.Insert(0, VarsVals);
                 ClusterMaxs.Insert(0, MaxVals);
                 ClusterMins.Insert(0, MinVals);
-
                 ClusterDone = true;
-
-                //for (int i = 0; i < DesignMapSorted.Count; i++)
-
-                //{
-                //LabelsList[i] = LabelsList[i] + 1;
-                //}
-
 
             }
 
@@ -274,9 +252,7 @@ namespace Cluster
 
 
 
-            ////END NEW CLUSTER
-
-
+            // Create list of cluster labels
             List<List<double>> averageTree = new List<List<Double>>();
 
             ClusterLabelsList = LabelsList;
@@ -302,6 +278,7 @@ namespace Cluster
                     }
                 }
 
+                // Shift indices of labels from 0-numbering to 1-numbering (so that "0" will be original inputs)
                 if (ClusterDone && !indexShifted)
 
                 {
@@ -321,10 +298,7 @@ namespace Cluster
                 ClusterMins.Clear();
                 ClusterObjs.Clear();
 
-
-
-                // ADD CURRENT VALUES
-
+                // Add original inputs of variable sliders to cluster lists, so that "0" will reset to original design space
                 ClusterAves.Add(new List<double>());
                 ClusterMaxs.Add(new List<double>());
                 ClusterMins.Add(new List<double>());
@@ -336,8 +310,7 @@ namespace Cluster
                     ClusterMins[0].Add(MinVals[k]);
                 }
 
-
-
+                // Add cluster properties to lists for outputs and cycling through clusters (in Component Attributes)
                 for (int i = 0; i < numClusters; i++)
                 {
 
@@ -396,10 +369,9 @@ namespace Cluster
 
                     }
 
-                  
 
                     // Capture objective value averages
-
+              
                     for (int j = 0; j < DesignMapSorted[i].Count; j++)
 
                     {
@@ -442,15 +414,10 @@ namespace Cluster
 
                 }
 
-
-                // Change sliders
-
-                //WHERE INDEXSHIFTED WAS
-
                 propCalculated = true;
             }
 
-
+            // Set all outputs
             if (ClusterDone & propCalculated)
             {
 

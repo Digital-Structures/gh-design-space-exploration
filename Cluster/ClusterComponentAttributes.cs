@@ -49,7 +49,6 @@ namespace Cluster
         {
 
 
-
             // Read in Cluster number slider
            List<IGH_Param> sliderListClust = new List<IGH_Param>();
            foreach (IGH_Param src2 in MyComponent.Params.Input[4].Sources)
@@ -59,7 +58,6 @@ namespace Cluster
             Grasshopper.Kernel.Special.GH_NumberSlider clusterSlider = (Grasshopper.Kernel.Special.GH_NumberSlider) sliderListClust[0];
 
             //Set all cluster values
-
             if(MyComponent.ClusterDone)
 
             {
@@ -79,16 +77,13 @@ namespace Cluster
 
             for (int i = 0; i < numVars; i++)
             {
-
+                // if input is not zero, reset sliders based on clusters properties
                 if (MyComponent.index != 0)
-
                 {
-
                     Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderList[i];
 
                     double adjmin = ClusterMins[MyComponent.index][i] + (1 - MyComponent.flexibility) * (ClusterAves[MyComponent.index][i] - ClusterMins[MyComponent.index][i]);
                     double adjmax = ClusterMaxs[MyComponent.index][i] - (1 - MyComponent.flexibility) * (ClusterMaxs[MyComponent.index][i] - ClusterAves[MyComponent.index][i]);
-
                     
                     nslider.Slider.Minimum = ((decimal)adjmin);
                     nslider.Slider.Maximum = ((decimal)adjmax);
@@ -98,29 +93,20 @@ namespace Cluster
                 {
                     Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderList[i];
 
-                    
                     nslider.Slider.Minimum = ((decimal)ClusterMins[MyComponent.index][i]);
                     nslider.Slider.Maximum = ((decimal)ClusterMaxs[MyComponent.index][i]);
                     nslider.TrySetSliderValue((decimal)ClusterAves[MyComponent.index][i]);
 
                     }
-
+            }
             }
 
-            }
-
-            MyComponent.ClusterDone = true;
             Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
 
             return base.RespondToMouseDoubleClick(sender, e);
         }
-      
-
-
 
     }
-
-   
 
     }
 
