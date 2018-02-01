@@ -90,10 +90,10 @@ namespace Stepper
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
 
+            pManager.AddNumberParameter("Tested Design Map", "DM", "Map of tested designs during finite differences", GH_ParamAccess.tree);
             pManager.AddNumberParameter("Gradient", "Gradient", "The Gradient at the previous point", GH_ParamAccess.tree);
-            pManager.AddNumberParameter("b1", "b1", "The Gradient at the previous point", GH_ParamAccess.tree);
             pManager.AddNumberParameter("b2", "b2", "The Gradient at the previous point", GH_ParamAccess.tree);
-            pManager.AddNumberParameter("b3", "b3", "The Gradient at the previous point", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("Isoperformance Direction", "Iso", "The selected isoperformance direction for stepping", GH_ParamAccess.tree);
 
         }
 
@@ -153,9 +153,13 @@ namespace Stepper
 
 
             DA.SetDataTree(0, ListOfListsToTree<double>(((StepperComponentAttributes)this.m_attributes).DesignMapStepperCombined));
-            DA.SetDataTree(1, ListOfListsToTree<double>(((StepperComponentAttributes)this.m_attributes).ObjValsOne));
-            DA.SetDataTree(2, ListOfListsToTree<double>(((StepperComponentAttributes)this.m_attributes).Gradient));
-            DA.SetDataTree(3, ListToTree<double>(((StepperComponentAttributes)this.m_attributes).IsoPerf));
+            DA.SetDataTree(1, ListOfListsToTree<double>(((StepperComponentAttributes)this.m_attributes).Gradient));
+            //DA.SetDataTree(2, ListOfListsToTree<double>(((StepperComponentAttributes)this.m_attributes).ObjValsOne));
+            if (((StepperComponentAttributes)this.m_attributes).stepped)
+            {
+                //DA.SetDataTree(2, ListToTree<double>(((StepperComponentAttributes)this.m_attributes).IsoPerfDirList));
+            }
+            DA.SetDataTree(3, ListOfListsToTree<double>(((StepperComponentAttributes)this.m_attributes).IsoPerf));
 
         }
 

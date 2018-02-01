@@ -39,8 +39,7 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="MathNet.Numerics">
-      <HintPath>..\Libraries\MathNet.Numerics\lib\Net40\MathNet.Numerics.dll</HintPath>
-      <Private>True</Private>
+      <HintPath>..\packages\MathNet.Numerics.3.20.1\lib\net40\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="RhinoCommon">
       <HintPath>..\Libraries\Rhino\5.1.3\x64\RhinoCommon.dll</HintPath>
@@ -83,6 +82,7 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\Sampler1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

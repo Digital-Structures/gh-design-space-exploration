@@ -34,10 +34,10 @@ namespace Stepper
             this.DesignMapStepperCombined = new List<List<double>>();
             this.ObjValsOne = new List<List<double>>();
             this.ObjValsTwo = new List<List<double>>();
-            this.IsoPerf = new List<double>();
+            this.IsoPerf = new List<List<double>>();
 
-
-        }
+            this.test = new List<List<double>>(); //JUST TO TEST
+    }
 
 
         // Create variables
@@ -52,10 +52,15 @@ namespace Stepper
         public List<List<double>> DesignMapStepperCombined;
         public List<List<double>> ObjValsOne;
         public List<List<double>> ObjValsTwo;
-        public List<double> IsoPerf;
+        public List<List<double>> IsoPerf;
         double stepSizeNorm;
-        
-       
+        public Boolean stepped;
+        public int dir;
+        public List<double> IsoPerfDirList;
+        public double FDstep;
+
+        public List<List<double>> test; //JUST TO TEST
+
 
         [STAThread]
         public override Grasshopper.GUI.Canvas.GH_ObjectResponse RespondToMouseDoubleClick(Grasshopper.GUI.Canvas.GH_Canvas sender, Grasshopper.GUI.GH_CanvasMouseEvent e)
@@ -73,87 +78,92 @@ namespace Stepper
             this.DesignMapStepperCombined = new List<List<double>>();
             this.ObjValsOne = new List<List<double>>();
             this.ObjValsTwo = new List<List<double>>();
+            this.IsoPerf = new List<List<double>>();
 
-
-
+            //TO TEST OUTPUTS
+            test.Add(new List<double>());
+            test[0].Add(248.0);
 
             numVars = MyComponent.numVars;
-                numObjs = MyComponent.numObjs;
+            numObjs = MyComponent.numObjs;
+
+            //Set Finite Differences step size
+            FDstep = 0.01;
 
 
-                // create design map stepper, which is the list of new points to be tested
+            // create design map stepper, which is the list of new points to be tested
+            for (int i = 0; i < numVars; i++)
+            {
+                DesignMapStepperOne.Add(new List<double>());
+                DesignMapStepperTwo.Add(new List<double>());
+            }
+
+            for (int i = 0; i < numVars; i++)
+            {
+                for (int j = 0; j < numVars; j++)
+                {
+                    DesignMapStepperOne[i].Add(MyComponent.VarsVals[j]);
+                    DesignMapStepperTwo[i].Add(MyComponent.VarsVals[j]);
+                }
+            }
+
+            for (int i = 0; i < numVars; i++)
+            {
+
+                double left = MyComponent.VarsVals[i] - 0.5 * FDstep * (MyComponent.MaxVals[i] - MyComponent.MinVals[i]);
+                double right = MyComponent.VarsVals[i] + 0.5 * FDstep * (MyComponent.MaxVals[i] - MyComponent.MinVals[i]);
+
+                DesignMapStepperOne[i][i] = left;
+                DesignMapStepperTwo[i][i] = right;
+
+            }
+
+            // combine lists
+            DesignMapStepperCombined.AddRange(DesignMapStepperOne);
+            DesignMapStepperCombined.AddRange(DesignMapStepperTwo);
+
+            // Add dummy at end to resent sliders
+            DesignMapStepperCombined.Add(MyComponent.VarsVals);
+
+
+            // run through both design maps, gather objective values on left and right for each variable
+            MyComponent.ObjValues = new List<List<double>>();
+
+            MyComponent.Iterating = true;
+            this.Iterate();
+            MyComponent.Iterating = false;
+
+            for (int j = 0; j < numObjs; j++)
+            {
+                ObjValsOne.AddRange(MyComponent.ObjValues);
+            }
+
+            double maxObj = double.MinValue;
+            double minObj = double.MaxValue;
+
+            // find the gradient for each objective by taking finite differences of every variable
+
+            for (int j = 0; j < numObjs; j++)
+            {
+
+                Gradient.Add(new List<double>());
+
+
                 for (int i = 0; i < numVars; i++)
                 {
-                    DesignMapStepperOne.Add(new List<double>());
-                    DesignMapStepperTwo.Add(new List<double>());
+
+                    double left = ObjValsOne[i][j];
+                    double right = ObjValsOne[numVars + i][j];
+
+                    double difference = (right - left) / (FDstep); //* (MyComponent.MaxVals[i] - MyComponent.MinVals[i]));
+
+                    if (difference > maxObj) { maxObj = difference; }
+                    if (difference < minObj) { minObj = difference; }
+
+                    Gradient[j].Add((double)difference);
+
+                    //Gradient[j].Add((double) maxObj);
                 }
-
-                for (int i = 0; i < numVars; i++)
-                {
-                    for (int j = 0; j < numVars; j++)
-                    {
-                        DesignMapStepperOne[i].Add(MyComponent.VarsVals[j]);
-                        DesignMapStepperTwo[i].Add(MyComponent.VarsVals[j]);
-                    }
-                }
-
-                for (int i = 0; i < numVars; i++)
-                {
-
-                    double left = MyComponent.VarsVals[i] - 0.5 * MyComponent.StepSize * (MyComponent.MaxVals[i] - MyComponent.MinVals[i]);
-                    double right = MyComponent.VarsVals[i] + 0.5 * MyComponent.StepSize * (MyComponent.MaxVals[i] - MyComponent.MinVals[i]);
-
-                    DesignMapStepperOne[i][i] = left;
-                    DesignMapStepperTwo[i][i] = right;
-
-                }
-
-                // combine lists
-                DesignMapStepperCombined.AddRange(DesignMapStepperOne);
-                DesignMapStepperCombined.AddRange(DesignMapStepperTwo);
-
-                // Add dummy at end to resent sliders
-                DesignMapStepperCombined.Add(MyComponent.VarsVals);
-
-
-                // run through both design maps, gather objective values on left and right for each variable
-                MyComponent.ObjValues = new List<List<double>>();
-
-                MyComponent.Iterating = true;
-                this.Iterate();
-                MyComponent.Iterating = false;
-
-                for (int j = 0; j < numObjs; j++)
-                {
-                    ObjValsOne.AddRange(MyComponent.ObjValues);
-                }
-
-                double maxObj = double.MinValue;
-                double minObj = double.MaxValue;
-
-                // find the gradient for each objective by taking finite differences of every variable
-
-                for (int j = 0; j < numObjs; j++)
-                {
-
-                    Gradient.Add(new List<double>());
-
-
-                    for (int i = 0; i < numVars; i++)
-                    {
-
-                        double left = ObjValsOne[i][j];
-                        double right = ObjValsOne[numVars + i][j];
-
-                        double difference = (right - left) / (MyComponent.StepSize * (MyComponent.MaxVals[i] - MyComponent.MinVals[i]));
-
-                            if (difference > maxObj) { maxObj = difference; }
-                            if (difference < minObj) { minObj = difference; }
-
-                        Gradient[j].Add((double) difference);
-
-                        //Gradient[j].Add((double) maxObj);
-                    }
 
                 //Normalize by max/min difference
 
@@ -193,100 +203,121 @@ namespace Stepper
 
             var matrixGrad = MathNet.Numerics.LinearAlgebra.Double.DenseMatrix.OfArray(gradientArray);
 
-            var matrixGradT = matrixGrad.Transpose();
-            var nullspace = matrixGradT.Kernel();
+            //var matrixGrad = MathNet.Numerics.LinearAlgebra.Double.Matrix.Abs(14.0);
 
+            //var matrixGradT = matrixGrad.Transpose();
 
-            // STRATEGY 1: Direct to Array
+            var nullspace = matrixGrad.Kernel();
 
-            double[] nullspaceArray;
+            
 
-            for (int i = 1; i < 2; i++)
+            // Convert array to List of nullspace vectors
+            if (numVars > numObjs)
             {
-                nullspaceArray = nullspace[i].ToArray();
+                for (int i = 0; i < numVars - numObjs; i++)
+                {
+                    IsoPerf.Add(new List<double>());
+                    double[] IsoPerfDir = nullspace[i].ToArray();
+                    IsoPerf[i].AddRange(IsoPerfDir);
+                }
             }
 
-            // STRATEGY 2: One Line to Array
-            //double[] IsoPerfDir = nullspace.ToArray()[1].ToArray();
+            // Randomly pick an isoperformance direction
 
-            double[] IsoPerfDir2 = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+            Random rnd = new Random();
+            int dir = new int();
+            int testrand = new int();
+            testrand = rnd.Next(numVars - numObjs);
 
-            //STRATEGY 3: STRING IN THE MIDDLE
-            //string IsoPerfDir = nullspace.ToArray()[0].ToString();
+            dir = testrand;
 
-            //List<double> IsoPerfDir3 = (List<double>)StringToDoubleList(IsoPerfDir);
+            
+
+            // Ensure that direction is "interesting"
+
+            //for (int i = testrand; i < numVars - numObjs - 1; i++)
+            //{
+
+            //    dir = i;
+            //    List<double> IsoVecAbs = IsoPerf[i].Select(x => Math.Abs(x)).ToList();
+            //    IsoVecAbs.Sort();
+
+            //    double a = IsoVecAbs[numVars - 1]; 
+            //    double b = IsoVecAbs[numVars - 2];
+            //    double c = a / b;
+
+            //    if (c < 3) { break; }
+            //    else { dir = dir + 1; }
+
+            //}
+
+            //for (int i = 0; i < numVars - numObjs; i++)
+            //{
+            //    for (int j = 0; j < IsoPerf[i].Count; j++)
+            //    {
+            //        IsoPerf.Add(new List<double>());
+            //        double[] IsoPerfDir = nullspace[i].ToArray();
+
+            //    }
+            //}
 
 
-            //var IsoPerfMatrix = nullspace;
-
-            //IsoPerf.Add(IsoPerfMatrix[1]);
-
-            //// Randomly assign coefficient, create isoperformance direction
-            //Random rnd = new Random();
-            //int isoDir = rnd.Next(0, numVars - 1);
-
-
-
-
-            //// Convert array to List
-
-
-            for (int i = 0; i < numVars; i++)
-            {
-                IsoPerf.Add(IsoPerfDir2[i]);
-            }
-
-
+            List<double> IsoPerfDirList = IsoPerf[dir];
 
 
             // step in the right direction based on the gradient vector
 
             List<IGH_Param> sliderlist = new List<IGH_Param>();
 
-                foreach (IGH_Param src in MyComponent.Params.Input[0].Sources)
+            foreach (IGH_Param src in MyComponent.Params.Input[0].Sources)
+            {
+                sliderlist.Add(src);
+            }
+
+            for (int i = 0; i < numVars; i++)
+            {
+
+                if (MyComponent.Direction > 0)
                 {
-                    sliderlist.Add(src);
+                    Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderlist[i];
+
+                    double SteppedSlider = MyComponent.VarsVals[i] + Gradient[MyComponent.ObjNum][i] * MyComponent.StepSize * (MyComponent.MaxVals[i] - MyComponent.MinVals[i]);
+
+                    nslider.TrySetSliderValue((decimal)SteppedSlider);
                 }
 
-                for (int i = 0; i < numVars; i++)
+                if (MyComponent.Direction < 0)
+                {
+                    Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderlist[i];
+
+                    double SteppedSlider = MyComponent.VarsVals[i] - Gradient[MyComponent.ObjNum][i] * MyComponent.StepSize * (MyComponent.MaxVals[i] - MyComponent.MinVals[i]) ;
+
+                    nslider.TrySetSliderValue((decimal)SteppedSlider);
+                }
+
+                // TAKE STEP IN ORTHOGONAL DIRECTION
+
+                if (MyComponent.Direction == 0)
                 {
 
-                    if (MyComponent.Direction > 0)
-                    {
-                        Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderlist[i];
+                    Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderlist[i];
 
-                        double SteppedSlider = MyComponent.VarsVals[i] + Gradient[MyComponent.ObjNum][i] * MyComponent.StepSize;
+                    
 
-                        nslider.TrySetSliderValue((decimal)SteppedSlider);
-                    }
+                    double SteppedSlider = MyComponent.VarsVals[i] + IsoPerfDirList[i] * MyComponent.StepSize*MyComponent.numVars*3;
 
-                    if (MyComponent.Direction < 0)
-                    {
-                        Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderlist[i];
+                    
 
-                        double SteppedSlider = MyComponent.VarsVals[i] - Gradient[MyComponent.ObjNum][i] * MyComponent.StepSize;
+                    nslider.TrySetSliderValue((decimal)SteppedSlider);
 
-                        nslider.TrySetSliderValue((decimal)SteppedSlider);
-                    }
+                }
 
-                     /// TAKE STEP IN ORTHOGONAL DIRECTION
-
-                    //if (MyComponent.Direction == 0)
-                    //{
-
-                    //Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderlist[i];
-
-                    //double SteppedSlider = MyComponent.VarsVals[i] - IsoPerf[i] * MyComponent.StepSize;
-
-                    //nslider.TrySetSliderValue((decimal)SteppedSlider);
-
-                    //}
-
-
+            
 
             }
 
-                Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
+            stepped = true;
+            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
 
             //return base.RespondToKeyDown(sender, e);
 

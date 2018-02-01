@@ -4,8 +4,9 @@ using System.Linq;
 using System.Text;
 using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra.Double;
-using MathNet.Numerics.LinearAlgebra.Generic;
+using MathNet.Numerics.LinearAlgebra;
 using DSECommon;
+//using MathNet.Numerics.LinearAlgebra.Generic;
 
 namespace Sampler
 {
@@ -152,8 +153,21 @@ namespace Sampler
                 v = this.Shuffle(v);
                 X.SetColumn(i, v);
             }
-            X = X.Add(new DenseMatrix(n, k, 0.5));
-            X = X.PointwiseDivide(new DenseMatrix(n, k, n));
+
+            // NEW FOR MATH.NET Update - create arrays of 0.5 and n 
+
+            double[] array1 = new double[n * k];
+            double[] array2 = new double[n * k];
+
+            for (int i = 0; i < n*k; i++)
+            {
+                array1[i] = 0.5;
+                array2[i] = n;
+            }
+
+
+            X = X.Add(new DenseMatrix(n, k, array1));
+            X = X.PointwiseDivide(new DenseMatrix(n, k, array2));
 
             //// add small amount of "noise"
             //for (int i = 0; i < X.RowCount; i++)
@@ -231,7 +245,20 @@ namespace Sampler
             Vector<double> d = MathUtilities.ListToVector(t.Item1);
             Vector<double> J = MathUtilities.ListToVector(t.Item2);
 
-            double Phiq = Math.Pow(J.PointwiseMultiply(MathUtilities.PointwisePower(d, (new DenseVector(d.Count, -q)))).Sum(), 1 / q);
+
+            // NEW FOR MATH.NET Update - create arrays of -q 
+
+            double[] array3 = new double[d.Count];
+
+            for (int i = 0; i < d.Count; i++)
+            {
+                array3[i] = -q;
+                
+            }
+
+            //
+
+            double Phiq = Math.Pow(J.PointwiseMultiply(MathUtilities.PointwisePower(d, (new DenseVector(array3)))).Sum(), 1 / q);
             return Phiq;
         }
 
