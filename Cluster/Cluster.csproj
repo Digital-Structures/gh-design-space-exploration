@@ -30,9 +30,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Accord.MachineLearning">
+    <Reference Include="Accord.MachineLearning, Version=3.3.0.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Libraries\Accord\Accord.MachineLearning.dll</HintPath>
-      <Private>True</Private>
     </Reference>
     <Reference Include="GH_IO">
       <HintPath>..\Libraries\Grasshopper\0.9.76.0\x64\GH_IO.dll</HintPath>
