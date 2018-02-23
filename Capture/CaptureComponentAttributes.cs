@@ -39,12 +39,15 @@ namespace Capture
         {
             int i = 1;
 
+            MyComponent.Index = i;
+
             foreach (List<double> sample in MyComponent.DesignMap)
             {
                 GHUtilities.ChangeSliders(MyComponent.SlidersList, sample);
 
+                MyComponent.Index = i;
                 // If we're taking screen shots, this happens here.
-                
+
                 if (MyComponent.Mode == CaptureComponent.CaptureMode.SaveScreenshot || MyComponent.Mode == CaptureComponent.CaptureMode.Both)
                 {
                     BeforeScreenShots();

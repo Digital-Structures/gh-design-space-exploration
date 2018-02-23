@@ -55,6 +55,7 @@ namespace Capture
         public int NumVars, NumObjs;
         public string DataWritten;
         public string ImagesWritten;
+        public int Index;
 
         public override void CreateAttributes()
         {
@@ -86,6 +87,7 @@ namespace Capture
             param.AddNamedValue("Save both [2]", 2);
             param.AddNamedValue("Save neither [3]", 3);
 
+            pManager[1].Optional = true;
             pManager[3].Optional = true;
             pManager[5].Optional = true;
             pManager[6].Optional = true;
@@ -103,6 +105,8 @@ namespace Capture
             pManager.AddTextParameter("Captured Properties", "Prop", "Additional numerical properties (not objectives) recorded during capture", GH_ParamAccess.tree);
             pManager.AddTextParameter("Data", "CSV?", "Data written?", GH_ParamAccess.item);
             pManager.AddTextParameter("Images", "PNGs?", "Images written?", GH_ParamAccess.item);
+            pManager.AddTextParameter("I", "Index", "Index of design for external use", GH_ParamAccess.item);
+
         }
 
         /// <summary>
@@ -177,6 +181,8 @@ namespace Capture
                     }
                 }
                 PropertyValues.Add(p);
+
+                DA.SetData(4, Index);
             }
 
             if (!Iterating)
