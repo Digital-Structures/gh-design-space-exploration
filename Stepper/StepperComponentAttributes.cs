@@ -304,7 +304,7 @@ namespace Stepper
 
                     
 
-                    double SteppedSlider = MyComponent.VarsVals[i] + IsoPerfDirList[i] * MyComponent.StepSize*MyComponent.numVars*3;
+                    double SteppedSlider = MyComponent.VarsVals[i] + IsoPerfDirList[i] * MyComponent.StepSize*MyComponent.numVars;
 
                     
 

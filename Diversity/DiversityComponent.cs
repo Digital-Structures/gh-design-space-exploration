@@ -7,8 +7,7 @@ using Grasshopper;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Types;
-using Accord.Math;
-using Microsoft.DirectX.Direct3D;
+
 
 
 namespace Diversity
@@ -29,20 +28,30 @@ namespace Diversity
         {
 
             this.DesignMap = new List<List<double>>();
+            this.DesignMapThreshold = new List<List<double>>();
+            this.Objectives = new List<List<double>>();
+            this.Targets = new List<double>();
             this.centroid = new List<double>();
             this.median = new List<double>();
             this.distances = new List<List<double>>();
             this.diversity = new List<double>();
+            this.diversityfin = new List<double>();
+            
 
         }
 
 
         public List<List<double>> DesignMap;
+        public List<List<double>> DesignMapThreshold;
+        public List<List<double>> Objectives;
+        public List<double> Targets;
         public List<double> centroid;
         public List<double> median;
         public List<List<double>> distances;
         public List<double> diversity;
-        public double[] diversityfin = new double[6];
+        public List<double> diversityfin;
+        public double threshold;
+        public int cullTo;
 
 
         /// <summary>
@@ -53,6 +62,11 @@ namespace Diversity
 
             pManager.AddNumberParameter("Design map", "DM", "Set of design vectors for calculating set diversity", GH_ParamAccess.tree);
             pManager.AddIntegerParameter("Mode", "M", "Diversity measurement type. Right click to choose type.", GH_ParamAccess.item, 0);
+            pManager.AddNumberParameter("Objective Scores", "Obj (DM)", "List of objective scores for designs in DM", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("Objective Targets", "Obj Targets", "Targets for each objective", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("Objective Threshold", "Threshold", "If < 1, fraction that solutions can differ from target", GH_ParamAccess.item);
+            pManager.AddIntegerParameter("Cull to", "Cull to", "Desired number of solutions in final set", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Run", "Run", "Run diversity filtering", GH_ParamAccess.item);
 
             // Add possible values for the mode input
             Param_Integer param = (Param_Integer)pManager[1];
@@ -60,8 +74,8 @@ namespace Diversity
             param.AddNamedValue("Sparseness (avg) [1]", 1);
             param.AddNamedValue("Sparseness (med) [2]", 2);
             param.AddNamedValue("Outlier [3]", 3);
-            param.AddNamedValue("Enclosing Ball [4]", 2);
-            param.AddNamedValue("Convex Hull [5]", 3);
+           // param.AddNamedValue("Enclosing Ball [4]", 2);
+           // param.AddNamedValue("Convex Hull [5]", 3);
 
         }
 
@@ -71,8 +85,12 @@ namespace Diversity
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
 
-            pManager.AddTextParameter("Diversity", "Div", "Measured diversity of set using selected metric", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Diversity", "DivCulled", "Measured diversity of culled set using selected metric", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Diversity", "DivFull", "Measured diversity of full set using selected metric", GH_ParamAccess.tree);
             pManager.AddTextParameter("Test", "Test", "Test", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Culled Set", "Culled", "Diverse set of designs for consideration", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Full Set", "All", "Full set of qualifying designs", GH_ParamAccess.tree);
+
 
         }
 
@@ -92,77 +110,317 @@ namespace Diversity
             int mode = 0;
             if (!DA.GetData(1, ref mode)) return;
 
+            var map2 = new GH_Structure<GH_Number>();
+            DA.GetDataTree(2, out map2);
+            this.Objectives = StructureToListOfLists(map2);
+
+
             int dimension = this.DesignMap[0].Count;
+            int numObj = this.Objectives[0].Count;
 
-            // Find centroid
-            for (int i = 0; i < dimension; i++)
+            var map3 = new GH_Structure<GH_Number>();
+            DA.GetDataTree(3, out map3);
+            this.Targets = StructureToList(map3);
+
+            DA.GetData(4, ref threshold);
+            DA.GetData(5, ref cullTo);
+
+
+            // Do filtering based on threshold first
+
+            DesignMapThreshold.Clear();
+
+            // Add all designs that qualify
+            for (int i = 0; i < DesignMap.Count(); i++)
             {
-                List<double> coordlist = new List<double>();
 
-                for (int j = 0; j <this.DesignMap.Count; j++)
+                List<Boolean> qualified = new List<Boolean>();
+
+                for (int j = 0; j < Targets.Count(); j++)
                 {
-                    coordlist.Add(this.DesignMap[j][i]);
-                } 
-            
-                centroid.Add(coordlist.Average());
-                coordlist.Sort();
-                median.Add(coordlist[coordlist.Count / 2]);
+
+                    if (Objectives[i][j] > (Targets[j] - threshold * Targets[j]) && Objectives[i][j] < (Targets[j] + threshold * Targets[j]))
+                    {
+                        qualified.Add(true);
+                    }
+                    else { qualified.Add(false); }
+                }
+
+                if (!qualified.Any(c => c == false))
+                {
+                    DesignMapThreshold.Add(DesignMap[i]);
+                }
+
             }
+
 
             distances.Add(new List<double>());
 
-            // Compare distance
-            for (int i = 0; i < DesignMap.Count; i++)
-            {
-               
-                distances.Add(new List<double>());
+            //if (Run(DA, 5))
 
-                List<double> coorddif = new List<double>();
-                List<double> coorddif2 = new List<double>();
+            //{
 
-                for (int j = 0; j < dimension; j++)
-                { 
-                    coorddif.Add((DesignMap[i][j] - centroid[j])* (DesignMap[i][j] - centroid[j]));
-                    coorddif2.Add((DesignMap[i][j] - median[j]) * (DesignMap[i][j] - median[j]));
+            // Do Diversity Calculations
+
+            diversityfin.Clear();
+            diversityfin.Add(0.0);
+            diversityfin.Add(0.0);
+            diversityfin.Add(0.0);
+            diversityfin.Add(0.0);
+
+            // Find centroid
+            for (int i = 0; i < dimension; i++)
+                {
+                    List<double> coordlist = new List<double>();
+
+                    for (int j = 0; j < this.DesignMap.Count; j++)
+                    {
+                        coordlist.Add(this.DesignMap[j][i]);
+                    }
+
+                    centroid.Add(coordlist.Average());
+                    coordlist.Sort();
+                    median.Add(coordlist[coordlist.Count / 2]);
                 }
 
-                double sum = coorddif.Sum(x => Convert.ToDouble(x));
-                double sumcent = coorddif2.Sum(x => Convert.ToDouble(x));
+                
 
-                distances[0].Add(Math.Sqrt(sum));
-                distances[1].Add(Math.Sqrt(sumcent));
-             
+                // Compare distance
+                for (int i = 0; i < DesignMap.Count; i++)
+                {
+
+                    distances.Add(new List<double>());
+
+                    List<double> coorddif = new List<double>();
+                    List<double> coorddif2 = new List<double>();
+
+                    for (int j = 0; j < dimension; j++)
+                    {
+                        coorddif.Add((DesignMap[i][j] - centroid[j]) * (DesignMap[i][j] - centroid[j]));
+                        coorddif2.Add((DesignMap[i][j] - median[j]) * (DesignMap[i][j] - median[j]));
+                    }
+
+                    double sum = coorddif.Sum(x => Convert.ToDouble(x));
+                    double sumcent = coorddif2.Sum(x => Convert.ToDouble(x));
+
+                    distances[0].Add(Math.Sqrt(sum));
+                    distances[1].Add(Math.Sqrt(sumcent));
+
+                }
+
+
+               // DataTree<double> tree = new DataTree<double>();
+               // DataTree<double> tree2 = new DataTree<double>();
+
+
+                diversity.Add(this.distances[0].Average());
+
+                // add distance calculations to diversity list
+                diversityfin[1] = this.distances[0].Max();
+                diversityfin[2] = this.distances[0].Average();
+                diversityfin[3] = this.distances[1].Average();
+
+                double divsum = 0;
+                for (int i = 1; i < 4; i++)
+                { divsum = divsum + diversityfin[i]; }
+
+                diversityfin[0] = divsum / 3;
+
+               List<double> diversityfinselected = new List<double>();
+               diversityfinselected.Add(diversityfin[mode]); 
+
+
+                //tree.Add(diversity[mode], new GH_Path());
+                //tree2.AddRange(diversityfin, new GH_Path());
+
+                DA.SetDataTree(1, ListToTree(diversityfinselected));
+                DA.SetDataTree(2, ListToTree(diversityfin));
+
+            //}
+
+            DA.SetDataTree(4, ListOfListsToTree(DesignMapThreshold));
+
+            // ---------------------------------------------------------------------------------------------
+
+            if (Run(DA, 6))
+
+            {
+
+                // Do Diversity Calculations
+
+                diversityfin.Clear();
+                median.Clear();
+                centroid.Clear();
+                distances.Clear();
+                diversityfin.Add(0.0);
+                diversityfin.Add(0.0);
+                diversityfin.Add(0.0);
+                diversityfin.Add(0.0);
+
+                distances.Add(new List<double>());
+
+                // Find centroid
+                for (int i = 0; i < dimension; i++)
+                {
+                    List<double> coordlist = new List<double>();
+
+                    for (int j = 0; j < this.DesignMapThreshold.Count; j++)
+                    {
+                        coordlist.Add(this.DesignMapThreshold[j][i]);
+                    }
+
+                    centroid.Add(coordlist.Average());
+                    coordlist.Sort();
+                    median.Add(coordlist[coordlist.Count / 2]);
+                }
+
+
+
+                // Compare distance
+                for (int i = 0; i < DesignMapThreshold.Count; i++)
+                {
+
+                    distances.Add(new List<double>());
+
+                    List<double> coorddif = new List<double>();
+                    List<double> coorddif2 = new List<double>();
+
+                    for (int j = 0; j < dimension; j++)
+                    {
+                        coorddif.Add((DesignMapThreshold[i][j] - centroid[j]) * (DesignMapThreshold[i][j] - centroid[j]));
+                        coorddif2.Add((DesignMapThreshold[i][j] - median[j]) * (DesignMapThreshold[i][j] - median[j]));
+                    }
+
+                    double sum = coorddif.Sum(x => Convert.ToDouble(x));
+                    double sumcent = coorddif2.Sum(x => Convert.ToDouble(x));
+
+                    distances[0].Add(Math.Sqrt(sum));
+                    distances[1].Add(Math.Sqrt(sumcent));
+
+                }
+
+
+                // DataTree<double> tree = new DataTree<double>();
+                // DataTree<double> tree2 = new DataTree<double>();
+
+
+                diversity.Add(this.distances[0].Average());
+
+                // add distance calculations to diversity list
+                diversityfin[1] = this.distances[0].Max();
+                diversityfin[2] = this.distances[0].Average();
+                diversityfin[3] = this.distances[1].Average();
+
+                double divsum2 = 0;
+                for (int i = 1; i < 4; i++)
+                { divsum2 = divsum2 + diversityfin[i]; }
+
+                diversityfin[0] = divsum / 3;
+
+                List<double> diversityfinselected2 = new List<double>();
+                diversityfinselected2.Add(diversityfin[mode]);
+
+                DA.SetDataTree(0, ListToTree(diversityfinselected));
+                DA.SetDataTree(3, ListOfListsToTree(DesignMapThreshold));
+
             }
-
-            
-
-            // Microsoft.DirectX.Direct3D.
-
-            DataTree<double> tree = new DataTree<double>();
-            DataTree<double> tree2 = new DataTree<double>();
-
-            diversity.Add(this.distances[0].Average());
-       
-            // add distance calculations to diversity list
-            diversityfin[1] = this.distances[0].Max();
-            diversityfin[2] = this.distances[0].Average();
-            diversityfin[3] = this.distances[1].Average();
-
-            double divsum = 0;
-            for (int i = 1; i < 4; i++)
-            { divsum = divsum + diversityfin[i]; }
-
-            diversityfin[0] = divsum / 3;
-
-            tree.Add(diversity[mode], new GH_Path());
-            tree2.AddRange(diversityfin, new GH_Path());
-
-
-            DA.SetDataTree(0, tree);
-            DA.SetDataTree(1, tree2);
 
 
         }
+
+
+        // --------------------------------------------------------------------------------------------------------
+
+
+
+        //static double Diversity(int mode, List<List<double>> DesignMap)
+
+        //{
+
+
+
+        //    distances.Add(new List<double>());
+
+        //    //if (Run(DA, 5))
+
+        //    //{
+
+        //    // Do Diversity Calculations
+
+        //    diversityfin.Clear();
+        //    diversityfin.Add(0.0);
+        //    diversityfin.Add(0.0);
+        //    diversityfin.Add(0.0);
+        //    diversityfin.Add(0.0);
+
+        //    // Find centroid
+        //    for (int i = 0; i < dimension; i++)
+        //    {
+        //        List<double> coordlist = new List<double>();
+
+        //        for (int j = 0; j < this.DesignMap.Count; j++)
+        //        {
+        //            coordlist.Add(this.DesignMap[j][i]);
+        //        }
+
+        //        centroid.Add(coordlist.Average());
+        //        coordlist.Sort();
+        //        median.Add(coordlist[coordlist.Count / 2]);
+        //    }
+
+
+
+        //    // Compare distance
+        //    for (int i = 0; i < DesignMap.Count; i++)
+        //    {
+
+        //        distances.Add(new List<double>());
+
+        //        List<double> coorddif = new List<double>();
+        //        List<double> coorddif2 = new List<double>();
+
+        //        for (int j = 0; j < dimension; j++)
+        //        {
+        //            coorddif.Add((DesignMap[i][j] - centroid[j]) * (DesignMap[i][j] - centroid[j]));
+        //            coorddif2.Add((DesignMap[i][j] - median[j]) * (DesignMap[i][j] - median[j]));
+        //        }
+
+        //        double sum = coorddif.Sum(x => Convert.ToDouble(x));
+        //        double sumcent = coorddif2.Sum(x => Convert.ToDouble(x));
+
+        //        distances[0].Add(Math.Sqrt(sum));
+        //        distances[1].Add(Math.Sqrt(sumcent));
+
+        //    }
+
+
+        //    // DataTree<double> tree = new DataTree<double>();
+        //    // DataTree<double> tree2 = new DataTree<double>();
+
+
+        //    diversity.Add(this.distances[0].Average());
+
+        //    // add distance calculations to diversity list
+        //    diversityfin[1] = this.distances[0].Max();
+        //    diversityfin[2] = this.distances[0].Average();
+        //    diversityfin[3] = this.distances[1].Average();
+
+        //    double divsum = 0;
+        //    for (int i = 1; i < 4; i++)
+        //    { divsum = divsum + diversityfin[i]; }
+
+        //    diversityfin[0] = divsum / 3;
+
+        //    List<double> diversityfinselected = new List<double>();
+        //    diversityfinselected.Add(diversityfin[mode]);
+
+        //    return diversityfinselected[mode];
+
+        //}
+
+
+
+
 
 
         static List<List<double>> StructureToListOfLists(GH_Structure<GH_Number> structure)
@@ -183,6 +441,23 @@ namespace Diversity
             return list;
         }
 
+        static List<double> StructureToList(GH_Structure<GH_Number> structure)
+        {
+            List<double> list = new List<double>();
+            foreach (GH_Path p in structure.Paths)
+            {
+                List<GH_Number> l = (List<GH_Number>)structure.get_Branch(p);
+                
+                foreach (GH_Number n in l)
+                {
+                    double d = 0;
+                    n.CastTo<double>(out d);
+                    list.Add(d);
+                }
+                
+            }
+            return list;
+        }
 
 
         static DataTree<T> ListOfListsToTree<T>(List<List<T>> listofLists)
@@ -195,6 +470,22 @@ namespace Diversity
             return tree;
         }
 
+        static DataTree<T> ListToTree<T>(List<T> List)
+        {
+            DataTree<T> tree = new DataTree<T>();
+            for (int i = 0; i < List.Count; i++)
+            {
+                tree.Add(List[i], new GH_Path(i));
+            }
+            return tree;
+        }
+
+        public static bool Run(Grasshopper.Kernel.IGH_DataAccess DA, int index)
+        {
+            bool run = false;
+            DA.GetData<bool>(index, ref run);
+            return run;
+        }
 
         /// <summary>
         /// Provides an Icon for every component that will be visible in the User Interface.
