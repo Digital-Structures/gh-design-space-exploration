@@ -32,7 +32,8 @@ namespace Diversity
             this.Objectives = new List<List<double>>();
             this.Targets = new List<double>();
             this.DesignMapDiv = new List<List<double>>();
-
+            this.CulledInd = new List<double>();
+            this.QualInd = new List<double>();
 
 
         }
@@ -43,6 +44,8 @@ namespace Diversity
         public List<List<double>> DesignMapDiv;
         public List<List<double>> Objectives;
         public List<double> Targets;
+        public List<double> QualInd;
+        public List<double> CulledInd;
         public List<double> centroid;
         public List<double> median;
         public List<List<double>> distances;
@@ -87,10 +90,14 @@ namespace Diversity
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
 
-            pManager.AddTextParameter("Diversity of Culled", "DivCulled", "Measured diversity of culled set using selected metric", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Diversity of All Qualified", "DivQual", "Measured diversity of qualified set using selected metric", GH_ParamAccess.tree);
-            pManager.AddTextParameter("Culled Set", "CulledSet", "Diverse set of designs for consideration", GH_ParamAccess.tree);
+            
+            pManager.AddTextParameter("Diversity of All Qualified", "QualDiv", "Measured diversity of qualified set using selected metric", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Qualified Indices", "QualInd", "Full set of qualifying designs", GH_ParamAccess.tree);
             pManager.AddTextParameter("Qualified Set", "QualSet", "Full set of qualifying designs", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Diversity of Culled", "CulledDiv", "Measured diversity of culled set using selected metric", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Culled Indices", "CulledInd", "Diverse set of designs for consideration", GH_ParamAccess.tree);
+            pManager.AddTextParameter("Culled Set", "CulledSet", "Diverse set of designs for consideration", GH_ParamAccess.tree);
+
 
 
         }
@@ -131,6 +138,7 @@ namespace Diversity
             // Do filtering based on threshold first
 
             DesignMapThreshold.Clear();
+            QualInd.Clear();
 
             // Add all designs that qualify
             for (int i = 0; i < DesignMap.Count(); i++)
@@ -151,6 +159,7 @@ namespace Diversity
                 if (!qualified.Any(c => c == false))
                 {
                     DesignMapThreshold.Add(DesignMap[i]);
+                    QualInd.Add(i);
                 }
 
             }
@@ -174,12 +183,14 @@ namespace Diversity
             //tree.Add(diversity[mode], new GH_Path());
             //tree2.AddRange(diversityfin, new GH_Path());
 
-            DA.SetDataTree(1, ListToTree(diversityfinselected));
-            
+            DA.SetDataTree(0, ListToTree(diversityfinselected));
+
 
             //}
 
-            DA.SetDataTree(3, ListOfListsToTree(DesignMapThreshold));
+            DA.SetDataTree(1, ListToTree(QualInd));
+            DA.SetDataTree(2, ListOfListsToTree(DesignMapThreshold));
+            
 
             // ---------------------------------------------------------------------------------------------
 
@@ -189,6 +200,7 @@ namespace Diversity
 
                 double maxDiv = 0;
                 DesignMapDivFinal = new List<List<double>>();
+                
 
                 for (int j = 0; j < Iterations; j++)
                 {
@@ -198,7 +210,7 @@ namespace Diversity
                     int Range = DesignMapThreshold.Count();
 
                     DesignMapDiv.Clear();
-
+                    List<double> CullIndTemp = new List<double>();
 
                     for (int i = 0; i < cullTo; i++)
                     {
@@ -210,6 +222,8 @@ namespace Diversity
                         if (ind.Any(c => c == Rand)) { Rand = MyRand.Next(0, Range); }
 
                             DesignMapDiv.Add(DesignMapThreshold[Rand]);
+                        CullIndTemp.Add(QualInd[Rand]);
+
                     }
 
                     double divCull = Diversity(mode, DesignMapDiv);
@@ -218,6 +232,7 @@ namespace Diversity
                     {
                         maxDiv = divCull;
                         DesignMapDivFinal = DesignMapDiv;
+                        CulledInd = CullIndTemp;
                     }
 
 
@@ -228,8 +243,9 @@ namespace Diversity
                 List<double> diversityfinCull = new List<double>();
                 diversityfinCull.Add(maxDiv);
 
-                DA.SetDataTree(0, ListToTree(diversityfinCull));
-                DA.SetDataTree(2, ListOfListsToTree(DesignMapDivFinal));
+                DA.SetDataTree(3, ListToTree(diversityfinCull));
+                DA.SetDataTree(4, ListToTree(CulledInd));
+                DA.SetDataTree(5, ListOfListsToTree(DesignMapDivFinal));
 
             }
 
