@@ -33,8 +33,7 @@ namespace Reader
         {
 
             pManager.AddTextParameter("Filepath", "Dir + F", "Csv filepath", GH_ParamAccess.item);
-            pManager.AddTextParameter("Separator", "S", "Character used to separate data", GH_ParamAccess.item, " ");
-
+            pManager.AddTextParameter("Separator", "S", "Character used to separate data", GH_ParamAccess.item, ",");
         }
 
         /// <summary>
@@ -53,18 +52,14 @@ namespace Reader
         protected override void SolveInstance(IGH_DataAccess DA)
         {
 
-            // First, we need to retrieve all data from the input parameters.
-            // We'll start by declaring variables and assigning them starting values.
+            // Data Retrieval
             string path = null;
             string separator = null;
-            // Then we need to access the input parameters individually. 
-            // When data cannot be extracted from a parameter, we should abort this method.
+            // Abort if data cannot be extracted
             if (!DA.GetData(0, ref path)) return;
             if (!DA.GetData(1, ref separator)) return;
 
-            // We're set to create the spiral now. To keep the size of the SolveInstance() method small, 
-            // The actual functionality will be in a different method:
-
+            // Convert separator string to char
             char sep = separator.ToCharArray()[0];
 
             System.IO.StreamReader file = new System.IO.StreamReader(path);
