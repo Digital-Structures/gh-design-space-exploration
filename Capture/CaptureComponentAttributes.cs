@@ -121,20 +121,19 @@ namespace Capture
 
         private void WriteOutputToFile(List<List<double>> output, string path, string filename, string extension)
         {
-            string a = null;
-            for (int i = 0; i < output.Count; i++)
-            {
-                string b = null;
-                for (int j = 0; j < output[i].Count; j++)
-                {
-                    b = b + output[i][j] + " ";
-                }
-                a = a + b + "\r\n";
-            }
 
-            System.IO.StreamWriter file = new System.IO.StreamWriter(@"" + path + filename + extension);
-            file.Write(a);
-            file.Close();
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"" + path + filename + extension))
+            {
+                for (int i = 0; i < output.Count; i++)
+                {
+                    string b = null;
+                    for (int j = 0; j < output[i].Count; j++)
+                    {
+                        b = b + output[i][j] + " ";
+                    }
+                    file.WriteLine(b);
+                }
+            }
         }
 
     }
