@@ -42,7 +42,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DSECommon">
-      <HintPath>..\DSECommon\bin\Release\DSECommon.dll</HintPath>
+      <HintPath>..\DSECommon\bin\Debug\DSECommon.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics, Version=3.20.1.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MathNet.Numerics.3.20.1\lib\net40\MathNet.Numerics.dll</HintPath>
@@ -57,12 +57,12 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="Grasshopper">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\grasshopper_0.9.76.0\Grasshopper.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Common Files\McNeel\Rhinoceros\5.0\Plug-ins\Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)\0.9.76.0\Grasshopper.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="GH_IO">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>C:\Program Files\grasshopper_0.9.76.0\GH_IO.dll</HintPath>
+      <HintPath>..\..\..\..\..\..\..\..\..\Program Files\Common Files\McNeel\Rhinoceros\5.0\Plug-ins\Grasshopper (b45a29b1-4343-4035-989e-044e8580d9cf)\0.9.76.0\GH_IO.dll</HintPath>
       <Private>False</Private>
     </Reference>
   </ItemGroup>
