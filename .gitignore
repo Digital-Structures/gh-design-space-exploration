@@ -2,6 +2,10 @@
 Thumbs.db
 ehthumbs.db
 
+*.lock
+*.user
+
+
 # Folder config file
 Desktop.ini
 
