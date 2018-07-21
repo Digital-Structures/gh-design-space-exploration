@@ -29,7 +29,7 @@ namespace Stepper
               "Steps in the direction of the gradient",
               "DSE", "Simplify")
         {
-
+            this.IsWindowOpen = false;
             this.VarsList = new List<DSEVariable>();
             this.VarsVals = new List<double>();
             this.MinVals = new List<double>();
@@ -44,9 +44,9 @@ namespace Stepper
         }
 
         // Properties specific to this component:
+        public bool IsWindowOpen;
         public List<DSEVariable> VarsList;
         public List<double> ObjInput;
-
         public List<double> MinVals;
         public List<double> MaxVals;
         public List<double> VarsVals;
@@ -118,7 +118,6 @@ namespace Stepper
             // First, we need to retrieve all data from the input parameters.
             // We'll start by declaring variables and assigning them starting values.
 
-
             List<double> variables = new List<double>();
             if (!DA.GetDataList(0, variables)) return;
 
@@ -134,8 +133,6 @@ namespace Stepper
             if (!DA.GetData(3, ref this.StepSize)) return;
             if (!DA.GetData(4, ref this.Direction)) return;
             if (!DA.GetData(5, ref this.Step)) return;
-
-
 
             if (Iterating)
             {
