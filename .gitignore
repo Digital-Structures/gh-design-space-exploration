@@ -81,3 +81,6 @@ Output/
 
 Documentation/~$ols_readme.docx
 Documentation/~$ols_readme.docx
+
+# .vs/ folders
+.vs/
