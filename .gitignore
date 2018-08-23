@@ -84,3 +84,5 @@ Documentation/~$ols_readme.docx
 
 # .vs/ folders
 .vs/
+.vs/AllProjects/v15/Server/sqlite3/storage.ide
+*.ide
