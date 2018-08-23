@@ -31,7 +31,8 @@ namespace Capture
             MyComponent.Iterating = true;
             this.Iterate();
             MyComponent.Iterating = false;
-            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
+            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true,GH_SolutionMode.Silent);
+
             return base.RespondToMouseDoubleClick(sender, e);
         }
 

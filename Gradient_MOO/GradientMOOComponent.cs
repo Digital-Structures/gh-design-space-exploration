@@ -101,6 +101,8 @@ namespace Gradient_MOO
             pManager.AddNumberParameter("Bisector", "Bisector", "Direction between two gradients", GH_ParamAccess.tree);
             pManager.AddNumberParameter("Angle", "Angle", "Angle between gradients", GH_ParamAccess.item);
             pManager.AddNumberParameter("Bisector Length", "Bisector Length", "I mean come on, the name basically says it", GH_ParamAccess.item);
+            pManager.AddNumberParameter("HistoryBi", "HistoryBi", "List of steps taken towards Pareto front", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("HistoryGrad", "HistoryGrad", "List of steps taken on the (approx) Pareto front", GH_ParamAccess.tree);
 
         }
 
@@ -164,6 +166,8 @@ namespace Gradient_MOO
             DA.SetData(3, ((GradientMOOComponentAttributes)this.m_attributes).angle);
             DA.SetData(4, ((GradientMOOComponentAttributes)this.m_attributes).bisectLength);
 
+            DA.SetDataTree(5, ListOfListsToTree<double>(((GradientMOOComponentAttributes)this.m_attributes).HistoryBiSteps));
+            DA.SetDataTree(6, ListOfListsToTree<double>(((GradientMOOComponentAttributes)this.m_attributes).HistoryGradSteps));
         }
 
 

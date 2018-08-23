@@ -62,6 +62,9 @@ namespace Gradient_MOO
         public double bisectLength;
 
 
+        public List<List<double>> HistoryBiSteps = new List<List<double>>();
+        public List<List<double>> HistoryGradSteps = new List<List<double>>();
+
         [STAThread]
         public override Grasshopper.GUI.Canvas.GH_ObjectResponse RespondToMouseDoubleClick(Grasshopper.GUI.Canvas.GH_Canvas sender, Grasshopper.GUI.GH_CanvasMouseEvent e)
 
@@ -88,10 +91,20 @@ namespace Gradient_MOO
             FDstep = 0.01;
 
             angle = 0;
- 
-            while (angle < MyComponent.threshold)
+
+            double iterationlimit = 0;
+            while (iterationlimit < 1000)
             {
                 TakeStep();
+
+                iterationlimit++;
+
+                if (angle > MyComponent.threshold)
+                {
+                    stepped = true;
+                    break;
+                }
+                    
             }
 
             return base.RespondToMouseDoubleClick(sender, e);
@@ -261,6 +274,17 @@ namespace Gradient_MOO
 
             }
 
+            // Send to history, depending on mode
+
+            List<double> VarsObjsCurrent = new List<double>();
+            VarsObjsCurrent.AddRange(MyComponent.VarsVals);
+            VarsObjsCurrent.AddRange(MyComponent.ObjInput);
+
+            if (!MyComponent.Mode)
+            {
+                HistoryBiSteps.Add(VarsObjsCurrent);
+            } else { HistoryGradSteps.Add(VarsObjsCurrent); }
+
             double sum3 = 0;
             //Calculate length of bisector
             for (int i = 0; i < numVars; i++)
@@ -270,8 +294,12 @@ namespace Gradient_MOO
 
             bisectLength = Math.Sqrt(sum3);
 
-            stepped = true;
+            //stepped = true;
+
+            // Do not recompute UI--------------------------
             Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
+            
+            //
 
             //return base.RespondToKeyDown(sender, e);
 

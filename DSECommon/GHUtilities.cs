@@ -26,7 +26,8 @@ namespace DSECommon
                 double d = targetVals[i];
                 s.SetSliderValue((decimal)d);
             }
-            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
+            // Modify for silent behavior
+            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true,GH_SolutionMode.Silent);
         }
 
         public static void WriteOutputToFile(List<List<double>> output, string path, string filename, string extension)
