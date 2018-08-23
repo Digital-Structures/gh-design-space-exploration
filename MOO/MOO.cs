@@ -114,7 +114,16 @@ namespace MOO
                 directory = directory + @"\";
             }
 
+            // Give warning messages for illegal inputs
+            if (gen < 2)
+            {
+                this.AddRuntimeMessage((GH_RuntimeMessageLevel)20, "If number of generations is less than 2, outputs will not work properly");
+            }
 
+            if (popSize % 2 > 0)
+            {
+                this.AddRuntimeMessage((GH_RuntimeMessageLevel)20, "Population size cannot be odd; please try an even population size");
+            }
 
 
             if (MooDone)

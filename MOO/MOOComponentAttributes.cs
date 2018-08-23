@@ -41,6 +41,8 @@ namespace MOO
             if (MyComponent.gen < 2)
             {
                 throw new Exception("If number of generations is less than 2, outputs will not work properly");
+                
+
             }
 
             if (MyComponent.popSize % 2 > 0)

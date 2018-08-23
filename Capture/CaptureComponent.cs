@@ -163,9 +163,31 @@ namespace Capture
                 SSDir = @SSDir + @"\";
             }
 
+            // Give warning messages for illegal inputs
+            if (Mode == CaptureComponent.CaptureMode.SaveScreenshot || Mode == CaptureComponent.CaptureMode.Both)
+            {
+
+                if (SSDir == "None")
+                {
+                    this.AddRuntimeMessage((GH_RuntimeMessageLevel)20, "No screenshot directory given! Please add valid directory");
+                }
+            }
+
+            if (Mode == CaptureComponent.CaptureMode.SaveCSV || Mode == CaptureComponent.CaptureMode.Both)
+            {
+
+                if (CSVDir == "None")
+                {
+                    this.AddRuntimeMessage((GH_RuntimeMessageLevel)20, "No CSV directory given! Please add valid directory");
+                }
+            }
 
 
-            if (Iterating)
+
+
+
+
+                if (Iterating)
             {
                 List<double> o = new List<double>();
                 List<double> p = new List<double>();
