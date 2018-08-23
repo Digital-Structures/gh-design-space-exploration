@@ -34,11 +34,30 @@ namespace Sampler
             if (MyComponent.Dir != "None")
            
             {
-                GHUtilities.WriteOutputToFile(MyComponent.Output, MyComponent.Dir, MyComponent.Filename, ".csv");
+                PrintAllSolutions();
                 MyComponent.FilesWritten = "Yes";
             }
             Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
             return base.RespondToMouseDoubleClick(sender, e);
+        }
+
+        public void PrintAllSolutions()
+        {
+            System.IO.StreamWriter file = new System.IO.StreamWriter(@"" + MyComponent.Dir + MyComponent.Filename + ".csv");
+            for (int i = 0; i < MyComponent.Output.Count; i++)
+            {
+                string design = "";
+                List<double> currentDesign = MyComponent.Output[i];
+                for (int j = 0; j < currentDesign.Count-1; j++)
+                {
+                    design = design + currentDesign[j] + ",";
+                }
+
+                design = design + currentDesign[currentDesign.Count - 1];
+
+                file.WriteLine(design);
+            }
+            file.Close();
         }
 
     }

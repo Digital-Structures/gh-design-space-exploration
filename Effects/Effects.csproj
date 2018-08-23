@@ -41,6 +41,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DSECommon">
+      <HintPath>..\DSECommon\obj\Release\DSECommon.dll</HintPath>
+    </Reference>
     <Reference Include="GH_IO">
       <HintPath>..\Libraries\Grasshopper\0.9.76.0\x64\GH_IO.dll</HintPath>
       <Private>False</Private>
@@ -51,7 +54,6 @@
     </Reference>
     <Reference Include="RhinoCommon">
       <HintPath>..\Libraries\Rhino\5.1.3\x64\RhinoCommon.dll</HintPath>
-      <Private>False</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -68,12 +70,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\DSECommon\DSECommon.csproj">
-      <Project>{b5a7edb7-dbe4-40ed-91c8-14182779b7ae}</Project>
-      <Name>DSECommon</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

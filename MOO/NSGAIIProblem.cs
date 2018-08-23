@@ -132,12 +132,16 @@ namespace MOO
             {
                 string design = "";
                 List<double> currentDesign = allSolutions[i];
-                for (int j = 0; j < currentDesign.Count; j++)
+                for (int j = 0; j < currentDesign.Count - 1; j++)
                 {
-                    design = design + currentDesign[j] + " ";
+                    design = design + currentDesign[j] + ",";
                 }
+
+                design = design + currentDesign[currentDesign.Count - 1];
+
                 file.WriteLine(design);
             }
+
             file.Close();
         }
 

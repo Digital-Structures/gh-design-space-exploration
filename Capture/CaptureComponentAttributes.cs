@@ -50,6 +50,12 @@ namespace Capture
 
                 if (MyComponent.Mode == CaptureComponent.CaptureMode.SaveScreenshot || MyComponent.Mode == CaptureComponent.CaptureMode.Both)
                 {
+
+                    if (MyComponent.SSDir == "None")
+                    {
+                        throw new Exception("No screenshot directory given! Please add valid directory");
+                    }
+
                     BeforeScreenShots();
                     ScreenShot(i);
                     AfterScreenShots();
@@ -65,9 +71,16 @@ namespace Capture
             {
                 WriteOutputToFile(MyComponent.AssembleDMO(MyComponent.DesignMap, MyComponent.ObjValues), MyComponent.CSVDir, MyComponent.CSVFilename, ".csv");
                 MyComponent.DataWritten = "Yes";
+
+                if (MyComponent.CSVDir == "None")
+                {
+                    throw new Exception("No CSV directory given! Please add valid directory");
+                }
+
             }
 
-            
+           
+
         }
 
         private Color currentColor;
@@ -127,10 +140,13 @@ namespace Capture
                 for (int i = 0; i < output.Count; i++)
                 {
                     string b = null;
-                    for (int j = 0; j < output[i].Count; j++)
+                    for (int j = 0; j < output[i].Count - 1; j++)
                     {
-                        b = b + output[i][j] + " ";
+                        b = b + output[i][j] + ",";
                     }
+
+                    b = b + output[i][output[i].Count - 1];
+
                     file.WriteLine(b);
                 }
             }
