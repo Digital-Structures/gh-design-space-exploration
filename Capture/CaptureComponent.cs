@@ -181,13 +181,17 @@ namespace Capture
                     this.AddRuntimeMessage((GH_RuntimeMessageLevel)20, "No CSV directory given! Please add valid directory");
                 }
             }
+        
+            if (NumVars != this.DesignMap[0].Count)
+            {
+                    this.AddRuntimeMessage((GH_RuntimeMessageLevel)20, "Number of sliders and design map do not match; please check");
+            }
+            
 
 
 
 
-
-
-                if (Iterating)
+            if (Iterating)
             {
                 List<double> o = new List<double>();
                 List<double> p = new List<double>();
@@ -293,6 +297,9 @@ namespace Capture
             this.VarsList.Clear();
             this.SlidersList = new List<GH_NumberSlider>();
             int nVars = this.Params.Input[0].Sources.Count;
+
+            NumVars = nVars;
+
             for (int i = 0; i < nVars; i++)
             {
                 this.SlidersList.Add(this.Params.Input[0].Sources[i] as GH_NumberSlider);

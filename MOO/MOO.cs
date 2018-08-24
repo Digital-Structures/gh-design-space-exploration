@@ -23,7 +23,7 @@ namespace MOO
         public MOO()
           : base("MOO", "MOO",
               "Executes the NSGA-II multi-objective optimization algorithm. WORKS ON DOUBLECLICK",
-              "DSE", "Catalog")
+              "DSE", "Optimize")
         {
             this.ObjValues = new List<List<double>>();
             this.VarValues = new List<List<double>>();

@@ -34,7 +34,7 @@ namespace Diversity
             this.DesignMapDiv = new List<List<double>>();
             this.CulledInd = new List<double>();
             this.QualInd = new List<double>();
-
+            this.thresholds = new List<double>();
 
         }
 
@@ -51,7 +51,7 @@ namespace Diversity
         public List<List<double>> distances;
         public List<double> diversity;
         public List<double> diversityfin;
-        public double threshold;
+        public List<double> thresholds;
         public int Iterations;
         public int cullTo;
         public List<double> diversityfinCull;
@@ -67,8 +67,8 @@ namespace Diversity
             pManager.AddNumberParameter("Design map", "DM", "Set of design vectors for calculating set diversity", GH_ParamAccess.tree);
             pManager.AddIntegerParameter("Mode", "Mode", "Diversity measurement type. Right click to choose type.", GH_ParamAccess.item, 0);
             pManager.AddNumberParameter("Objective Scores", "Obj (DM)", "List of objective scores for designs in DM", GH_ParamAccess.tree);
-            pManager.AddNumberParameter("Objective Targets", "Obj Targets", "Targets for each objective", GH_ParamAccess.tree);
-            pManager.AddNumberParameter("Objective Threshold", "Threshold", "If < 1, fraction that solutions can differ from target", GH_ParamAccess.item);
+            pManager.AddNumberParameter("Objective Targets", "Obj Target(s)", "Targets for each objective", GH_ParamAccess.tree);
+            pManager.AddNumberParameter("Objective Thresholds", "Threshold(s)", "If < 1, fraction that solutions can differ from target", GH_ParamAccess.tree);
             pManager.AddIntegerParameter("Cull to", "Cull to", "Desired number of solutions in final set", GH_ParamAccess.item);
             pManager.AddIntegerParameter("Iterations", "Iter", "Iterations for diversity culling - recommended at least 1000 if not too slow", GH_ParamAccess.item, 10000);
             pManager.AddBooleanParameter("Run", "Run", "Run diversity filtering", GH_ParamAccess.item);
@@ -88,18 +88,13 @@ namespace Diversity
         /// Registers all the output parameters for this component.
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
-        {
-
-            
+        { 
             pManager.AddTextParameter("Diversity of All Qualified", "QualDiv", "Measured diversity of qualified set using selected metric", GH_ParamAccess.tree);
             pManager.AddTextParameter("Qualified Indices", "QualInd", "Full set of qualifying designs", GH_ParamAccess.tree);
             pManager.AddTextParameter("Qualified Set", "QualSet", "Full set of qualifying designs", GH_ParamAccess.tree);
             pManager.AddTextParameter("Diversity of Culled", "CulledDiv", "Measured diversity of culled set using selected metric", GH_ParamAccess.tree);
             pManager.AddTextParameter("Culled Indices", "CulledInd", "Diverse set of designs for consideration", GH_ParamAccess.tree);
             pManager.AddTextParameter("Culled Set", "CulledSet", "Diverse set of designs for consideration", GH_ParamAccess.tree);
-
-
-
         }
 
         /// <summary>
@@ -130,7 +125,18 @@ namespace Diversity
             DA.GetDataTree(3, out map3);
             this.Targets = StructureToList(map3);
 
-            DA.GetData(4, ref threshold);
+            var thresh = new GH_Structure<GH_Number>();
+            if (!DA.GetDataTree(4, out thresh)) return;
+            this.thresholds = StructureToList(thresh);
+
+            // Check if there are multiple thresholds; if not, use the first one
+            double numThresh = thresholds.Count;
+            if (numThresh == 1)
+            {
+                for (int i = 1; i < numObj; i++) { thresholds.Add(thresholds[0]);  }
+            }
+
+
             DA.GetData(5, ref cullTo);
             DA.GetData(6, ref Iterations);
 
@@ -149,7 +155,7 @@ namespace Diversity
                 for (int j = 0; j < Targets.Count(); j++)
                 {
 
-                    if (Objectives[i][j] > (Targets[j] - threshold * Targets[j]) && Objectives[i][j] < (Targets[j] + threshold * Targets[j]))
+                    if (Objectives[i][j] > (Targets[j] - thresholds[j] * Targets[j]) && Objectives[i][j] < (Targets[j] + thresholds[j] * Targets[j]))
                     {
                         qualified.Add(true);
                     }
