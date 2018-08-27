@@ -128,6 +128,8 @@ namespace MOO
         public void PrintAllSolutions()
         {
             System.IO.StreamWriter file = new System.IO.StreamWriter(@"" + component.directory + "allSolutions-" + component.fileName);
+
+
             for (int i = 0; i < allSolutions.Count; i++)
             {
                 string design = "";

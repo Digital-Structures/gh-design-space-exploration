@@ -118,7 +118,7 @@ namespace Capture
         {
             this.readSlidersList();
 
-            if (!DA.GetDataList<double>(1, this.ObjInput)) return;
+            DA.GetDataList<double>(1, this.ObjInput);
             int mode = 0;
             if (!DA.GetData(2, ref mode)) return;
             this.Mode = (CaptureMode)mode;
