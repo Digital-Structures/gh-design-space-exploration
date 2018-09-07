@@ -90,6 +90,13 @@ namespace Sift
 
             if (!DA.GetData(2, ref Index)) return;
 
+            // insert warnings
+            int NumVars = this.Params.Input[0].Sources.Count;
+
+            if (NumVars != this.DesignMap[0].Count)
+            {
+                this.AddRuntimeMessage((GH_RuntimeMessageLevel)20, "Number of sliders and design map do not match; please check");
+            }
 
             //Set Current slider list
 
@@ -114,6 +121,12 @@ namespace Sift
             int nVars = this.Params.Input[0].Sources.Count;
             for (int i = 0; i < nVars; i++)
             {
+                if (this.Params.Input[0].Sources[i].Name != "Number Slider")
+                {
+                    this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, "One or more sliders are invalid");
+                    return;
+                }
+
                 this.SlidersList.Add(this.Params.Input[0].Sources[i] as GH_NumberSlider);
             }
 

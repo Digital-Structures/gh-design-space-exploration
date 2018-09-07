@@ -1,0 +1,88 @@
+﻿<Window x:Class="Stepper.StepperWindow"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:local="clr-namespace:Stepper"
+            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+            xmlns:sys="clr-namespace:System;assembly=mscorlib"
+            xmlns:Converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf" 
+            xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+            xmlns:nlopt="clr-namespace:NLoptNet;assembly=NLoptNet"
+            mc:Ignorable="d"
+            Title="DSE Stepper" Height="600" Width="1000"
+            TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+            Background="{DynamicResource MaterialDesignPaper}"
+            TextElement.FontWeight="Medium"
+            TextElement.FontSize="12"
+            FontFamily="Global User Interface"
+            Closing="Window_Closing">
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+
+                <!-- primary color -->
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.BlueGrey.Primary.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+
+                    <SolidColorBrush x:Key="PrimaryHueLightBrush" Color="{StaticResource Primary50}"/>
+                    <SolidColorBrush x:Key="PrimaryHueLightForegroundBrush" Color="{StaticResource Primary50Foreground}"/>
+                    <SolidColorBrush x:Key="PrimaryHueMidBrush" Color="{StaticResource Primary400}"/>
+                    <SolidColorBrush x:Key="PrimaryHueMidForegroundBrush" Color="{StaticResource Primary400Foreground}"/>
+                    <SolidColorBrush x:Key="PrimaryHueDarkBrush" Color="{StaticResource Primary800}"/>
+                    <SolidColorBrush x:Key="PrimaryHueDarkForegroundBrush" Color="{StaticResource Primary800Foreground}"/>
+                </ResourceDictionary>
+
+                <!-- secondary color -->
+                <ResourceDictionary>
+                    <ResourceDictionary.MergedDictionaries>
+                        <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.Red.Primary.xaml" />
+                    </ResourceDictionary.MergedDictionaries>
+
+                    <SolidColorBrush x:Key="SecondaryAccentBrush" Color="{StaticResource Primary700}"/>
+                    <SolidColorBrush x:Key="SecondaryAccentForegroundBrush" Color="{StaticResource Primary700Foreground}"/>
+                </ResourceDictionary>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <Expander Grid.Column="0" Name="MenuExpander" Width="500">
+            <Expander.Header>
+                MENU
+            </Expander.Header>
+            <StackPanel>
+                <Expander Name="ObjectivesExpander" Padding="20,0">
+                    <Expander.Header>
+                        Objectives
+                    </Expander.Header>
+                    <StackPanel Name="ObjectivesPanel">
+                        <TextBlock> This is where objective controls would go.</TextBlock>
+                    </StackPanel>
+                </Expander>
+                <Expander Name="VariablesExpander" Padding="20,0">
+                    <Expander.Header>
+                        Variables
+                    </Expander.Header>
+                    <StackPanel Name="VariablesPanel" Width="Auto">
+                        <TextBlock> This is where objectives would go.</TextBlock>
+                    </StackPanel>
+                </Expander>
+            </StackPanel>
+        </Expander>
+
+        <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="48" TextWrapping="Wrap" Visibility="Collapsed">
+            EXPLORATION HISTORY CHART COLUMN
+        </TextBlock>
+
+    </Grid>
+</Window>

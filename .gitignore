@@ -2,8 +2,15 @@
 Thumbs.db
 ehthumbs.db
 
+*.lock
+*.user
+
+
 # Folder config file
 Desktop.ini
+
+*.user
+*.lock
 
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
@@ -84,5 +91,4 @@ Documentation/~$ols_readme.docx
 
 # .vs/ folders
 .vs/
-.vs/AllProjects/v15/Server/sqlite3/storage.ide
 *.ide

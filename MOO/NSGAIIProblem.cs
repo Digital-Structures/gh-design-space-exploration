@@ -128,16 +128,22 @@ namespace MOO
         public void PrintAllSolutions()
         {
             System.IO.StreamWriter file = new System.IO.StreamWriter(@"" + component.directory + "allSolutions-" + component.fileName);
+
+
             for (int i = 0; i < allSolutions.Count; i++)
             {
                 string design = "";
                 List<double> currentDesign = allSolutions[i];
-                for (int j = 0; j < currentDesign.Count; j++)
+                for (int j = 0; j < currentDesign.Count - 1; j++)
                 {
-                    design = design + currentDesign[j] + " ";
+                    design = design + currentDesign[j] + ",";
                 }
+
+                design = design + currentDesign[currentDesign.Count - 1];
+
                 file.WriteLine(design);
             }
+
             file.Close();
         }
 

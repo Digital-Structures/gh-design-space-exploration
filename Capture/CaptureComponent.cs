@@ -118,7 +118,7 @@ namespace Capture
         {
             this.readSlidersList();
 
-            if (!DA.GetDataList<double>(1, this.ObjInput)) return;
+            DA.GetDataList<double>(1, this.ObjInput);
             int mode = 0;
             if (!DA.GetData(2, ref mode)) return;
             this.Mode = (CaptureMode)mode;
@@ -162,6 +162,32 @@ namespace Capture
             {
                 SSDir = @SSDir + @"\";
             }
+
+            // Give warning messages for illegal inputs
+            if (Mode == CaptureComponent.CaptureMode.SaveScreenshot || Mode == CaptureComponent.CaptureMode.Both)
+            {
+
+                if (SSDir == "None")
+                {
+                    this.AddRuntimeMessage((GH_RuntimeMessageLevel)20, "No screenshot directory given! Please add valid directory");
+                }
+            }
+
+            if (Mode == CaptureComponent.CaptureMode.SaveCSV || Mode == CaptureComponent.CaptureMode.Both)
+            {
+
+                if (CSVDir == "None")
+                {
+                    this.AddRuntimeMessage((GH_RuntimeMessageLevel)20, "No CSV directory given! Please add valid directory");
+                }
+            }
+        
+            if (NumVars != this.DesignMap[0].Count)
+            {
+                    this.AddRuntimeMessage((GH_RuntimeMessageLevel)20, "Number of sliders and design map do not match; please check");
+            }
+            
+
 
 
 
@@ -271,6 +297,9 @@ namespace Capture
             this.VarsList.Clear();
             this.SlidersList = new List<GH_NumberSlider>();
             int nVars = this.Params.Input[0].Sources.Count;
+
+            NumVars = nVars;
+
             for (int i = 0; i < nVars; i++)
             {
                 this.SlidersList.Add(this.Params.Input[0].Sources[i] as GH_NumberSlider);

@@ -37,9 +37,19 @@ namespace MOO
             // Reset list of objective values
             MyComponent.ObjValues = new List<List<double>>();
             MyComponent.ObjValues = new List<List<double>>();
-            
 
-           
+            if (MyComponent.gen < 2)
+            {
+                throw new Exception("If number of generations is less than 2, outputs will not work properly");
+                
+
+            }
+
+            if (MyComponent.popSize % 2 > 0)
+            {
+                throw new Exception("Population size cannot be odd; please try an even population size");
+            }
+
 
             variablesSliders = MyComponent.readSlidersList();
             NSGAIIProblem problem = new NSGAIIProblem("ArrayReal", MyComponent, solutionsCounter);
@@ -48,6 +58,8 @@ namespace MOO
             problem.PrintAllSolutions();
             problem.PrintLogFile();
             solutionsCounter++;
+
+
 
 
             MyComponent.MooDone = true;

@@ -103,7 +103,7 @@ namespace Writer
                 string b = null;
                 for (int j = 0; j < output[i].Count; j++)
                 {
-                    b = b + output[i][j] + " ";
+                    b = b + output[i][j] + ",";
                 }
                 a = a + b + "\r\n";
             }

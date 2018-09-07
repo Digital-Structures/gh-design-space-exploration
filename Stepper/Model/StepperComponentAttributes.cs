@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
+using Grasshopper.Kernel;
+using Rhino.Geometry;
 using System.Linq;
 using System.Text;
-using Grasshopper;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Data;
-using Rhino.Geometry;
-using DSECommon;
-using System.Drawing;
-using Grasshopper.GUI.Canvas;
+using System.Windows;
 using System.Windows.Forms;
+using System.Threading.Tasks;
+using System.ComponentModel;
+using System.Diagnostics;
+using DSECommon;
+using System.Threading;
 using MathNet.Numerics;
 
 namespace Stepper
@@ -22,9 +22,7 @@ namespace Stepper
         public StepperComponentAttributes(IGH_Component component)
             : base(component)
         {
-
-
-                MyComponent = (StepperComponent)component;
+            MyComponent = (StepperComponent)component;
 
             this.Gradient = new List<List<double>>();
             this.DifOne = new List<List<double>>();
@@ -64,10 +62,23 @@ namespace Stepper
 
         [STAThread]
         public override Grasshopper.GUI.Canvas.GH_ObjectResponse RespondToMouseDoubleClick(Grasshopper.GUI.Canvas.GH_Canvas sender, Grasshopper.GUI.GH_CanvasMouseEvent e)
-
-        //public override GH_ObjectResponse RespondToKeyDown(GH_Canvas sender, KeyEventArgs e)
         {
+            //Prevent opening of multiple windows at once
+            if (!MyComponent.IsWindowOpen)
+            {
+                MyComponent.IsWindowOpen = true;
+                StepperVM VM= new StepperVM(this.MyComponent);
 
+                Thread viewerThread = new Thread(delegate ()
+                {
+                    System.Windows.Window viewer = new StepperWindow(VM);
+                    viewer.Show();
+                    System.Windows.Threading.Dispatcher.Run();
+                });
+
+                viewerThread.SetApartmentState(ApartmentState.STA); // needs to be STA or throws exception
+                viewerThread.Start();
+            }
 
             //reset relevant lists
             this.Gradient = new List<List<double>>();
@@ -109,13 +120,11 @@ namespace Stepper
 
             for (int i = 0; i < numVars; i++)
             {
-
                 double left = MyComponent.VarsVals[i] - 0.5 * FDstep * (MyComponent.MaxVals[i] - MyComponent.MinVals[i]);
                 double right = MyComponent.VarsVals[i] + 0.5 * FDstep * (MyComponent.MaxVals[i] - MyComponent.MinVals[i]);
 
                 DesignMapStepperOne[i][i] = left;
                 DesignMapStepperTwo[i][i] = right;
-
             }
 
             // combine lists
@@ -142,7 +151,6 @@ namespace Stepper
             double minObj = double.MaxValue;
 
             // find the gradient for each objective by taking finite differences of every variable
-
             for (int j = 0; j < numObjs; j++)
             {
 
@@ -166,7 +174,6 @@ namespace Stepper
                 }
 
                 //Normalize by max/min difference
-
                 double maxAbs = double.MinValue;
                 double vecLength = 0;
 
@@ -187,9 +194,7 @@ namespace Stepper
             }
 
             //// FIND THE ORTHOGONAL VECTORS
-
             ////double[][] gradientArray = Gradient.Select(a => a.ToArray()).ToArray();
-
             List<List<string>> lst = new List<List<string>>();
             double[,] gradientArray = new double[Gradient.Count, Gradient[0].Count];
 
@@ -209,8 +214,6 @@ namespace Stepper
 
             var nullspace = matrixGrad.Kernel();
 
-            
-
             // Convert array to List of nullspace vectors
             if (numVars > numObjs)
             {
@@ -223,7 +226,6 @@ namespace Stepper
             }
 
             // Randomly pick an isoperformance direction
-
             Random rnd = new Random();
             int dir = new int();
             int testrand = new int();
@@ -280,46 +282,28 @@ namespace Stepper
                 if (MyComponent.Direction > 0)
                 {
                     Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderlist[i];
-
                     double SteppedSlider = MyComponent.VarsVals[i] + Gradient[MyComponent.ObjNum][i] * MyComponent.StepSize * (MyComponent.MaxVals[i] - MyComponent.MinVals[i]);
-
                     nslider.TrySetSliderValue((decimal)SteppedSlider);
                 }
 
                 if (MyComponent.Direction < 0)
                 {
                     Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderlist[i];
-
                     double SteppedSlider = MyComponent.VarsVals[i] - Gradient[MyComponent.ObjNum][i] * MyComponent.StepSize * (MyComponent.MaxVals[i] - MyComponent.MinVals[i]) ;
-
                     nslider.TrySetSliderValue((decimal)SteppedSlider);
                 }
 
                 // TAKE STEP IN ORTHOGONAL DIRECTION
-
                 if (MyComponent.Direction == 0)
                 {
-
-                    Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderlist[i];
-
-                    
-
-                    double SteppedSlider = MyComponent.VarsVals[i] + IsoPerfDirList[i] * MyComponent.StepSize*MyComponent.numVars;
-
-                    
-
+                    Grasshopper.Kernel.Special.GH_NumberSlider nslider = (Grasshopper.Kernel.Special.GH_NumberSlider)sliderlist[i];              
+                    double SteppedSlider = MyComponent.VarsVals[i] + IsoPerfDirList[i] * MyComponent.StepSize*MyComponent.numVars;                  
                     nslider.TrySetSliderValue((decimal)SteppedSlider);
-
                 }
-
-            
-
             }
 
             stepped = true;
             Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
-
-            //return base.RespondToKeyDown(sender, e);
 
             return base.RespondToMouseDoubleClick(sender, e);
         }
@@ -348,7 +332,6 @@ namespace Stepper
                 // Reset last slider
                 if (i == this.DesignMapStepperCombined.Count)
                 {
-                
                 }
 
                 i++;
