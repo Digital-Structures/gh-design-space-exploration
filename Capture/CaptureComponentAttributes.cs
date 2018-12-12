@@ -62,7 +62,23 @@ namespace Capture
                     AfterScreenShots();
                     MyComponent.ImagesWritten = "Yes";
                 }
-                i++;
+
+                // Write intermediate Screenshots
+                if (MyComponent.Mode == CaptureComponent.CaptureMode.SaveCSV || MyComponent.Mode == CaptureComponent.CaptureMode.Both)
+                {
+
+                    if (MyComponent.SaveFreq > 0)
+                    {
+                        if (i % MyComponent.SaveFreq == 0)
+                        {
+                            WriteProgressToFile(MyComponent.AssembleDMO(MyComponent.DesignMap, MyComponent.ObjValues), MyComponent.CSVDir, MyComponent.CSVFilename, ".csv", i);
+                            int Last = i - MyComponent.SaveFreq;
+                            System.IO.File.Delete(MyComponent.CSVDir + MyComponent.CSVFilename + "_progress_" + Last.ToString() + ".csv");
+                        }
+                    }
+                }
+
+                    i++;
             }
 
             
@@ -137,6 +153,26 @@ namespace Capture
         {
 
             using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"" + path + filename + extension))
+            {
+                for (int i = 0; i < output.Count; i++)
+                {
+                    string b = null;
+                    for (int j = 0; j < output[i].Count - 1; j++)
+                    {
+                        b = b + output[i][j] + ",";
+                    }
+
+                    b = b + output[i][output[i].Count - 1];
+
+                    file.WriteLine(b);
+                }
+
+            }
+        }
+
+        private void WriteProgressToFile(List<List<double>> output, string path, string filename, string extension, int count)
+        {
+            using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"" + path + filename + "_progress_" + count.ToString() + extension))
             {
                 for (int i = 0; i < output.Count; i++)
                 {

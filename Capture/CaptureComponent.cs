@@ -56,6 +56,7 @@ namespace Capture
         public string DataWritten;
         public string ImagesWritten;
         public int Index;
+        public int SaveFreq;
 
         public override void CreateAttributes()
         {
@@ -79,6 +80,7 @@ namespace Capture
             pManager.AddTextParameter(".csv directory", ".csv Dir", @"Output path. Example: 'C:\Folder or C:\Folder\", GH_ParamAccess.item, "None");
             pManager.AddTextParameter("Screenshot filename", "SS F", "Prefix for output files. Example: 'design'", GH_ParamAccess.item);
             pManager.AddTextParameter("Screenshot directory", "SS Dir", @"Output path. Example: 'C:\Folder or C:\Folder\", GH_ParamAccess.item, "None");
+            pManager.AddIntegerParameter("Backup Frequency", "SaveFreq", "If a number is provided, Capture will write progress backup files every 'SaveFreq' iterations", GH_ParamAccess.item, 0);
 
             // Add possible values for the mode input
             Param_Integer param = (Param_Integer)pManager[2];
@@ -93,6 +95,7 @@ namespace Capture
             pManager[6].Optional = true;
             pManager[7].Optional = true;
             pManager[8].Optional = true;
+            pManager[9].Optional = true;
 
         }
 
@@ -145,7 +148,7 @@ namespace Capture
             DA.GetData(6, ref CSVDir);
             DA.GetData(7, ref SSFilename);
             DA.GetData(8, ref SSDir);
-
+            DA.GetData(9, ref SaveFreq);
 
             // Make sure directories can be accepted with or without slashes
 
