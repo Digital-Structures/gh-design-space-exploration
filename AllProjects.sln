@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Diversity", "Diversity\Dive
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Gradient_MOO", "Gradient_MOO\Gradient_MOO.csproj", "{7727F6C5-C95A-4C27-8E66-5EE33FA1D333}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contort", "Contort\Contort.csproj", "{67D1CDE4-E62F-40B6-8668-99A0A9A31821}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -131,6 +133,14 @@ Global
 		{7727F6C5-C95A-4C27-8E66-5EE33FA1D333}.Debug64|Any CPU.Build.0 = Debug|Any CPU
 		{7727F6C5-C95A-4C27-8E66-5EE33FA1D333}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7727F6C5-C95A-4C27-8E66-5EE33FA1D333}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67D1CDE4-E62F-40B6-8668-99A0A9A31821}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D1CDE4-E62F-40B6-8668-99A0A9A31821}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67D1CDE4-E62F-40B6-8668-99A0A9A31821}.Debug32|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D1CDE4-E62F-40B6-8668-99A0A9A31821}.Debug32|Any CPU.Build.0 = Debug|Any CPU
+		{67D1CDE4-E62F-40B6-8668-99A0A9A31821}.Debug64|Any CPU.ActiveCfg = Debug|Any CPU
+		{67D1CDE4-E62F-40B6-8668-99A0A9A31821}.Debug64|Any CPU.Build.0 = Debug|Any CPU
+		{67D1CDE4-E62F-40B6-8668-99A0A9A31821}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67D1CDE4-E62F-40B6-8668-99A0A9A31821}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
