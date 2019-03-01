@@ -46,6 +46,7 @@ namespace Sift
         public override void CreateAttributes()
         {
             base.m_attributes = new SiftComponentAttributes(this);
+           
         }
 
 

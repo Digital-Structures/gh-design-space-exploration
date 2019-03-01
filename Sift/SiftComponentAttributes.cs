@@ -24,19 +24,28 @@ namespace Sift
         [STAThread]
         public override Grasshopper.GUI.Canvas.GH_ObjectResponse RespondToMouseDoubleClick(Grasshopper.GUI.Canvas.GH_Canvas sender, Grasshopper.GUI.GH_CanvasMouseEvent e)
         {
-            GHUtilities.ChangeSliders(MyComponent.SlidersList, MyComponent.DesignMap[MyComponent.Index]);
-            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(false);      
+
+            if (MyComponent.SlidersList.Count != MyComponent.DesignMap[MyComponent.Index].Count)
+            {
+                throw new Exception("Error: Number of sliders and number of target values must be equal.");
+            }
+
+            for (int i = 0; i < MyComponent.SlidersList.Count; i++)
+            {
+                Grasshopper.Kernel.Special.GH_NumberSlider s = MyComponent.SlidersList[i];
+                double d = MyComponent.DesignMap[MyComponent.Index][i];
+                s.SetSliderValue((decimal)d);
+            }
+
+            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(false, GH_SolutionMode.Silent);
+
+            //Grasshopper.Instances.ActiveCanvas.Document.NewSolution(false);      
             return base.RespondToMouseDoubleClick(sender, e);
         }
 
-
-
     }
 
-      
 
-        
-      
 
-    }
+}
 
