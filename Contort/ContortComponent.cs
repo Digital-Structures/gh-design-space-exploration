@@ -48,17 +48,17 @@ namespace Contort
         {
 
             this.SlidersList = new List<GH_NumberSlider>();
-            this.Coeff = new List<double>();
+            this.Coeff = new List<List<double>>();
             this.SynthVals = new List<double>();
         }
 
 
-        public int NumVars, NumObjs;
+        public int NumVars, NumSynths;
         public double Scale;
         public bool MakeSliders;
         public bool run;
         public List<GH_NumberSlider> SlidersList;
-        public List<double> Coeff;
+        public List<List<double>> Coeff;
         public List<double> SynthVals;
 
 
@@ -70,10 +70,10 @@ namespace Contort
 
             // Check that number of sliders is equal to number of variables in DM; otherwise, throw an error.
             pManager.AddNumberParameter("Variables", "Var", "Sliders representing variables", GH_ParamAccess.list);
-            pManager.AddNumberParameter("Coefficients", "Coeff", "Coefficents for mapping to synthetic variables; each (nested) list of coefficients must equal the number of variables", GH_ParamAccess.list);
+            pManager.AddNumberParameter("Coefficients", "Coeff", "Coefficents for mapping to synthetic variables; each (nested) list of coefficients must equal the number of variables", GH_ParamAccess.tree);            
             pManager.AddNumberParameter("Synthetic Sliders", "SynthSlide", "Synthetic sliders to control your overall design; must match number of coefficient lists", GH_ParamAccess.list, 0);
             pManager.AddNumberParameter("Scale", "Scale", "Scale of how far to move in the design space", GH_ParamAccess.item);
-            pManager.AddBooleanParameter("Create Sliders", "CreateSliders", "Click button to create sliders", GH_ParamAccess.item);
+            pManager.AddBooleanParameter("Create Sliders", "CreateSliders", "Click button to create sliders", GH_ParamAccess.item,false);
 
         }
 
@@ -100,7 +100,12 @@ namespace Contort
 
             readSlidersList();
 
-            DA.GetDataList<double>(1, this.Coeff);
+            var RawCoeff = new GH_Structure<GH_Number>();
+            if (!DA.GetDataTree(1, out RawCoeff)) return;
+            this.Coeff = StructureToListOfLists(RawCoeff);
+
+            //DA.GetDataList<List<double>>(1, this.Coeff);
+
             DA.GetDataList<double>(2, this.SynthVals);
             DA.GetData(3, ref Scale);
             DA.GetData(4, ref MakeSliders);
@@ -109,7 +114,7 @@ namespace Contort
             if (MakeSliders)
             {
 
-                for (int i = 0; i < 1; i++)
+                for (int i = 0; i < NumSynths; i++)
                 {
 
                     //instantiate objective sliders
@@ -118,7 +123,7 @@ namespace Contort
 
 
                     //customise slider (position, ranges etc)
-                    slid.Attributes.Pivot = new PointF((float)this.Attributes.DocObject.Attributes.Bounds.Left - slid.Attributes.Bounds.Width - 30, (float)this.Params.Input[2].Attributes.Bounds.Y + NumVars * 30);
+                    slid.Attributes.Pivot = new PointF((float)this.Attributes.DocObject.Attributes.Bounds.Left - slid.Attributes.Bounds.Width - 30, (float)this.Params.Input[2].Attributes.Bounds.Y + i * 30);
                     slid.Slider.Maximum = 1;
                     slid.Slider.Minimum = -1;
                     slid.Slider.DecimalPlaces = 3;
@@ -134,18 +139,27 @@ namespace Contort
 
 
             NumVars = SlidersList.Count;
+            NumSynths = Coeff.Count;
 
             for (int i = 0; i < NumVars; i++)
             {
-                var slider = SlidersList[i] as Grasshopper.Kernel.Special.GH_NumberSlider; //try to cast that thing as a slider
 
+                var slider = SlidersList[i] as Grasshopper.Kernel.Special.GH_NumberSlider; //try to cast that thing as a slider
                 decimal mid = (slider.Slider.Maximum + slider.Slider.Minimum) / 2;
+
+                decimal value = mid;
+
+                for (int j = 0; j < NumSynths; j++)
+                {
+
+                    value = value + (decimal)SynthVals[j] * (decimal) Coeff[j][i] * (decimal) Scale;
+
+                }
 
                 if (slider != null) //if the component was successfully cast as a slider
                 {
-                    slider.SetSliderValue(mid + (decimal) SynthVals[0] * (decimal) Coeff[i] * (decimal) Scale);
+                    slider.SetSliderValue(value);
                 }
-              
             }
 
             run = true;
@@ -187,6 +201,34 @@ namespace Contort
             Grasshopper.Instances.ActiveCanvas.Document.ScheduleSolution(1);
         }
 
+        static List<List<T>> TreeToListOfLists<T>(DataTree<T> tree)
+        {
+            List<List<T>> list = new List<List<T>>();
+            foreach (GH_Path p in tree.Paths)
+            {
+                List<T> l = tree.Branch(p);
+                list.Add(l);
+            }
+            return list;
+        }
+
+        static List<List<double>> StructureToListOfLists(GH_Structure<GH_Number> structure)
+        {
+            List<List<double>> list = new List<List<double>>();
+            foreach (GH_Path p in structure.Paths)
+            {
+                List<GH_Number> l = (List<GH_Number>)structure.get_Branch(p);
+                List<double> doubles = new List<double>();
+                foreach (GH_Number n in l)
+                {
+                    double d = 0;
+                    n.CastTo<double>(out d);
+                    doubles.Add(d);
+                }
+                list.Add(doubles);
+            }
+            return list;
+        }
 
         /// <summary>
         /// Provides an Icon for every component that will be visible in the User Interface.
@@ -198,7 +240,7 @@ namespace Contort
             {
                 // You can add image files to your project resources and access them like this:
                 //return Resources.IconForThisComponent;
-                return null;
+                return Contort.Properties.Resources.Contort1; 
             }
         }
 
