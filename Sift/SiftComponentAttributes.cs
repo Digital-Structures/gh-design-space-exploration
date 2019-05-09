@@ -37,7 +37,7 @@ namespace Sift
                 s.SetSliderValue((decimal)d);
             }
 
-            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(false, GH_SolutionMode.Silent);
+            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(false, GH_SolutionMode.Default);
 
             //Grasshopper.Instances.ActiveCanvas.Document.NewSolution(false);      
             return base.RespondToMouseDoubleClick(sender, e);

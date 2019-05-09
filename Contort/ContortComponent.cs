@@ -146,13 +146,14 @@ namespace Contort
 
                 var slider = SlidersList[i] as Grasshopper.Kernel.Special.GH_NumberSlider; //try to cast that thing as a slider
                 decimal mid = (slider.Slider.Maximum + slider.Slider.Minimum) / 2;
+                decimal range = slider.Slider.Maximum - slider.Slider.Minimum;
 
                 decimal value = mid;
 
                 for (int j = 0; j < NumSynths; j++)
                 {
 
-                    value = value + (decimal)SynthVals[j] * (decimal) Coeff[j][i] * (decimal) Scale;
+                    value = value + (decimal)SynthVals[j] * (decimal) Coeff[j][i] * range/2 * (decimal) Scale;
 
                 }
 

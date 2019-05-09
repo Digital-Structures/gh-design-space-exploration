@@ -27,7 +27,7 @@ namespace DSECommon
                 s.SetSliderValue((decimal)d);
             }
             // Modify for silent behavior
-            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true,GH_SolutionMode.Silent);
+            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(false,GH_SolutionMode.Silent);
         }
 
         public static void WriteOutputToFile(List<List<double>> output, string path, string filename, string extension)
