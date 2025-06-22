@@ -69,6 +69,14 @@ A comprehensive design space exploration toolkit with multi-objective optimizati
 |---------|---------|------------------|
 | **NLoptNet** | `1.4.3` | DSOpt, Radical, StepperAux |
 
+### Optimization Libraries (Native)
+| Library | Description |
+|---------|-------------|
+| **nlopt.dll** | NLopt native optimization library |
+| **nlopt_x32.dll** | 32-bit version |
+| **nlopt_x64.dll** | 64-bit version |
+| **libnlopt-0.dll** | Alternative NLopt library |
+
 ### Logging
 | Package | Version | Used In Projects |
 |---------|---------|------------------|
