@@ -1,0 +1,363 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A5B0A166-35FF-4AFF-8A85-C6BEB305AA83}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>StructureEngine</RootNamespace>
+    <AssemblyName>StructureEngineCS_StormCloud</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Analysis\BaseTrussAnalysis.cs" />
+    <Compile Include="Analysis\BraninTestFunction.cs" />
+    <Compile Include="Analysis\EquivFrameAnalysis.cs" />
+    <Compile Include="Analysis\GraphicStatics\ForcePolygon.cs" />
+    <Compile Include="Analysis\GraphicStatics\FormDiagram.cs" />
+    <Compile Include="Analysis\GraphicStatics\PointLoad.cs" />
+    <Compile Include="Analysis\GraphicStatics\ProblemSetup.cs" />
+    <Compile Include="Analysis\IAnalysis.cs" />
+    <Compile Include="Analysis\RegAnalysis.cs" />
+    <Compile Include="Analysis\Results.cs" />
+    <Compile Include="Analysis\TrussAnalysis.cs" />
+    <Compile Include="Analysis\TrussDispAnalysis.cs" />
+    <Compile Include="Evolutionary\DiversityBooster.cs" />
+    <Compile Include="Evolutionary\EvoParams.cs" />
+    <Compile Include="Evolutionary\GramDivBooster.cs" />
+    <Compile Include="Evolutionary\IDivBooster.cs" />
+    <Compile Include="Evolutionary\ParDivBooster.cs" />
+    <Compile Include="Evolutionary\PopulationGenerator.cs" />
+    <Compile Include="Grammar\Airport\AirportAnalysis.cs" />
+    <Compile Include="Grammar\Airport\AirportGrammar.cs" />
+    <Compile Include="Grammar\Airport\AirportShape.cs" />
+    <Compile Include="Grammar\Airport\AirportShapeState.cs" />
+    <Compile Include="Grammar\Airport\Rules\Rule001.cs" />
+    <Compile Include="Grammar\Airport\Rules\Rule002.cs" />
+    <Compile Include="Grammar\Airport\Rules\Rule003.cs" />
+    <Compile Include="Grammar\Airport\Rules\Rule004.cs" />
+    <Compile Include="Grammar\Airport\Rules\Rule005.cs" />
+    <Compile Include="Grammar\Airport\Rules\RuleA.cs" />
+    <Compile Include="Grammar\BaseGrammar.cs" />
+    <Compile Include="Grammar\BaseRule.cs" />
+    <Compile Include="Grammar\BaseShape.cs" />
+    <Compile Include="Grammar\Bridge\BridgeAnalysis.cs" />
+    <Compile Include="Grammar\Bridge\BridgeGrammar.cs" />
+    <Compile Include="Grammar\Bridge\BridgeShape.cs" />
+    <Compile Include="Grammar\Bridge\BridgeShapeState.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule001.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule002.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule003.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule004.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule005.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule006.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule007.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule008.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule009.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule010.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule011.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule012.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule013.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule014.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule015.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule016.cs" />
+    <Compile Include="Grammar\Bridge\Rules\Rule017.cs" />
+    <Compile Include="Grammar\Bridge\Rules\RuleA.cs" />
+    <Compile Include="Grammar\Bridge\Rules\RuleB.cs" />
+    <Compile Include="Grammar\Bridge\Rules\RuleC.cs" />
+    <Compile Include="Grammar\Bridge\Rules\RuleD.cs" />
+    <Compile Include="Grammar\DoubleParameter.cs" />
+    <Compile Include="Grammar\ElementGroup.cs" />
+    <Compile Include="Grammar\EnumParameter.cs" />
+    <Compile Include="Grammar\GrammarSetup.cs" />
+    <Compile Include="Grammar\IElement.cs" />
+    <Compile Include="Grammar\IElementGroup.cs" />
+    <Compile Include="Grammar\IGrammar.cs" />
+    <Compile Include="Grammar\IGrammarAnalysis.cs" />
+    <Compile Include="Grammar\IntParameter.cs" />
+    <Compile Include="Grammar\IRule.cs" />
+    <Compile Include="Grammar\IRuleParameter.cs" />
+    <Compile Include="Grammar\IShape.cs" />
+    <Compile Include="Grammar\IShapeState.cs" />
+    <Compile Include="Grammar\RandomComputation.cs" />
+    <Compile Include="Grammar\RuleSet.cs" />
+    <Compile Include="Grammar\ShapeArea.cs" />
+    <Compile Include="Grammar\ShapeComputation.cs" />
+    <Compile Include="Grammar\ShapeHistory.cs" />
+    <Compile Include="Grammar\ShapeLine.cs" />
+    <Compile Include="Grammar\ShapePoint.cs" />
+    <Compile Include="Grammar\ShapePointLoad.cs" />
+    <Compile Include="Grammar\Simple\Rules\Rule001.cs" />
+    <Compile Include="Grammar\Simple\Rules\Rule002.cs" />
+    <Compile Include="Grammar\Simple\Rules\Rule003.cs" />
+    <Compile Include="Grammar\Simple\Rules\RuleA.cs" />
+    <Compile Include="Grammar\Simple\SimpleAnalysis.cs" />
+    <Compile Include="Grammar\Simple\SimpleGrammar.cs" />
+    <Compile Include="Grammar\Simple\SimpleShape.cs" />
+    <Compile Include="Grammar\Simple\SimpleShapeState.cs" />
+    <Compile Include="Logging\Generation.cs" />
+    <Compile Include="Logging\HttpWebRequestBuilder.cs" />
+    <Compile Include="Logging\LoadCaseSerializer.cs" />
+    <Compile Include="Logging\MemberSerializer.cs" />
+    <Compile Include="Logging\NodeSerializer.cs" />
+    <Compile Include="Logging\Session.cs" />
+    <Compile Include="Logging\StructureSerializer.cs" />
+    <Compile Include="MachineLearning\EnsembleNeuralNetRegression.cs" />
+    <Compile Include="MachineLearning\ErrorMeasures.cs" />
+    <Compile Include="MachineLearning\IFunction.cs" />
+    <Compile Include="MachineLearning\KrigingRegression.cs" />
+    <Compile Include="MachineLearning\Observation.cs" />
+    <Compile Include="MachineLearning\RandomForestRegression.cs" />
+    <Compile Include="MachineLearning\Regression.cs" />
+    <Compile Include="MachineLearning\Sampling.cs" />
+    <Compile Include="MachineLearning\SimpleSearch.cs" />
+    <Compile Include="MachineLearning\SurrogateModelBuilder.cs" />
+    <Compile Include="MachineLearning\Testing\ParametricStudy.cs" />
+    <Compile Include="MachineLearning\ValidationResult.cs" />
+    <Compile Include="Model\BaseDesign.cs" />
+    <Compile Include="Model\BraninObject.cs" />
+    <Compile Include="Model\ComputedMember.cs" />
+    <Compile Include="Model\ComputedStructure.cs" />
+    <Compile Include="Model\CoordVar.cs" />
+    <Compile Include="Model\DOF.cs" />
+    <Compile Include="Model\IDesign.cs" />
+    <Compile Include="Model\ISection.cs" />
+    <Compile Include="Model\ISetup.cs" />
+    <Compile Include="Model\IVariable.cs" />
+    <Compile Include="Model\Load.cs" />
+    <Compile Include="Model\LoadCase.cs" />
+    <Compile Include="Model\Material.cs" />
+    <Compile Include="Model\Member.cs" />
+    <Compile Include="Model\Node.cs" />
+    <Compile Include="Model\ParametricRelation.cs" />
+    <Compile Include="Model\RectangularSection.cs" />
+    <Compile Include="Model\RodSection.cs" />
+    <Compile Include="Model\RoundTubeSection.cs" />
+    <Compile Include="Model\Structure.cs" />
+    <Compile Include="Model\StructureSetup.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Serialization\DXFMaker.cs" />
+    <Compile Include="Serialization\FileSerializer.cs" />
+    <Compile Include="Test\DSGenerator.cs" />
+    <Compile Include="Test\DSPlotter2D.cs" />
+    <Compile Include="Utilities.cs" />
+    <Compile Include="View\DrawUtility.cs" />
+    <Compile Include="View\GrammarControls\AirportDrawer.cs" />
+    <Compile Include="View\GrammarControls\BridgeDrawer.cs" />
+    <Compile Include="View\GrammarControls\DoubParamControl.xaml.cs">
+      <DependentUpon>DoubParamControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GrammarControls\EnumParamControl.xaml.cs">
+      <DependentUpon>EnumParamControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GrammarControls\HistoryControl.xaml.cs">
+      <DependentUpon>HistoryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GrammarControls\IntParamControl.xaml.cs">
+      <DependentUpon>IntParamControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GrammarControls\RuleControl.xaml.cs">
+      <DependentUpon>RuleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GrammarControls\SetupParamControl.xaml.cs">
+      <DependentUpon>SetupParamControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GrammarControls\SetupRuleControl.xaml.cs">
+      <DependentUpon>SetupRuleControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GrammarControls\ShapeControl.xaml.cs">
+      <DependentUpon>ShapeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\GrammarControls\SimpleDrawer.cs" />
+    <Compile Include="View\GrammarControls\SpliceMarkControl.xaml.cs">
+      <DependentUpon>SpliceMarkControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\IDrawer.cs" />
+    <Compile Include="View\IModeBehavior.cs" />
+    <Compile Include="View\InteractiveStructure\ComputedMemberControl.xaml.cs">
+      <DependentUpon>ComputedMemberControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InteractiveStructure\ComputedMemberSimple.xaml.cs">
+      <DependentUpon>ComputedMemberSimple.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InteractiveStructure\CursorControl.xaml.cs">
+      <DependentUpon>CursorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InteractiveStructure\GhostMember.xaml.cs">
+      <DependentUpon>GhostMember.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InteractiveStructure\IControl.cs" />
+    <Compile Include="View\InteractiveStructure\MemberControl.xaml.cs">
+      <DependentUpon>MemberControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InteractiveStructure\NodeClear.xaml.cs">
+      <DependentUpon>NodeClear.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InteractiveStructure\NodeControl.xaml.cs">
+      <DependentUpon>NodeControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InteractiveStructure\SelectionWindow.xaml.cs">
+      <DependentUpon>SelectionWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\InteractiveStructure\SymmetryControl.xaml.cs">
+      <DependentUpon>SymmetryControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ShapeControl_old.xaml.cs">
+      <DependentUpon>ShapeControl_old.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StaticStructure\DesignControl.xaml.cs">
+      <DependentUpon>DesignControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StaticStructure\GenerateBehavior.cs" />
+    <Compile Include="View\StaticStructure\RefineBehavior.cs" />
+    <Compile Include="View\StaticStructure\RefineStructureControl.xaml.cs">
+      <DependentUpon>RefineStructureControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StaticStructure\SetupBehavior.cs" />
+    <Compile Include="View\StaticStructure\StructureControl.xaml.cs">
+      <DependentUpon>StructureControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\StaticStructure\TrussDrawer.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Assets\FIT Files\MichellTruss2Panel.fit">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\FIT Files\MichellTruss2PanelMetric-FINAL.fit" />
+    <None Include="Assets\FIT Files\MichellTruss2PanelMetric.fit" />
+    <None Include="Assets\FIT Files\MichellTruss2PanelMetric2.fit" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="View\GrammarControls\DoubParamControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\GrammarControls\EnumParamControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\GrammarControls\HistoryControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\GrammarControls\IntParamControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\GrammarControls\RuleControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\GrammarControls\SetupParamControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\GrammarControls\SetupRuleControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\GrammarControls\ShapeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\GrammarControls\SpliceMarkControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\InteractiveStructure\ComputedMemberControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\InteractiveStructure\ComputedMemberSimple.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\InteractiveStructure\CursorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\InteractiveStructure\GhostMember.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\InteractiveStructure\MemberControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\InteractiveStructure\NodeClear.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\InteractiveStructure\NodeControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\InteractiveStructure\SelectionWindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\InteractiveStructure\SymmetryControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\ShapeControl_old.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\StaticStructure\DesignControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\StaticStructure\RefineStructureControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\StaticStructure\StructureControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -9,11 +9,6 @@ using Rhino.Geometry;
 using DSECommon;
 using System.Drawing;
 
-
-
-
-
-
 namespace Effects
 {
     class EffectsComponentAttributes : Grasshopper.Kernel.Attributes.GH_ComponentAttributes
@@ -25,19 +20,15 @@ namespace Effects
         {
             MyComponent = (EffectsComponent)component;
 
-
             this.EffectIndicesList = new List<List<int>>();
             this.DesignMapEffects = new List<List<double>>();
             this.OverallAvg = new List<double>();
             this.IndEffectsSum = new List<List<List<List<double>>>>();
             this.IndEffectsAvg = new List<List<List<double>>>();
             this.OverallEff = new List<List<double>>();
-
         }
 
-
         // Create variables
-        
         public List<List<int>> EffectIndicesList;
         public List<List<double>> DesignMapEffects;
         public int numRows;
@@ -52,210 +43,389 @@ namespace Effects
         int numObj;
         int[,] EffectIndices;
 
-
         [STAThread]
         public override Grasshopper.GUI.Canvas.GH_ObjectResponse RespondToMouseDoubleClick(Grasshopper.GUI.Canvas.GH_Canvas sender, Grasshopper.GUI.GH_CanvasMouseEvent e)
         {
-
-            // Convert orthogonal matrix to list
-            numLevels = MyComponent.numLevels;
+            if (MyComponent.DebugLogging)
+            {
+                System.Console.WriteLine("=== Effects Analysis Started ===");
+            }
             
+            // Clear previous results
+            EffectIndicesList.Clear();
+            DesignMapEffects.Clear();
+            OverallAvg.Clear();
+            IndEffectsSum.Clear();
+            IndEffectsAvg.Clear();
+            OverallEff.Clear();
+
+            // Get basic parameters
+            numLevels = MyComponent.numLevels;
+            numVars = MyComponent.numVars;
             numObj = MyComponent.numObjs;
 
-            
-
-            
-            //Three level matrices
-           int[,] EffectIndicesOpt1 = new int[,] { { 0, 0, 0, 0 }, { 0, 1, 1, 1 }, { 0, 2, 2, 2 }, { 1, 0, 1, 2 }, { 1, 1, 2, 0 }, { 1, 2, 0, 1 }, { 2, 0, 2, 1 }, { 2, 1, 0, 2 }, { 2, 2, 1, 0 } };
-           int[,] EffectIndicesOpt2 = new int[,] { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 }, { 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2 }, { 0, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 1, 2 }, { 0, 1, 1, 1, 1, 1, 1, 2, 0, 2, 0, 2, 0 }, { 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 1, 0, 1 }, { 0, 2, 2, 2, 0, 0, 0, 2, 1, 2, 1, 2, 1 }, { 0, 2, 2, 2, 1, 1, 1, 0, 2, 0, 2, 0, 2 }, { 0, 2, 2, 2, 2, 2, 2, 1, 0, 1, 0, 1, 0 }, { 1, 0, 1, 2, 0, 1, 2, 0, 0, 1, 2, 2, 1 }, { 1, 0, 1, 2, 1, 2, 0, 1, 1, 2, 0, 0, 2 }, { 1, 0, 1, 2, 2, 0, 1, 2, 2, 0, 1, 1, 0 }, { 1, 1, 2, 0, 0, 1, 2, 1, 2, 2, 1, 0, 0 }, { 1, 1, 2, 0, 1, 2, 0, 2, 0, 0, 2, 1, 1 }, { 1, 1, 2, 0, 2, 0, 1, 0, 1, 1, 0, 2, 2 }, { 1, 2, 0, 1, 0, 1, 2, 2, 1, 0, 0, 1, 2 }, { 1, 2, 0, 1, 1, 2, 0, 0, 2, 1, 1, 2, 0 }, { 1, 2, 0, 1, 2, 0, 1, 1, 0, 2, 2, 0, 1 }, { 2, 0, 2, 1, 0, 2, 1, 0, 0, 2, 1, 1, 2 }, { 2, 0, 2, 1, 1, 0, 2, 1, 1, 0, 2, 2, 0 }, { 2, 0, 2, 1, 2, 1, 0, 2, 2, 1, 0, 0, 1 }, { 2, 1, 0, 2, 0, 2, 1, 1, 2, 0, 0, 2, 1 }, { 2, 1, 0, 2, 1, 0, 2, 2, 0, 1, 1, 0, 2 }, { 2, 1, 0, 2, 2, 1, 0, 0, 1, 2, 2, 1, 0 }, { 2, 2, 1, 0, 0, 2, 1, 2, 1, 1, 2, 0, 0 }, { 2, 2, 1, 0, 1, 0, 2, 0, 2, 2, 0, 1, 1 }, { 2, 2, 1, 0, 2, 1, 0, 1, 0, 0, 1, 2, 2 } };
-
-
-            //2 level matrices
-            int[,] EffectIndicesOpt3 = new int[,] { { 0, 0, 0, 0, 0, 0, 0 }, { 0, 0, 0, 1, 1, 1, 1 }, { 0, 1, 1, 0, 0, 1, 1 }, { 0, 1, 1, 1, 1, 0, 0 }, { 1, 0, 1, 0, 1, 0, 1 }, { 1, 0, 1, 1, 0, 1, 0 }, { 1, 1, 0, 0, 1, 1, 0 }, { 1, 1, 0, 1, 0, 0, 1 }};
-            int[,] EffectIndicesOpt4 = new int[,] { { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 }, { 0,0,0,0,0,0,0,1,1,1,1,1,1,1,1},{ 0,0,0,1,1,1,1,0,0,0,0,1,1,1,1},{ 0,0,0,1,1,1,1,1,1,1,1,0,0,0,0},{ 0,1,1,0,0,1,1,0,0,1,1,0,0,1,1},{ 0,1,1,0,0,1,1,1,1,0,0,1,1,0,0},{ 0,1,1,1,1,0,0,0,0,1,1,1,1,0,0},{ 0,1,1,1,1,0,0,1,1,0,0,0,0,1,1},{ 1,0,1,0,1,0,1,0,1,0,1,0,1,0,1},{ 1,0,1,0,1,0,1,1,0,1,0,1,0,1,0},{ 1,0,1,1,0,1,0,0,1,0,1,1,0,1,0},{ 1,0,1,1,0,1,0,1,0,1,0,0,1,0,1},{ 1,1,0,0,1,1,0,0,1,1,0,0,1,1,0},{ 1,1,0,0,1,1,0,1,0,0,1,1,0,0,1},{ 1,1,0,1,0,0,1,0,1,1,0,1,0,0,1},{ 1,1,0,1,0,0,1,1,0,0,1,0,1,1,0} };
-
-
-
-            if (MyComponent.numLevels == 2)
+            if (MyComponent.DebugLogging)
             {
-                if (MyComponent.numVars < 7)
+                System.Console.WriteLine($"Configuration:");
+                System.Console.WriteLine($"  Number of Variables: {numVars}");
+                System.Console.WriteLine($"  Number of Levels: {numLevels}");
+                System.Console.WriteLine($"  Number of Objectives: {numObj}");
+                System.Console.WriteLine($"  Level Settings: [{string.Join(", ", MyComponent.LevelSettings)}]");
+            }
+
+            // Validate inputs
+            if (numVars < 1 || numVars > 13)
+            {
+                throw new ArgumentException("Number of variables must be between 1 and 13");
+            }
+
+            if (numLevels < 2 || numLevels > 3)
+            {
+                throw new ArgumentException("Number of levels must be 2 or 3");
+            }
+
+            if (MyComponent.LevelSettings.Count < numLevels)
+            {
+                throw new ArgumentException($"Need {numLevels} level settings, but only {MyComponent.LevelSettings.Count} provided.");
+            }
+
+            // Orthogonal arrays for different configurations
+            int[,] orthogonalArray = null;
+            
+            if (numLevels == 2)
+            {
+                if (numVars <= 7)
                 {
-                    EffectIndices = EffectIndicesOpt3;
-                    numFactors = MyComponent.numVars;
+                    if (MyComponent.DebugLogging)
+                    {
+                        System.Console.WriteLine($"Using L8(2^7) orthogonal array for {numVars} variables at 2 levels");
+                    }
+                    // L8(2^7) array
+                    orthogonalArray = new int[,] {
+                        { 0, 0, 0, 0, 0, 0, 0 },
+                        { 0, 0, 0, 1, 1, 1, 1 },
+                        { 0, 1, 1, 0, 0, 1, 1 },
+                        { 0, 1, 1, 1, 1, 0, 0 },
+                        { 1, 0, 1, 0, 1, 0, 1 },
+                        { 1, 0, 1, 1, 0, 1, 0 },
+                        { 1, 1, 0, 0, 1, 1, 0 },
+                        { 1, 1, 0, 1, 0, 0, 1 }
+                    };
                     numRows = 8;
                 }
                 else
                 {
-                    EffectIndices = EffectIndicesOpt4;
-                    numFactors = MyComponent.numVars;
+                    if (MyComponent.DebugLogging)
+                    {
+                        System.Console.WriteLine($"Using L16(2^15) orthogonal array for {numVars} variables at 2 levels");
+                    }
+                    // L16(2^15) array
+                    orthogonalArray = new int[,] {
+                        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                        { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1 },
+                        { 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1 },
+                        { 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0 },
+                        { 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1 },
+                        { 0, 1, 1, 0, 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0 },
+                        { 0, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0 },
+                        { 0, 1, 1, 1, 1, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1 },
+                        { 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1 },
+                        { 1, 0, 1, 0, 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0 },
+                        { 1, 0, 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0 },
+                        { 1, 0, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 1, 0, 1 },
+                        { 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0, 0, 1, 1, 0 },
+                        { 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1 },
+                        { 1, 1, 0, 1, 0, 0, 1, 0, 1, 1, 0, 1, 0, 0, 1 },
+                        { 1, 1, 0, 1, 0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0 }
+                    };
                     numRows = 16;
                 }
             }
-
-                if (MyComponent.numLevels == 3)
+            else if (numLevels == 3)
             {
-                if (MyComponent.numVars < 5)
+                if (numVars <= 4)
                 {
-                    EffectIndices = EffectIndicesOpt1;
-                    numFactors = MyComponent.numVars;
+                    if (MyComponent.DebugLogging)
+                    {
+                        System.Console.WriteLine($"Using L9(3^4) orthogonal array for {numVars} variables at 3 levels");
+                    }
+                    // L9(3^4) array
+                    orthogonalArray = new int[,] {
+                        { 0, 0, 0, 0 },
+                        { 0, 1, 1, 1 },
+                        { 0, 2, 2, 2 },
+                        { 1, 0, 1, 2 },
+                        { 1, 1, 2, 0 },
+                        { 1, 2, 0, 1 },
+                        { 2, 0, 2, 1 },
+                        { 2, 1, 0, 2 },
+                        { 2, 2, 1, 0 }
+                    };
                     numRows = 9;
-
                 }
                 else
                 {
-                    EffectIndices = EffectIndicesOpt2;
-                    numFactors = MyComponent.numVars;
+                    if (MyComponent.DebugLogging)
+                    {
+                        System.Console.WriteLine($"Using L27(3^13) orthogonal array for {numVars} variables at 3 levels");
+                    }
+                    // L27(3^13) array
+                    orthogonalArray = new int[,] {
+                        { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 },
+                        { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1 },
+                        { 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2 },
+                        { 0, 1, 1, 1, 0, 0, 0, 1, 2, 1, 2, 1, 2 },
+                        { 0, 1, 1, 1, 1, 1, 1, 2, 0, 2, 0, 2, 0 },
+                        { 0, 1, 1, 1, 2, 2, 2, 0, 1, 0, 1, 0, 1 },
+                        { 0, 2, 2, 2, 0, 0, 0, 2, 1, 2, 1, 2, 1 },
+                        { 0, 2, 2, 2, 1, 1, 1, 0, 2, 0, 2, 0, 2 },
+                        { 0, 2, 2, 2, 2, 2, 2, 1, 0, 1, 0, 1, 0 },
+                        { 1, 0, 1, 2, 0, 1, 2, 0, 0, 1, 2, 2, 1 },
+                        { 1, 0, 1, 2, 1, 2, 0, 1, 1, 2, 0, 0, 2 },
+                        { 1, 0, 1, 2, 2, 0, 1, 2, 2, 0, 1, 1, 0 },
+                        { 1, 1, 2, 0, 0, 1, 2, 1, 2, 2, 1, 0, 0 },
+                        { 1, 1, 2, 0, 1, 2, 0, 2, 0, 0, 2, 1, 1 },
+                        { 1, 1, 2, 0, 2, 0, 1, 0, 1, 1, 0, 2, 2 },
+                        { 1, 2, 0, 1, 0, 1, 2, 2, 1, 0, 0, 1, 2 },
+                        { 1, 2, 0, 1, 1, 2, 0, 0, 2, 1, 1, 2, 0 },
+                        { 1, 2, 0, 1, 2, 0, 1, 1, 0, 2, 2, 0, 1 },
+                        { 2, 0, 2, 1, 0, 2, 1, 0, 0, 2, 1, 1, 2 },
+                        { 2, 0, 2, 1, 1, 0, 2, 1, 1, 0, 2, 2, 0 },
+                        { 2, 0, 2, 1, 2, 1, 0, 2, 2, 1, 0, 0, 1 },
+                        { 2, 1, 0, 2, 0, 2, 1, 1, 2, 0, 0, 2, 1 },
+                        { 2, 1, 0, 2, 1, 0, 2, 2, 0, 1, 1, 0, 2 },
+                        { 2, 1, 0, 2, 2, 1, 0, 0, 1, 2, 2, 1, 0 },
+                        { 2, 2, 1, 0, 0, 2, 1, 2, 1, 1, 2, 0, 0 },
+                        { 2, 2, 1, 0, 1, 0, 2, 0, 2, 2, 0, 1, 1 },
+                        { 2, 2, 1, 0, 2, 1, 0, 1, 0, 0, 1, 2, 2 }
+                    };
                     numRows = 27;
                 }
-
             }
 
-            for (int i = 0; i < numRows; i++)
-            {
-                EffectIndicesList.Add(new List<int>());
-            }
+            // Determine how many columns we can use from the orthogonal array
+            int availableColumns = orthogonalArray.GetLength(1);
+            int columnsToUse = Math.Min(numVars, availableColumns);
 
-            for (int i = 1; i < numRows + 1; i++)
-            {
-                for (int j = 1; j < numFactors + 1; j++)
-                {
-                    EffectIndicesList[i - 1].Add(EffectIndices[i - 1, j - 1]);
-                }
-            }
-
-            // Create Design Map of levels samples 
+            // Build the design map
             for (int i = 0; i < numRows; i++)
             {
                 DesignMapEffects.Add(new List<double>());
-            }
-
-            for (int k = 0; k < numRows; k++)
-            {
-                for (int j = 0; j < MyComponent.numVars; j++)
+                for (int j = 0; j < numVars; j++)
                 {
-                        double setting = MyComponent.MinVals[j] + (MyComponent.LevelSettings[EffectIndices[k, j]] * (MyComponent.MaxVals[j] - MyComponent.MinVals[j]));
-                        DesignMapEffects[k].Add(setting);
+                    int levelIndex;
+                    if (j < columnsToUse)
+                    {
+                        // Use orthogonal array value
+                        levelIndex = orthogonalArray[i, j];
+                    }
+                    else
+                    {
+                        // For extra variables, use a simple pattern
+                        levelIndex = i % numLevels;
+                    }
+
+                    // Ensure level index is valid
+                    levelIndex = Math.Min(levelIndex, MyComponent.LevelSettings.Count - 1);
+                    
+                    // Calculate actual variable value
+                    double minVal = MyComponent.MinVals[j];
+                    double maxVal = MyComponent.MaxVals[j];
+                    double levelSetting = MyComponent.LevelSettings[levelIndex];
+                    double value = minVal + levelSetting * (maxVal - minVal);
+                    
+                    DesignMapEffects[i].Add(value);
                 }
             }
 
-
-            // Reset list of objective values
+            // Run the iterations
             MyComponent.ObjValues = new List<List<double>>();
-
             MyComponent.Iterating = true;
             this.Iterate();
             MyComponent.Iterating = false;
 
-
             // Calculate overall averages
-            for (int i = 0; i < numObj; i++)
+            for (int objIndex = 0; objIndex < numObj; objIndex++)
             {
-
-                double objSum = 0;
+                double sum = 0;
                 int count = 0;
-
-                for (int j = 0; j < numRows; j++)
+                
+                if (MyComponent.DebugLogging)
                 {
-                    objSum = objSum + MyComponent.ObjValues[j][i];
-                    count++;
+                    System.Console.WriteLine($"Calculating overall average for objective {objIndex}:");
+                    System.Console.WriteLine($"  numRows: {numRows}");
+                    System.Console.WriteLine($"  MyComponent.ObjValues.Count: {MyComponent.ObjValues.Count}");
                 }
-                OverallAvg.Add(objSum/(double)count);
+                
+                for (int runIndex = 0; runIndex < numRows; runIndex++)
+                {
+                    try
+                    {
+                        if (MyComponent.ObjValues.Count > runIndex && 
+                            MyComponent.ObjValues[runIndex].Count > objIndex)
+                        {
+                            sum += MyComponent.ObjValues[runIndex][objIndex];
+                            count++;
+                        }
+                        else
+                        {
+                            if (MyComponent.DebugLogging)
+                            {
+                                System.Console.WriteLine($"  Warning: Missing objective data at run {runIndex}, obj {objIndex}");
+                                System.Console.WriteLine($"    ObjValues.Count: {MyComponent.ObjValues.Count}");
+                                if (MyComponent.ObjValues.Count > runIndex)
+                                {
+                                    System.Console.WriteLine($"    ObjValues[{runIndex}].Count: {MyComponent.ObjValues[runIndex].Count}");
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (MyComponent.DebugLogging)
+                        {
+                            System.Console.WriteLine($"  Error accessing objective data at run {runIndex}, obj {objIndex}: {ex.Message}");
+                        }
+                    }
+                }
+                
+                double avgValue = count > 0 ? sum / count : 0.0;
+                OverallAvg.Add(avgValue);
+                if (MyComponent.DebugLogging)
+                {
+                    System.Console.WriteLine($"  Overall average for obj {objIndex}: {avgValue} (from {count} values)");
+                }
             }
 
-           
-            
-            // Calculate effects averages for each variable
-            for (int i = 0; i < MyComponent.numObjs; i++)
+            // Initialize effect calculations
+            for (int objIndex = 0; objIndex < numObj; objIndex++)
             {
                 IndEffectsSum.Add(new List<List<List<double>>>());
-
-                for (int j = 0; j < MyComponent.numVars; j++)
+                IndEffectsAvg.Add(new List<List<double>>());
+                OverallEff.Add(new List<double>());
+                
+                for (int varIndex = 0; varIndex < numVars; varIndex++)
                 {
-                    IndEffectsSum[i].Add(new List<List<double>>());
-
-                    for (int k = 0; k < MyComponent.numLevels; k++)
+                    IndEffectsSum[objIndex].Add(new List<List<double>>());
+                    IndEffectsAvg[objIndex].Add(new List<double>());
+                    
+                    for (int levelIndex = 0; levelIndex < numLevels; levelIndex++)
                     {
-                        IndEffectsSum[i][j].Add(new List<double>());
+                        IndEffectsSum[objIndex][varIndex].Add(new List<double>());
                     }
                 }
             }
 
-
-            // Create list of objective values for each variable level
-            for (int l = 0; l < MyComponent.numObjs; l++)
+            // Collect objective values by variable level
+            for (int objIndex = 0; objIndex < numObj; objIndex++)
             {
-                for (int i = 0; i < MyComponent.numVars; i++)
+                for (int varIndex = 0; varIndex < numVars; varIndex++)
                 {
-                    for (int j = 0; j < numLevels; j++)
+                    for (int levelIndex = 0; levelIndex < numLevels; levelIndex++)
                     {
-                        for (int k = 0; k < numRows; k++)
+                        for (int runIndex = 0; runIndex < numRows; runIndex++)
                         {
-                            if (EffectIndices[k, i] == j)
+                            try
                             {
-                               IndEffectsSum[l][i][j].Add(MyComponent.ObjValues[k][l]);
+                                // Determine what level this variable was set to in this run
+                                int actualLevel;
+                                if (varIndex < columnsToUse)
+                                {
+                                    actualLevel = orthogonalArray[runIndex, varIndex];
+                                }
+                                else
+                                {
+                                    actualLevel = runIndex % numLevels;
+                                }
+                                
+                                if (actualLevel == levelIndex &&
+                                    MyComponent.ObjValues.Count > runIndex &&
+                                    MyComponent.ObjValues[runIndex].Count > objIndex)
+                                {
+                                    IndEffectsSum[objIndex][varIndex][levelIndex].Add(MyComponent.ObjValues[runIndex][objIndex]);
+                                }
                             }
-                            else { };
+                            catch (Exception ex)
+                            {
+                                if (MyComponent.DebugLogging)
+                                {
+                                    System.Console.WriteLine($"Error in effects collection: obj={objIndex}, var={varIndex}, level={levelIndex}, run={runIndex}");
+                                    System.Console.WriteLine($"  Error: {ex.Message}");
+                                    System.Console.WriteLine($"  ObjValues.Count: {MyComponent.ObjValues.Count}");
+                                    if (MyComponent.ObjValues.Count > runIndex)
+                                    {
+                                        System.Console.WriteLine($"  ObjValues[{runIndex}].Count: {MyComponent.ObjValues[runIndex].Count}");
+                                    }
+                                }
+                            }
                         }
                     }
                 }
             }
 
-            // Calculate raw effects
-            // Create list of objective values for each variable level
-            for (int l = 0; l < MyComponent.numObjs; l++)
+            // Calculate effects
+            if (MyComponent.DebugLogging)
             {
-                IndEffectsAvg.Add(new List<List<double>>());
-
-                for (int i = 0; i < MyComponent.numVars; i++)
-                {
-                    IndEffectsAvg[l].Add(new List<double>());
-                }
+                System.Console.WriteLine($"Calculating effects for {numObj} objectives, {numVars} variables:");
             }
-
-
-            for (int l = 0; l < MyComponent.numObjs; l++)
+            for (int objIndex = 0; objIndex < numObj; objIndex++)
             {
-                for (int i = 0; i < MyComponent.numVars; i++)
+                for (int varIndex = 0; varIndex < numVars; varIndex++)
                 {
-                    for (int j = 0; j < numLevels; j++)
+                    double totalEffect = 0;
+                    int effectCount = 0;
+                    
+                    try
                     {
-
-                        IndEffectsAvg[l][i].Add(IndEffectsSum[l][i][j].Average() - OverallAvg[l]);
-
+                        for (int levelIndex = 0; levelIndex < numLevels; levelIndex++)
+                        {
+                            var levelValues = IndEffectsSum[objIndex][varIndex][levelIndex];
+                            if (levelValues.Count > 0)
+                            {
+                                double levelAvg = levelValues.Average();
+                                double effect = levelAvg - OverallAvg[objIndex];
+                                IndEffectsAvg[objIndex][varIndex].Add(effect);
+                                totalEffect += Math.Abs(effect);
+                                effectCount++;
+                                
+                                if (MyComponent.DebugLogging)
+                                {
+                                    System.Console.WriteLine($"  Obj{objIndex} Var{varIndex} Level{levelIndex}: avg={levelAvg:F6}, effect={effect:F6} (from {levelValues.Count} samples)");
+                                }
+                            }
+                            else
+                            {
+                                IndEffectsAvg[objIndex][varIndex].Add(0.0);
+                                if (MyComponent.DebugLogging)
+                                {
+                                    System.Console.WriteLine($"  Obj{objIndex} Var{varIndex} Level{levelIndex}: No samples, effect=0.0");
+                                }
+                            }
+                        }
+                        
+                        double avgEffect = effectCount > 0 ? totalEffect / effectCount : 0.0;
+                        OverallEff[objIndex].Add(avgEffect);
+                        if (MyComponent.DebugLogging)
+                        {
+                            System.Console.WriteLine($"  Overall effect for Obj{objIndex} Var{varIndex}: {avgEffect:F6}");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        if (MyComponent.DebugLogging)
+                        {
+                            System.Console.WriteLine($"Error calculating effects for obj={objIndex}, var={varIndex}: {ex.Message}");
+                        }
+                        OverallEff[objIndex].Add(0.0);
                     }
                 }
             }
-
-
-            //Calculate Average effect of each variable 
-            for (int i = 0; i < MyComponent.numObjs; i++)
-            {
-                OverallEff.Add(new List<double>());
-            }
-
-            for (int i = 0; i < MyComponent.numObjs; i++)
-            {
-                for (int j = 0; j < MyComponent.numVars; j++)
-                {
-                    double effsum = 0;
-                    int count = 0;
-
-                    for (int k = 0; k < IndEffectsAvg[i][j].Count; k++)
-                    {
-                        effsum = effsum + Math.Abs(IndEffectsAvg[i][j][k]);
-                        count++;
-                    }
-                    OverallEff[i].Add(effsum / (double)count);
-                }
-            }
-
-
 
             MyComponent.EffectsDone = true;
-                Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
+            Grasshopper.Instances.ActiveCanvas.Document.NewSolution(true);
 
-                return base.RespondToMouseDoubleClick(sender, e);
-            }
+            return base.RespondToMouseDoubleClick(sender, e);
+        }
 
         private void Iterate()
         {
@@ -264,23 +434,8 @@ namespace Effects
             foreach (List<double> sample in this.DesignMapEffects)
             {
                 GHUtilities.ChangeSliders(MyComponent.SlidersList, sample);
-
                 i++;
             }
-
-           
-
         }
-
-
     }
-
-    }
-
-
-
-
-
-
-
-
+}

@@ -3,24 +3,9 @@ using System.Collections.Generic;
 
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Special;
-using Rhino.Geometry;
-
 using Grasshopper.Kernel.Data;
-
 using DSECommon;
-using GH_IO;
 using Grasshopper;
-
-using Rhino;
-using Rhino.Geometry;
-using Rhino.DocObjects;
-using Rhino.Collections;
-
-using GH_IO;
-using GH_IO.Serialization;
-using Grasshopper;
-using Grasshopper.Kernel;
-using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Types;
 using System.Drawing;
 
@@ -143,23 +128,29 @@ namespace Contort
 
             for (int i = 0; i < NumVars; i++)
             {
+                var slider = SlidersList[i] as Grasshopper.Kernel.Special.GH_NumberSlider;
+                if (slider == null || slider.Slider == null)
+                {
+                    AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, $"Slider at index {i} is null or expired.");
+                    continue;
+                }
 
-                var slider = SlidersList[i] as Grasshopper.Kernel.Special.GH_NumberSlider; //try to cast that thing as a slider
                 decimal mid = (slider.Slider.Maximum + slider.Slider.Minimum) / 2;
                 decimal range = slider.Slider.Maximum - slider.Slider.Minimum;
-
                 decimal value = mid;
 
                 for (int j = 0; j < NumSynths; j++)
                 {
-
-                    value = value + (decimal)SynthVals[j] * (decimal) Coeff[j][i] * range/2 * (decimal) Scale;
-
+                    value = value + (decimal)SynthVals[j] * (decimal)Coeff[j][i] * range / 2 * (decimal)Scale;
                 }
 
-                if (slider != null) //if the component was successfully cast as a slider
+                try
                 {
                     slider.SetSliderValue(value);
+                }
+                catch (Exception ex)
+                {
+                    AddRuntimeMessage(GH_RuntimeMessageLevel.Error, $"Failed to set slider value: {ex.Message}");
                 }
             }
 
@@ -172,7 +163,7 @@ namespace Contort
 
             
 
-            int test = 0;
+            //int test = 0;
 
         }
 
@@ -222,9 +213,17 @@ namespace Contort
                 List<double> doubles = new List<double>();
                 foreach (GH_Number n in l)
                 {
-                    double d = 0;
-                    n.CastTo<double>(out d);
-                    doubles.Add(d);
+                    double d ;
+
+                    // There is signature mismatch in IGH_GOO and GH_GOO CastTo method that GH_NUMBER modifies. 
+                    //cn.CastTo<double>(out d);
+                    // doubles.Add(d);
+
+                    if (GH_Convert.ToDouble(n, out d, GH_Conversion.Both))
+                    {
+                        doubles.Add(d);
+                    }
+                    
                 }
                 list.Add(doubles);
             }

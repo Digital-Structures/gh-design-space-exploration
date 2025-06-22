@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="DesignTool.View.StructureControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    
+    mc:Ignorable="d" >
+
+    <Grid x:Name="LayoutRoot" Background="White" MouseLeftButtonDown="myStructure_MouseLeftButtonDown"
+          Height="74" Width="74" MouseEnter="LayoutRoot_MouseEnter" MouseLeave="LayoutRoot_MouseLeave"
+          HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid x:Name="Picture" Background="transparent" >
+        </Grid> 
+        <CheckBox HorizontalAlignment="Center" VerticalAlignment="Bottom" Name="refCheckBox" Checked="refCheckBox_Checked" Unchecked="refCheckBox_Unchecked"
+                  Background="Transparent" BorderBrush="Transparent" Margin="29,0,29,24" Width="16" Visibility="Collapsed"/>
+        <TextBlock Name="score"  Text="" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontFamily="century gothic"/>
+        <!--<TextBlock Name="predscore"  Foreground="gray" Text="" HorizontalAlignment="Center" VerticalAlignment="Bottom" FontFamily="century gothic" Margin="18,0,18,11" />-->
+    </Grid>
+</UserControl>

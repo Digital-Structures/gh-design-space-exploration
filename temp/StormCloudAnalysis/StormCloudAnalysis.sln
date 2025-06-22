@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StormCloud", "StormCloudAnalysis\StormCloud.csproj", "{0A3E9041-EBA1-452B-8207-2F7C9E46738F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug64|Any CPU = Debug64|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{0A3E9041-EBA1-452B-8207-2F7C9E46738F}.Debug|Any CPU.ActiveCfg = Debug64|Any CPU
+		{0A3E9041-EBA1-452B-8207-2F7C9E46738F}.Debug|Any CPU.Build.0 = Debug64|Any CPU
+		{0A3E9041-EBA1-452B-8207-2F7C9E46738F}.Debug64|Any CPU.ActiveCfg = Debug64|Any CPU
+		{0A3E9041-EBA1-452B-8207-2F7C9E46738F}.Debug64|Any CPU.Build.0 = Debug64|Any CPU
+		{0A3E9041-EBA1-452B-8207-2F7C9E46738F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0A3E9041-EBA1-452B-8207-2F7C9E46738F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

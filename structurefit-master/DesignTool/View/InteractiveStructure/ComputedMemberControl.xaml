@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="DesignTool.View.InteractiveStructure.ComputedMemberControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:designmodes="clr-namespace:DesignTool.DesignModes"
+    mc:Ignorable="d"
+    Canvas.ZIndex="-2">
+
+    <Canvas Name="CompMemberCanvas">
+        <Canvas.Resources>
+            <designmodes:CoordConverter x:Key="CoordConverter" />
+            <designmodes:PointConverter x:Key="PointConverter" />
+            <!--<designmodes:ForceColorConverter x:Key="ForceColorConverter" />-->
+            <designmodes:ThicknessConverter x:Key="ThicknessConverter" />
+            <designmodes:ColorConverter x:Key="ColorConverter" />
+        </Canvas.Resources>
+        <Line Name="Dummy" Stroke="Transparent" StrokeThickness="20"
+        X1="{Binding Path=Start.X, Converter={StaticResource CoordConverter}, ConverterParameter=X}"
+        Y1="{Binding Path=Start.Y, Converter={StaticResource CoordConverter}, ConverterParameter=Y}"
+        X2="{Binding Path=End.X, Converter={StaticResource CoordConverter}, ConverterParameter=X}"
+        Y2="{Binding Path=End.Y, Converter={StaticResource CoordConverter}, ConverterParameter=Y}"
+              MouseEnter="LayoutRoot_MouseEnter" MouseLeave="LayoutRoot_MouseLeave"/>
+        <Line Name="LayoutRoot" Stroke="{Binding Path=MemberColor}" StrokeThickness="{Binding Path=ReqThickness, 
+            Converter={StaticResource ThicknessConverter}}"
+              Opacity="{Binding Path=Envelope, Converter={StaticResource ColorConverter}, ConverterParameter=Refine}"
+        X1="{Binding Path=Start.X, Converter={StaticResource CoordConverter}, ConverterParameter=X}"
+        Y1="{Binding Path=Start.Y, Converter={StaticResource CoordConverter}, ConverterParameter=Y}"
+        X2="{Binding Path=End.X, Converter={StaticResource CoordConverter}, ConverterParameter=X}"
+        Y2="{Binding Path=End.Y, Converter={StaticResource CoordConverter}, ConverterParameter=Y}"
+         MouseEnter="LayoutRoot_MouseEnter" MouseLeave="LayoutRoot_MouseLeave"/>
+        <Line Name="DashedLine" Stroke="Black" StrokeThickness=".7" StrokeDashArray="4, 2"
+        X1="{Binding Path=Start.X, Converter={StaticResource CoordConverter}, ConverterParameter=X}"
+        Y1="{Binding Path=Start.Y, Converter={StaticResource CoordConverter}, ConverterParameter=Y}"
+        X2="{Binding Path=End.X, Converter={StaticResource CoordConverter}, ConverterParameter=X}"
+        Y2="{Binding Path=End.Y, Converter={StaticResource CoordConverter}, ConverterParameter=Y}"
+         />
+    </Canvas>
+</UserControl>

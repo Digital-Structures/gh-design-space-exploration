@@ -1,0 +1,136 @@
+<UserControl
+	x:Class="Stepper.SettingsControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Stepper" xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+	<Grid
+		Name="SettingsGrid">
+		<Grid.RowDefinitions>
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+			<RowDefinition
+				Height="Auto" />
+		</Grid.RowDefinitions>
+		<Grid
+			Row="0"
+			Margin="0,5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="*" />
+				<ColumnDefinition
+					Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<TextBlock
+				Grid.Column="0"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				Margin="35,1"
+				FontSize="13">Gradient Step Size:</TextBlock>
+			<TextBox
+				Grid.Column="1"
+				materialDesign:HintAssist.Hint="Step Size"
+				HorizontalAlignment="Right"
+				TextAlignment="Right"
+				VerticalContentAlignment="Center"
+				Margin="0,0,10,0"
+				FontSize="13"
+				Text="{Binding StepSize, Mode=TwoWay, FallbackValue=0.05}"
+				PreviewKeyDown="TextBox_PreviewKeyDown"
+				PreviewGotKeyboardFocus="TextBox_GotFocus"
+				PreviewLostKeyboardFocus="TextBox_LostFocus" />
+		</Grid>
+		<Grid
+			Row="1"
+			Margin="0,5">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="*" />
+				<ColumnDefinition
+					Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<TextBlock
+				Grid.Column="0"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				Margin="35,1"
+				FontSize="13">Internal Step Size:</TextBlock>
+			<TextBox
+				Grid.Column="1"
+				materialDesign:HintAssist.Hint="Internal Step Size"
+				HorizontalAlignment="Right"
+				TextAlignment="Right"
+				VerticalContentAlignment="Center"
+				Margin="0,0,10,0"
+				FontSize="13"
+				Text="{Binding FDStepSize, Mode=TwoWay, FallbackValue=0.01}"
+				PreviewKeyDown="TextBox_PreviewKeyDown"
+				PreviewGotKeyboardFocus="TextBox_GotFocus"
+				PreviewLostKeyboardFocus="TextBox_LostFocus" />
+		</Grid>
+		<Grid
+			Row="2"
+			Margin="0,7,10,0">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="*" />
+				<ColumnDefinition
+					Width="Auto" />
+				<ColumnDefinition
+					Width="Auto" />
+				<ColumnDefinition
+					Width="Auto" />
+			</Grid.ColumnDefinitions>
+			<TextBlock
+				Grid.Column="0"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				Margin="35,1"
+				FontSize="13"
+				Padding="0,0,0,7">Display Mode:</TextBlock>
+			<TextBlock
+				Grid.Column="1"
+				HorizontalAlignment="Right"
+				VerticalAlignment="Center"
+				FontSize="10"
+				Padding="0,0,0,7">Normalized</TextBlock>
+			<ToggleButton
+				Name="DisplayModeButton"
+				Grid.Column="2"
+				Width="60"
+				VerticalAlignment="Center"
+				IsChecked="False"
+				Padding="0,0,0,12"
+				Checked="ToggleButton_Checked"
+				Unchecked="ToggleButton_Unchecked" />
+			<TextBlock
+				Grid.Column="3"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				FontSize="10"
+				Padding="0,0,0,7">Absolute</TextBlock>
+		</Grid>
+		<Grid
+			Row="3"
+			Margin="30,0,10,7">
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition
+					Width="Auto" />
+				<ColumnDefinition
+					Width="*" />
+			</Grid.ColumnDefinitions>
+			<TextBlock
+				Grid.Column="1"
+				HorizontalAlignment="Left"
+				VerticalAlignment="Center"
+				Margin="5,0,3,0"
+				Foreground="{DynamicResource BackgroundHueDarkSubtextForegroundBrush}">Block Component Disabling</TextBlock>
+			<CheckBox
+				HorizontalAlignment="Left"
+				Background="{DynamicResource SecondaryAccentBrush}"
+				Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
+				Grid.Column="0"
+				IsChecked="{Binding DisablingNotAllowed, Mode=TwoWay}" />
+		</Grid>
+	</Grid>
+</UserControl>

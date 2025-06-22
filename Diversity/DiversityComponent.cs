@@ -361,9 +361,17 @@ namespace Diversity
                 List<double> doubles = new List<double>();
                 foreach (GH_Number n in l)
                 {
-                    double d = 0;
-                    n.CastTo<double>(out d);
-                    doubles.Add(d);
+                    double d;
+
+                    // There is signature mismatch in IGH_GOO and GH_GOO CastTo method that GH_NUMBER modifies. 
+                    //cn.CastTo<double>(out d);
+                    // doubles.Add(d);
+
+                    if (GH_Convert.ToDouble(n, out d, GH_Conversion.Both))
+                    {
+                        doubles.Add(d);
+                    }
+
                 }
                 list.Add(doubles);
             }
@@ -379,11 +387,19 @@ namespace Diversity
                 
                 foreach (GH_Number n in l)
                 {
-                    double d = 0;
-                    n.CastTo<double>(out d);
-                    list.Add(d);
+                    double d;
+
+                    // There is signature mismatch in IGH_GOO and GH_GOO CastTo method that GH_NUMBER modifies. 
+                    //cn.CastTo<double>(out d);
+                    // doubles.Add(d);
+
+                    if (GH_Convert.ToDouble(n, out d, GH_Conversion.Both))
+                    {
+                        list.Add(d);
+                    }
+
                 }
-                
+
             }
             return list;
         }

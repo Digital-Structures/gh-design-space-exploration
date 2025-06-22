@@ -1,0 +1,193 @@
+<local:BaseControl x:Class="DSOptimization.RadicalSettingsControl"
+            xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+            xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+            xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+            xmlns:nlopt="clr-namespace:NLoptNet;assembly=NLoptNet"
+            xmlns:local="clr-namespace:DSOptimization"
+            xmlns:rad="clr-namespace:Radical"
+            mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Light.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!--Temporary solution to a dumb problem-->
+            <Color x:Key="TEMPBackgroundHueDarkBrush">#cacbcd</Color>
+
+            <Storyboard x:Key="MoreInfo">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="InformationText">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="0" />
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="170"/>
+                </DoubleAnimationUsingKeyFrames>
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Brush.Opacity)" Storyboard.TargetName="InfoBackgroundBrush">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="0"/>
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0.1"/>
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+
+            <Storyboard x:Key="LessInfo">
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Height)" Storyboard.TargetName="InformationText">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="170"/>
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0" />
+                </DoubleAnimationUsingKeyFrames>
+                <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(Brush.Opacity)" Storyboard.TargetName="InfoBackgroundBrush">
+                    <EasingDoubleKeyFrame KeyTime="0" Value="0.1"/>
+                    <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+                </DoubleAnimationUsingKeyFrames>
+            </Storyboard>
+
+
+        </ResourceDictionary>
+
+    </UserControl.Resources>
+
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="MoreInformationButton">
+            <BeginStoryboard Storyboard="{StaticResource MoreInfo}"></BeginStoryboard>
+        </EventTrigger>
+        <EventTrigger RoutedEvent="ButtonBase.Click" SourceName="LessInformationButton">
+            <BeginStoryboard Storyboard="{StaticResource LessInfo}"></BeginStoryboard>
+        </EventTrigger>
+    </UserControl.Triggers>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <DockPanel Grid.Row="0">
+            <materialDesign:PackIcon Kind="Refresh" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" VerticalAlignment="Bottom" Width="25" Height="25"></materialDesign:PackIcon>
+            <ComboBox Name="ComboBoxRefreshMode" materialDesign:HintAssist.Hint="Refresh Mode" HorizontalAlignment="Right" SelectedIndex="0" 
+                     SelectedValue="{Binding Mode, Mode=OneWayToSource}" SelectionChanged="RefreshMode_SelectionChanged" Foreground="{DynamicResource BackgroundHueDarkForegroundBrush}"
+                     FontSize="14" ItemsSource="{Binding Source={rad:EnumBindingSource {x:Type rad:RefreshMode}}}">
+            </ComboBox>
+            <!--Having the local namespace be DSOptimization seems to cause some other problems (specifically in the ItemsSource for the Refresh combobox) there are work arounds but it is not ideal-->
+        </DockPanel>
+        <DockPanel Grid.Row="1">
+            <materialDesign:PackIcon Kind="SortNumeric" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" VerticalAlignment="Bottom" Width="20" Height="20"></materialDesign:PackIcon>
+            <TextBox Text="{Binding Niterations, Mode=OneWayToSource, FallbackValue=1000 }" materialDesign:HintAssist.Hint="Number of Iterations"
+                                 HorizontalAlignment="Right" TextAlignment="Right"
+                                 PreviewTextInput="TextBox_PreviewTextInput_Int" PreviewMouseDown="TextBox_PreviewMouseDown" PreviewKeyDown="TextBox_PreviewKeyDown" PreviewGotKeyboardFocus="TextBox_GotFocus" PreviewLostKeyboardFocus="TextBox_LostFocus"
+                                 FontSize="14" Foreground="{DynamicResource BackgroundHueDarkForegroundBrush}"></TextBox>
+        </DockPanel>
+        <DockPanel Grid.Row="2">
+            <materialDesign:PackIcon Kind="ChartLine"  Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" VerticalAlignment="Bottom" Width="20" Height="20"></materialDesign:PackIcon>
+            <TextBox Name="ConvergeText" Text="{Binding ConvCrit, Mode=OneWayToSource, FallbackValue=0.001 }" materialDesign:HintAssist.Hint="Relative Convergence Limit"
+                                 HorizontalAlignment="Right" TextAlignment="Right"
+                                 PreviewTextInput="TextBox_PreviewTextInput_Float" PreviewMouseDown="TextBox_PreviewMouseDown" PreviewKeyDown="TextBox_PreviewKeyDown" PreviewGotKeyboardFocus="TextBox_GotFocus" PreviewLostKeyboardFocus="TextBox_LostFocus"
+                                 FontSize="14" Foreground="{DynamicResource BackgroundHueDarkForegroundBrush}"></TextBox>
+        </DockPanel>
+        <DockPanel Grid.Row="3">
+            <materialDesign:PackIcon Kind="Factory" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" VerticalAlignment="Bottom" Width="20" Height="20"></materialDesign:PackIcon>
+            <ComboBox Name="PrimaryAlgorithm" HorizontalAlignment="Right"  materialDesign:HintAssist.Hint="Algorithm" IsEditable="True" IsReadOnly="True"
+                                  ItemsSource="{Binding AvailableAlgs, Mode=OneWay}" 
+                                  SelectedItem="{Binding PrimaryAlgorithm, Mode=OneWayToSource, FallbackValue={x:Static nlopt:NLoptAlgorithm.LN_COBYLA}}"
+                                  SelectionChanged="ComboBox_SelectionChanged" FontSize="14" Foreground="{DynamicResource BackgroundHueDarkForegroundBrush}">
+            </ComboBox>
+        </DockPanel>
+        <DockPanel Grid.Row="4">
+            <materialDesign:PackIcon Name="SecAlgIcon" Kind="Calculator" Foreground="{DynamicResource PrimaryHueDarkForegroundBrush}" VerticalAlignment="Bottom" Visibility="Collapsed" Width="20" Height="20"></materialDesign:PackIcon>
+            <ComboBox Name="SecondaryAlgorithm" Visibility="Collapsed"  HorizontalAlignment="Right" 
+                                  ItemsSource="{Binding AvailableSecondaryAlgs, Mode=OneWay}" 
+                                  SelectedItem="{Binding SecondaryAlgorithm, Mode=OneWayToSource, FallbackValue={x:Static nlopt:NLoptAlgorithm.LN_BOBYQA}}"
+                                  materialDesign:HintAssist.HintOpacity="1"
+                                  materialDesign:HintAssist.Hint="Secondary Algorithm" IsEditable="True" IsReadOnly="True" FontSize="15" Foreground="{DynamicResource BackgroundHueDarkForegroundBrush}">
+            </ComboBox>
+        </DockPanel>
+        <DockPanel Grid.Row="5" Margin="0,-5,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="Auto"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+
+                <TextBlock Grid.Column="0" Grid.Row="0" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{DynamicResource BackgroundHueDarkSubtextForegroundBrush}" FontSize="12" Margin="0,0,5,0">
+                    Show Advanced Algorithms*
+                </TextBlock>
+                <CheckBox IsChecked="{Binding AdvancedOptions, Mode=TwoWay}" HorizontalAlignment="Right"
+                          Background="{DynamicResource SecondaryAccentBrush}" Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
+                          Grid.Column="1" Grid.Row="0" Margin="0,0,7,0">
+                </CheckBox>
+
+                <TextBlock Grid.Column="0" Grid.Row="1" HorizontalAlignment="Right" VerticalAlignment="Center" Foreground="{DynamicResource BackgroundHueDarkSubtextForegroundBrush}" FontSize="12" Margin="0,0,5,0">
+                    Block Component Disabling**
+                </TextBlock>
+                <CheckBox IsChecked="{Binding DisablingNotAllowed, Mode=TwoWay}" HorizontalAlignment="Right"
+                          Background="{DynamicResource SecondaryAccentBrush}" Foreground="{DynamicResource SecondaryAccentForegroundBrush}"
+                          Grid.Column="1" Grid.Row="1" Margin="0,0,7,0">
+                </CheckBox>
+            </Grid>
+        </DockPanel>
+        <DockPanel Grid.Row="6" Margin="0,10,0,0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Button x:Name="MoreInformationButton" Click="MoreInformation_Click" Grid.Row="0" Width="20" Height="20" Margin="0,-5,7,-10"
+                                        Style="{StaticResource MaterialDesignFloatingActionButton}" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth2" BorderBrush="{DynamicResource SecondaryAccentBrush}" Background="Transparent">
+                    <materialDesign:PackIcon Kind="Help" Height="16" Width="16" Foreground="{DynamicResource SecondaryAccentBrush}"/>
+                </Button>
+
+                <Grid Grid.Row="0" Name="InformationText" Height="0" Margin="25,10,0,0" >
+                    <Grid.Background>
+                        <SolidColorBrush x:Name="InfoBackgroundBrush" Color="White" />
+                    </Grid.Background>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
+                    </Grid.RowDefinitions>
+
+                    <!--
+                    <TextBlock TextWrapping="Wrap" Grid.Row="0" Foreground="{DynamicResource BackgroundHueDarkForegroundBrush}" FontSize="16" Padding="10,10,10,0" HorizontalAlignment="Center">
+                         Optimization Algorithms
+                    </TextBlock>-->
+
+                    <TextBlock TextWrapping="Wrap" Grid.Row="0" Foreground="{DynamicResource BackgroundHueDarkForegroundBrush}" Padding="10" HorizontalAlignment="Center">
+                        *
+                        <Hyperlink NavigateUri="https://nlopt.readthedocs.io/en/latest/NLopt_Algorithms/" RequestNavigate="Hyperlink_RequestNavigate" Foreground="{DynamicResource SecondaryAccentBrush}">Click here</Hyperlink>
+                         <Run Text=" to learn more about the optimization algorithms Radical uses." />
+                    </TextBlock>
+
+                    <TextBlock TextWrapping="Wrap" Grid.Row="1" Margin ="10,10,10,5" Foreground="{DynamicResource BackgroundHueDarkForegroundBrush}" HorizontalAlignment="Center">
+                        **Radical may temporarily disable components in your Grasshopper script to avoid unnecessary computations.
+                        This is meant to speed up Radical, but if you experience problems with your script you can disable this functionality.
+                    </TextBlock>
+                </Grid>
+
+                <Border Name="HelpBorder" Grid.Row="1" Background="{DynamicResource MaterialDesignDivider}"
+                        Height="2"
+                        HorizontalAlignment="Stretch"
+                        SnapsToDevicePixels="True"
+                        VerticalAlignment="Center"
+                        Margin="0,-8,0,0">
+                </Border>
+
+                <Button x:Name="LessInformationButton" Click="LessInformation_Click" Grid.Row="1" Width="20" Height="20" Margin="0,-8,7,0"
+                                        Style="{StaticResource MaterialDesignFloatingActionButton}" Visibility="Collapsed" HorizontalAlignment="Right" VerticalAlignment="Center"
+                                        materialDesign:ShadowAssist.ShadowDepth="Depth2" BorderBrush="{DynamicResource SecondaryAccentBrush}" Background="{DynamicResource PrimaryHueDarkBrush}">
+                    <materialDesign:PackIcon Kind="Minus" Height="16" Width="16" Foreground="{DynamicResource SecondaryAccentBrush}"/>
+                </Button>
+                
+            </Grid>
+        </DockPanel>
+
+    </Grid>
+</local:BaseControl>

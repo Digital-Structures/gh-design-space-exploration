@@ -6,7 +6,7 @@ using MathNet.Numerics;
 using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra;
 using DSECommon;
-//using MathNet.Numerics.LinearAlgebra.Generic;
+//using MathNet.Numerics.LinearAlgebra;
 
 namespace Sampler
 {

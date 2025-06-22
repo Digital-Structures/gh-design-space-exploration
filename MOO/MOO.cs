@@ -8,7 +8,8 @@ using Rhino.Geometry;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Special;
 using Grasshopper;
-
+using log4net;
+using System.Configuration;
 namespace MOO
 {
     public class MOO : GH_Component
@@ -44,7 +45,7 @@ namespace MOO
         public List<double> objectives;
         public List<GH_NumberSlider> slidersList = new List<GH_NumberSlider>();
         public int popSize = 0, maxEvals = 0, gen = 0;
-        public string directory = null, fileName = null;
+        public string directory = @"C:\logs\", fileName = @"C:\logs\logs.txt";
         public string log = null;
         private ObjectiveComparer comparer;
         public Random MyRand;
