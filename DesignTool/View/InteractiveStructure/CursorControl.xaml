@@ -1,0 +1,28 @@
+﻿<UserControl x:Class="DesignTool.View.InteractiveStructure.CursorControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:designmodes="clr-namespace:DesignTool.DesignModes"
+    mc:Ignorable="d">
+
+    <UserControl.Resources>
+        <designmodes:CoordConverter x:Key="CoordConverter" />
+    </UserControl.Resources>
+    <Canvas x:Name="CursorCanvas" Background="Transparent"
+            Canvas.Top="{Binding Path=Y, Converter={StaticResource CoordConverter}, ConverterParameter=Y}"
+            Canvas.Left="{Binding Path=X, Converter={StaticResource CoordConverter}, ConverterParameter=X}">
+        <!--<Path Fill="Black" Stroke="Transparent" StrokeThickness ="2" 
+              Name="NodeEllipse" MouseEnter="NodeEllipse_MouseEnter"
+              MouseLeave="NodeEllipse_MouseLeave"
+              MouseLeftButtonDown="NodeEllipse_MouseEnter"
+              >
+            <Path.Data>
+                <EllipseGeometry x:Name="myEllipse"
+                    Center="{Binding Path=Center, Converter={StaticResource PointConverter}}"
+                    RadiusX="4"
+                    RadiusY="4" />
+            </Path.Data>
+        </Path>-->
+    </Canvas>
+</UserControl>

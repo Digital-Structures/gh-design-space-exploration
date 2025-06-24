@@ -1,148 +1,187 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug32</Configuration>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProductVersion>8.0.30703</ProductVersion>
-    <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{202BC7BD-8053-4FE9-8A6F-33D23ECF48D1}</ProjectGuid>
+    <ProjectGuid>{5FD0AD91-009A-4A83-83C5-24E80554DA80}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Stepper</RootNamespace>
     <AssemblyName>Stepper</AssemblyName>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <ProjectTypeGuids>{60DC8134-EBA5-43B8-BCC9-BB4BC16C2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug32|AnyCPU' ">
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>bin\Debug\</OutputPath>
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug64|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
-    <OutputPath>bin\</OutputPath>
+    <OutputPath>bin\Release\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="DSECommon">
-      <HintPath>..\DSECommon\bin\Debug\DSECommon.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Ed.Eto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.0.23304.9001\lib\net48\Ed.Eto.dll</HintPath>
     </Reference>
-    <Reference Include="GH_IO">
-      <HintPath>..\Libraries\Grasshopper\0.9.76.0\x64\GH_IO.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Eto, Version=2.7.0.0, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.0.23304.9001\lib\net48\Eto.dll</HintPath>
     </Reference>
-    <Reference Include="Grasshopper">
-      <HintPath>..\Libraries\Grasshopper\0.9.76.0\x64\Grasshopper.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="GH_IO, Version=8.0.23304.9001, Culture=neutral, PublicKeyToken=6a29997d2e6b4f97, processorArchitecture=MSIL">
+      <HintPath>..\packages\Grasshopper.8.0.23304.9001\lib\net48\GH_IO.dll</HintPath>
     </Reference>
-    <Reference Include="LiveCharts.Wpf">
+    <Reference Include="Grasshopper, Version=8.0.23304.9001, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803, processorArchitecture=MSIL">
+      <HintPath>..\packages\Grasshopper.8.0.23304.9001\lib\net48\Grasshopper.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
+      <HintPath>..\packages\LiveCharts.0.9.7\lib\net45\LiveCharts.dll</HintPath>
+    </Reference>
+    <Reference Include="LiveCharts.Wpf, Version=0.9.7.0, Culture=neutral, PublicKeyToken=0bc1f845d1ebb8df, processorArchitecture=MSIL">
       <HintPath>..\packages\LiveCharts.Wpf.0.9.7\lib\net45\LiveCharts.Wpf.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignColors">
+    <Reference Include="MaterialDesignColors, Version=1.1.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignColors.1.1.3\lib\net45\MaterialDesignColors.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="MaterialDesignThemes.Wpf">
+    <Reference Include="MaterialDesignThemes.Wpf, Version=2.4.0.1044, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.2.4.0.1044\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
-      <Private>True</Private>
     </Reference>
-    <Reference Include="MathNet.Numerics, Version=3.20.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\MathNet.Numerics.3.20.1\lib\net40\MathNet.Numerics.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="MathNet.Numerics, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.5.0.0\lib\net48\MathNet.Numerics.dll</HintPath>
     </Reference>
-    <Reference Include="NLoptNet">
-      <HintPath>..\..\Radical\Libs\NLoptNet.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="NLoptNet, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\NLoptNet.1.4.3\lib\net47\NLoptNet.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
-    <Reference Include="RhinoCommon">
-      <HintPath>..\Libraries\Rhino\5.1.3\x64\RhinoCommon.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Rhino.UI, Version=8.0.23304.9001, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.0.23304.9001\lib\net48\Rhino.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="RhinoCommon, Version=8.0.23304.9001, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.0.23304.9001\lib\net48\RhinoCommon.dll</HintPath>
     </Reference>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xaml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\StepperComponent.cs" />
-    <Compile Include="Model\StepperComponentAttributes.cs" />
-    <Compile Include="Model\StepperInfo.cs" />
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="BaseControl.cs" />
+    <Compile Include="BaseVM.cs" />
+    <Compile Include="CurveVariable.cs" />
+    <Compile Include="Design.cs" />
+    <Compile Include="DesignCurve.cs" />
+    <Compile Include="DesignSurface.cs" />
+    <Compile Include="GeoVariable.cs" />
+    <Compile Include="GroupVarVM.cs" />
+    <Compile Include="IDesignGeometry.cs" />
+    <Compile Include="IOptimizeToolVM.cs" />
+    <Compile Include="IStepDataElement.cs" />
+    <Compile Include="IVariable.cs" />
+    <Compile Include="IViewModel.cs" />
+    <Compile Include="ObjectiveVM.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModel\BaseVM.cs" />
-    <Compile Include="ViewModel\StepperVM.cs" />
-    <Compile Include="View\StepperWindow.xaml.cs">
-      <DependentUpon>StepperWindow.xaml</DependentUpon>
+    <Compile Include="Properties\Resources.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="View\ObjectiveControl.xaml.cs">
-      <DependentUpon>ObjectiveControl.xaml</DependentUpon>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <DependentUpon>Settings.settings</DependentUpon>
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="SliderVariable.cs" />
+    <Compile Include="StepperComponent.cs" />
+    <Compile Include="StepperComponentAttributes.cs" />
+    <Compile Include="StepperGraphVM.cs" />
+    <Compile Include="StepperInfo.cs" />
+    <Compile Include="StepperOptimizer.cs" />
+    <Compile Include="StepperVM.cs" />
+    <Compile Include="Styles.cs" />
+    <Compile Include="SurfaceVariable.cs" />
+    <Compile Include="VarVM.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <DependentUpon>Resources.cs</DependentUpon>
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\Stepper.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Page Include="View\StepperWindow.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="stepperfolder\dsview\groupvariablecontrol.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
-    <Page Include="View\ObjectiveControl.xaml">
-      <SubType>Designer</SubType>
+    <Page Include="stepperfolder\dsview\variablecontrol.xaml">
       <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="stepperfolder\dsview\variableheadercontrol.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="stepperfolder\view\datacontrol.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="stepperfolder\view\settingscontrol.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="stepperfolder\view\steppergraphcontrol.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="stepperfolder\view\stepperwindow.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
   <PropertyGroup>
-    <PostBuildEvent>MOVE /Y "$(TargetPath)" "$(TargetDir)$(ProjectName).gha" &amp;&amp; XCOPY /Y /F "$(TargetDir)*" "$(ProjectDir)..\Output\"</PostBuildEvent>
+    <PostBuildEvent>MOVE /Y "$(TargetPath)" "$(TargetDir)$(ProjectName).gha" &amp;&amp; XCOPY /Y /F "$(TargetDir)*" "$(ProjectDir)..\Output\Simplify\Stepper\"</PostBuildEvent>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug32|AnyCPU' ">
-    <StartArguments>
-    </StartArguments>
-    <StartAction>Program</StartAction>
-    <StartProgram>c:\Program Files (x86)\Rhinoceros 5\System\Rhino4.exe</StartProgram>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
-    <FallbackCulture>en-US</FallbackCulture>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug64|AnyCPU'">
-    <StartProgram>C:\Program Files\Rhinoceros 5 (64-bit)\System\Rhino.exe</StartProgram>
-    <StartArguments>
-    </StartArguments>
-    <StartAction>Program</StartAction>
-    <Prefer32Bit>false</Prefer32Bit>
-    <LangVersion>default</LangVersion>
-  </PropertyGroup>
+  <Import Project="..\packages\NLoptNet.1.4.3\build\net47\NLoptNet.targets" Condition="Exists('..\packages\NLoptNet.1.4.3\build\net47\NLoptNet.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NLoptNet.1.4.3\build\net47\NLoptNet.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NLoptNet.1.4.3\build\net47\NLoptNet.targets'))" />
+    <Error Condition="!Exists('..\packages\RhinoCommon.8.0.23304.9001\build\net48\RhinoCommon.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\RhinoCommon.8.0.23304.9001\build\net48\RhinoCommon.targets'))" />
+    <Error Condition="!Exists('..\packages\Grasshopper.8.0.23304.9001\build\net48\Grasshopper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Grasshopper.8.0.23304.9001\build\net48\Grasshopper.targets'))" />
+  </Target>
+  <Import Project="..\packages\RhinoCommon.8.0.23304.9001\build\net48\RhinoCommon.targets" Condition="Exists('..\packages\RhinoCommon.8.0.23304.9001\build\net48\RhinoCommon.targets')" />
+  <Import Project="..\packages\Grasshopper.8.0.23304.9001\build\net48\Grasshopper.targets" Condition="Exists('..\packages\Grasshopper.8.0.23304.9001\build\net48\Grasshopper.targets')" />
 </Project>

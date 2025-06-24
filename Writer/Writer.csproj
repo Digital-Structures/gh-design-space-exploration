@@ -9,8 +9,11 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Writer</RootNamespace>
     <AssemblyName>Writer</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -30,17 +33,23 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="GH_IO">
-      <HintPath>..\Libraries\Grasshopper\0.9.76.0\x64\GH_IO.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Ed.Eto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.0.23304.9001\lib\net48\Ed.Eto.dll</HintPath>
     </Reference>
-    <Reference Include="Grasshopper">
-      <HintPath>..\Libraries\Grasshopper\0.9.76.0\x64\Grasshopper.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="Eto, Version=2.7.0.0, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.0.23304.9001\lib\net48\Eto.dll</HintPath>
     </Reference>
-    <Reference Include="RhinoCommon">
-      <HintPath>..\Libraries\Rhino\5.1.3\x64\RhinoCommon.dll</HintPath>
-      <Private>False</Private>
+    <Reference Include="GH_IO, Version=8.0.23304.9001, Culture=neutral, PublicKeyToken=6a29997d2e6b4f97, processorArchitecture=MSIL">
+      <HintPath>..\packages\Grasshopper.8.0.23304.9001\lib\net48\GH_IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Grasshopper, Version=8.0.23304.9001, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803, processorArchitecture=MSIL">
+      <HintPath>..\packages\Grasshopper.8.0.23304.9001\lib\net48\Grasshopper.dll</HintPath>
+    </Reference>
+    <Reference Include="Rhino.UI, Version=8.0.23304.9001, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.0.23304.9001\lib\net48\Rhino.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="RhinoCommon, Version=8.0.23304.9001, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.0.23304.9001\lib\net48\RhinoCommon.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -70,11 +79,12 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="Resources\Writer1.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>MOVE /Y "$(TargetPath)" "$(TargetDir)$(ProjectName).gha" &amp;&amp; XCOPY /Y /F "$(TargetDir)*" "$(ProjectDir)..\Output\"</PostBuildEvent>
+    <PostBuildEvent>MOVE /Y "$(TargetPath)" "$(TargetDir)$(ProjectName).gha" &amp;&amp; XCOPY /Y /F "$(TargetDir)*" "$(ProjectDir)..\Output\Catalog\Writer\"</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -89,4 +99,13 @@
     <StartArguments />
     <StartWorkingDirectory />
   </PropertyGroup>
+  <Import Project="..\packages\RhinoCommon.8.0.23304.9001\build\net48\RhinoCommon.targets" Condition="Exists('..\packages\RhinoCommon.8.0.23304.9001\build\net48\RhinoCommon.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\RhinoCommon.8.0.23304.9001\build\net48\RhinoCommon.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\RhinoCommon.8.0.23304.9001\build\net48\RhinoCommon.targets'))" />
+    <Error Condition="!Exists('..\packages\Grasshopper.8.0.23304.9001\build\net48\Grasshopper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Grasshopper.8.0.23304.9001\build\net48\Grasshopper.targets'))" />
+  </Target>
+  <Import Project="..\packages\Grasshopper.8.0.23304.9001\build\net48\Grasshopper.targets" Condition="Exists('..\packages\Grasshopper.8.0.23304.9001\build\net48\Grasshopper.targets')" />
 </Project>

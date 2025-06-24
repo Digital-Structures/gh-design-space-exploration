@@ -1,0 +1,19 @@
+﻿<UserControl x:Class="DesignTool.View.RefineStructureControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Grid Name="LayoutRoot" HorizontalAlignment="Center" VerticalAlignment="Center" >
+        <Grid.RowDefinitions>
+            <RowDefinition Height="600" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0" Name="Picture" HorizontalAlignment="Center" 
+              VerticalAlignment="Center" Background="Transparent" > </Grid>
+        <StackPanel Grid.Row="1" HorizontalAlignment="Center">
+            <TextBlock Name="Score" FontFamily="Century Gothic" FontSize="16" 
+                       FontWeight="Bold" Text="Sample" HorizontalAlignment="Center"/>
+        </StackPanel>
+    </Grid>
+</UserControl>

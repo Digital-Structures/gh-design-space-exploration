@@ -1,0 +1,220 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug64</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{0A3E9041-EBA1-452B-8207-2F7C9E46738F}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>StormCloud</RootNamespace>
+    <AssemblyName>StormCloud</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug64|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>
+    </DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisIgnoreBuiltInRules>false</CodeAnalysisIgnoreBuiltInRules>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Attributes\InterOptComponentAttributes.cs" />
+    <Compile Include="BoolVisConverter.cs" />
+    <Compile Include="Components\AnalysisComponent.cs" />
+    <Compile Include="Components\ConnectivityComponent.cs" />
+    <Compile Include="Components\Display.cs" />
+    <Compile Include="Components\InterOptComponent.cs" />
+    <Compile Include="Components\InterOptComponentStructure.cs" />
+    <Compile Include="Components\LoadComponent.cs" />
+    <Compile Include="Components\MaterialComponent.cs" />
+    <Compile Include="Components\SectionComponent.cs" />
+    <Compile Include="Components\SupportComponent.cs" />
+    <Compile Include="csvWriter.cs" />
+    <Compile Include="DesignControl.xaml.cs">
+      <DependentUpon>DesignControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Evolutionary\Design.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Evolutionary\DesignVar.cs" />
+    <Compile Include="Evolutionary\DVariableGH.cs" />
+    <Compile Include="Evolutionary\EvolutionaryUtilities.cs" />
+    <Compile Include="Evolutionary\EvoParams.cs" />
+    <Compile Include="Evolutionary\GH_VarNumberSlider.cs" />
+    <Compile Include="Evolutionary\IDesign.cs" />
+    <Compile Include="Evolutionary\IDivBooster.cs" />
+    <Compile Include="Evolutionary\IVariable.cs" />
+    <Compile Include="Evolutionary\ParDivBooster.cs" />
+    <Compile Include="Evolutionary\Utilities.cs" />
+    <Compile Include="Parameters\DVariableParameter.cs" />
+    <Compile Include="Parameters\MaterialParameter.cs" />
+    <Compile Include="Parameters\StructureParameter.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StormCloudInfo.cs" />
+    <Compile Include="StormCloudWindow.xaml.cs">
+      <DependentUpon>StormCloudWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Types\MaterialType.cs" />
+    <Compile Include="Types\SectionType.cs" />
+    <Compile Include="Types\StructureType.cs" />
+    <Compile Include="ViewModel\BaseVM.cs" />
+    <Compile Include="ViewModel\CurrentGeneration.cs" />
+    <Compile Include="ViewModel\DesignVM.cs" />
+    <Compile Include="ViewModel\EvoParamsVM.cs" />
+    <Compile Include="ViewModel\RenderingSettings.cs" />
+    <Compile Include="ViewModel\RhinoHelixUtilities.cs" />
+    <Compile Include="ViewModel\DesignToolVM.cs" />
+    <Compile Include="ViewModel\StructureView.cs" />
+    <Compile Include="View\Structure3D.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <CustomToolNamespace>Resources</CustomToolNamespace>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="DesignControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="StormCloudWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\gen_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\wrench.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Test\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\gen_icon_small.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Ed.Eto, Version=1.0.0.0, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.12.24282.7001\lib\net48\Ed.Eto.dll</HintPath>
+    </Reference>
+    <Reference Include="Eto, Version=2.8.0.0, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.12.24282.7001\lib\net48\Eto.dll</HintPath>
+    </Reference>
+    <Reference Include="GH_IO, Version=8.12.24282.7001, Culture=neutral, PublicKeyToken=6a29997d2e6b4f97, processorArchitecture=MSIL">
+      <HintPath>..\packages\Grasshopper.8.12.24282.7001\lib\net48\GH_IO.dll</HintPath>
+    </Reference>
+    <Reference Include="Grasshopper, Version=8.12.24282.7001, Culture=neutral, PublicKeyToken=dda4f5ec2cd80803, processorArchitecture=MSIL">
+      <HintPath>..\packages\Grasshopper.8.12.24282.7001\lib\net48\Grasshopper.dll</HintPath>
+    </Reference>
+    <Reference Include="HelixToolkit, Version=2.25.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <HintPath>..\packages\HelixToolkit.2.25.0\lib\netstandard2.0\HelixToolkit.dll</HintPath>
+    </Reference>
+    <Reference Include="HelixToolkit.Wpf, Version=2.25.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
+      <HintPath>..\packages\HelixToolkit.Wpf.2.25.0\lib\net462\HelixToolkit.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="MathNet.Numerics, Version=5.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\MathNet.Numerics.5.0.0\lib\net48\MathNet.Numerics.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Rhino.UI, Version=8.12.24282.7001, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.12.24282.7001\lib\net48\Rhino.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="RhinoCommon, Version=8.12.24282.7001, Culture=neutral, PublicKeyToken=552281e97c755530, processorArchitecture=MSIL">
+      <HintPath>..\packages\RhinoCommon.8.12.24282.7001\lib\net48\RhinoCommon.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Diagnostics.DiagnosticSource, Version=8.0.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Memory, Version=4.0.1.2, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+    </Reference>
+    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics.Vectors, Version=4.1.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    </Reference>
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+    </Reference>
+    <Reference Include="System.Threading.Tasks.Extensions, Version=4.2.0.1, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+    </Reference>
+    <Reference Include="System.Windows" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Presentation" />
+    <Reference Include="System.Xaml" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Xml.Serialization" />
+    <Reference Include="WindowsBase" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="app.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\StructureEngineCS_StormCloud\StructureEngineCS_StormCloud.csproj">
+      <Project>{aa4d9383-fc04-4c03-bb4c-6b780b5e7c2b}</Project>
+      <Name>StructureEngineCS_StormCloud</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>MOVE /Y "$(TargetPath)" "$(TargetDir)$(ProjectName).gha" &amp;&amp; XCOPY /Y /F "$(TargetDir)*" "$(ProjectDir)..\Output\"</PostBuildEvent>
+  </PropertyGroup>
+  <PropertyGroup>
+    <FallbackCulture>en-US</FallbackCulture>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartAction>Program</StartAction>
+    <StartProgram>$(RHINO)</StartProgram>
+    <StartArguments />
+    <StartWorkingDirectory />
+  </PropertyGroup>
+  <Import Project="..\packages\RhinoCommon.8.12.24282.7001\build\net48\RhinoCommon.targets" Condition="Exists('..\packages\RhinoCommon.8.12.24282.7001\build\net48\RhinoCommon.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\RhinoCommon.8.12.24282.7001\build\net48\RhinoCommon.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\RhinoCommon.8.12.24282.7001\build\net48\RhinoCommon.targets'))" />
+    <Error Condition="!Exists('..\packages\Grasshopper.8.12.24282.7001\build\net48\Grasshopper.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Grasshopper.8.12.24282.7001\build\net48\Grasshopper.targets'))" />
+  </Target>
+  <Import Project="..\packages\Grasshopper.8.12.24282.7001\build\net48\Grasshopper.targets" Condition="Exists('..\packages\Grasshopper.8.12.24282.7001\build\net48\Grasshopper.targets')" />
+</Project>

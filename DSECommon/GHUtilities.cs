@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using Grasshopper;
 using Grasshopper.Kernel;
 using Grasshopper.Kernel.Data;
 using Grasshopper.Kernel.Special;
-using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Types;
-using Rhino.Geometry;
 
 namespace DSECommon
 {
@@ -66,10 +62,18 @@ namespace DSECommon
                 List<GH_Number> l = (List<GH_Number>)structure.get_Branch(p);
                 List<double> doubles = new List<double>();
                 foreach (GH_Number n in l)
-                {
-                    double d = 0;
-                    n.CastTo<double>(out d);
-                    doubles.Add(d);
+ {
+                    double d ;
+
+                    // There is signature mismatch in IGH_GOO and GH_GOO CastTo method that GH_NUMBER modifies. 
+                    //cn.CastTo<double>(out d);
+                    // doubles.Add(d);
+
+                    if (GH_Convert.ToDouble(n, out d, GH_Conversion.Both))
+                    {
+                        doubles.Add(d);
+                    }
+                    
                 }
                 list.Add(doubles);
             }

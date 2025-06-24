@@ -3,12 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Grasshopper.Kernel;
-using Rhino.Geometry;
 using DSECommon;
 
 using Grasshopper;
 using Grasshopper.Kernel.Data;
-using Grasshopper.Kernel.Parameters;
 using Grasshopper.Kernel.Special;
 using Grasshopper.Kernel.Types;
 using Accord.MachineLearning;
@@ -31,7 +29,6 @@ namespace Cluster
               "Clusters designs using the K-means algorithm and adjusts variable bounds based on each cluster. WORKS ON DOUBLECLICK",
               "DSE", "Simplify")
         {
-
             this.VarsList = new List<DSEVariable>();
             this.VarsVals = new List<double>();
             this.MinVals = new List<double>();
@@ -46,6 +43,8 @@ namespace Cluster
             this.labelstree = new List<List<int>>();
             this.newVars = new List<double>();
             
+            // Disable caching to force refresh
+            this.Message = "Click Run to update";
         }
 
         // Properties specific to this component:
@@ -125,9 +124,21 @@ namespace Cluster
         /// to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-
-            // Read in slider properties
+            // Clear previous data to ensure fresh calculations
+            this.DesignMapSorted.Clear();
+            this.ClusterAves.Clear();
+            this.ClusterMaxs.Clear();
+            this.ClusterMins.Clear();
+            this.ClusterObjs.Clear();
+            this.labelstree.Clear();
+            this.propCalculated = false;
+            
+            // Read in slider properties - reinitialize lists to ensure fresh data
+            this.VarsVals.Clear();
+            this.MinVals.Clear();
+            this.MaxVals.Clear();
             readSlidersList();
+            
             List<double> variables = new List<double>();
             if (!DA.GetDataList(0, variables)) return;
             numVars = variables.Count;
@@ -146,111 +157,184 @@ namespace Cluster
 
             // If button is clicked, run clustering
             if (Run(DA,5))
-
             {
+                // Initialize the lists for each cluster
+                for (int i = 0; i < numClusters; i++)
+                {
+                    ClusterObjs.Add(new List<double>());
+                    labelstree.Add(new List<int>());
+                }
+
                 //run clustering process
                 KMeans kmeans = new KMeans(numClusters);
 
                 double[][] data = DesignMap.Select(a => a.ToArray()).ToArray();
-                double[] weights = null;
 
-                // int[] labels = kmeans.Learn(data,weights);
+                // Make sure we have data to cluster
+                if (data.Length == 0 || data[0].Length < numVars)
+                {
+                    this.AddRuntimeMessage(GH_RuntimeMessageLevel.Error, "Not enough data to cluster");
+                    return;
+                }
 
+                // Extract just the variables (not objectives) for clustering
                 for (int i = 0; i < data.Count(); i++)
                 {
                     data[i] = data[i].Take(data[i].Count() - numObjs).ToArray();
                 }
 
+                // Debug output
+                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, 
+                    $"Clustering {data.Length} designs with {numVars} variables into {numClusters} clusters");
 
+                // Compute clusters
                 int[] labels = kmeans.Compute(data);
-
+                
                 LabelsList = labels.OfType<int>().ToList();
 
+                // Initialize labelstree for output
+                for (int i = 0; i < LabelsList.Count; i++)
+                {
+                    int clusterIndex = LabelsList[i];
+                    if (clusterIndex >= 0 && clusterIndex < labelstree.Count)
+                    {
+                        labelstree[clusterIndex].Add(i);
+                    }
+                }
+
                 // create Sorted list
+                DesignMapSorted.Clear();
                 for (int i = 0; i < numClusters; i++)
                 {
-
                     DesignMapSorted.Add(new List<List<double>>());
-                    for (int j = 0; j < DesignMap.Count; j++)
+                }
+
+                for (int j = 0; j < DesignMap.Count; j++)
+                {
+                    if (j < LabelsList.Count)
                     {
-
-                        if (LabelsList[j] == i)
+                        int clusterIndex = LabelsList[j];
+                        if (clusterIndex >= 0 && clusterIndex < DesignMapSorted.Count)
                         {
-
-                            DesignMapSorted[i].Add(DesignMap[j]);
-
+                            DesignMapSorted[clusterIndex].Add(DesignMap[j]);
                         }
                     }
                 }
 
                 // Calculate min/max/average for each cluster
+                ClusterAves.Clear();
+                ClusterMaxs.Clear();
+                ClusterMins.Clear();
+                ClusterObjs.Clear();
+
+                // Initialize with the slider values
+                ClusterAves.Add(new List<double>(VarsVals));
+                ClusterMaxs.Add(new List<double>(MaxVals));
+                ClusterMins.Add(new List<double>(MinVals));
+
                 for (int i = 0; i < numClusters; i++)
                 {
-
                     ClusterAves.Add(new List<double>());
                     ClusterMaxs.Add(new List<double>());
                     ClusterMins.Add(new List<double>());
+                    ClusterObjs.Add(new List<double>());
+
+                    // Skip empty clusters
+                    if (DesignMapSorted[i].Count == 0)
+                    {
+                        this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, $"Cluster {i} is empty");
+                        
+                        // Add placeholder values
+                        for (int k = 0; k < numVars; k++)
+                        {
+                            ClusterAves[i+1].Add(0);
+                            ClusterMaxs[i+1].Add(0);
+                            ClusterMins[i+1].Add(0);
+                        }
+                        
+                        for (int k = 0; k < numObjs; k++)
+                        {
+                            ClusterObjs[i].Add(0);
+                        }
+                        
+                        continue;
+                    }
 
                     double[] sum = new double[numVars];
                     double[] average = new double[numVars];
                     double[] max = new double[numVars];
                     double[] min = new double[numVars];
+                    
+                    double[] sumObj = new double[numObjs];
+                    double[] averageObj = new double[numObjs];
+                    double[] maxObj = new double[numObjs];
+                    double[] minObj = new double[numObjs];
 
+                    // Initialize values
                     for (int l = 0; l < numVars; l++)
-
                     {
                         sum[l] = 0;
                         max[l] = double.MinValue;
                         min[l] = double.MaxValue;
                     }
 
-                    for (int j = 0; j < DesignMapSorted[i].Count; j++)
-
+                    for (int l = 0; l < numObjs; l++)
                     {
-
-                        for (int k = 0; k < numVars; k++)
-
-                        {
-                            sum[k] = sum[k] + DesignMapSorted[i][j][k];
-
-                            if (DesignMapSorted[i][j][k] > max[k])
-
-                            {
-                                max[k] = DesignMapSorted[i][j][k];
-                            }
-                            else if (DesignMapSorted[i][j][k] < min[k])
-
-                            {
-
-                                min[k] = DesignMapSorted[i][j][k];
-                            }
-
-                            average[k] = sum[k] / DesignMapSorted[i].Count;
-
-                        }
-
-
+                        sumObj[l] = 0;
+                        maxObj[l] = double.MinValue;
+                        minObj[l] = double.MaxValue;
                     }
-
+                    
+                    // Calculate statistics for this cluster
+                    for (int j = 0; j < DesignMapSorted[i].Count; j++)
+                    {
+                        if (DesignMapSorted[i][j].Count < numVars + numObjs)
+                        {
+                            this.AddRuntimeMessage(GH_RuntimeMessageLevel.Warning, 
+                                $"Design {j} in cluster {i} has insufficient data");
+                            continue;
+                        }
+                        
+                        // Process variables
+                        for (int k = 0; k < numVars; k++)
+                        {
+                            sum[k] += DesignMapSorted[i][j][k];
+                            max[k] = Math.Max(max[k], DesignMapSorted[i][j][k]);
+                            min[k] = Math.Min(min[k], DesignMapSorted[i][j][k]);
+                        }
+                        
+                        // Process objectives
+                        for (int k = 0; k < numObjs; k++)
+                        {
+                            sumObj[k] += DesignMapSorted[i][j][k+numVars];
+                            maxObj[k] = Math.Max(maxObj[k], DesignMapSorted[i][j][k+numVars]);
+                            minObj[k] = Math.Min(minObj[k], DesignMapSorted[i][j][k+numVars]);
+                        }
+                    }
+                    
+                    // Calculate averages
                     for (int k = 0; k < numVars; k++)
                     {
-                        ClusterAves[i].Add(average[k]);
-                        ClusterMaxs[i].Add(max[k]);
-                        ClusterMins[i].Add(min[k]);
+                        average[k] = sum[k] / DesignMapSorted[i].Count;
+                        ClusterAves[i+1].Add(average[k]);
+                        ClusterMaxs[i+1].Add(max[k]);
+                        ClusterMins[i+1].Add(min[k]);
+                    }
+                    
+                    for (int k = 0; k < numObjs; k++)
+                    {
+                        averageObj[k] = sumObj[k] / DesignMapSorted[i].Count;
+                        ClusterObjs[i].Add(averageObj[k]);
                     }
                 }
 
-
-                ClusterAves.Insert(0, VarsVals);
-                ClusterMaxs.Insert(0, MaxVals);
-                ClusterMins.Insert(0, MinVals);
+                propCalculated = true;
                 ClusterDone = true;
 
+                // Debug output
+                this.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, 
+                    $"Calculated statistics for {numClusters} clusters");
             }
-
-
-
-
 
             // Create list of cluster labels
             List<List<double>> averageTree = new List<List<Double>>();
@@ -449,9 +533,15 @@ namespace Cluster
                 List<double> doubles = new List<double>();
                 foreach (GH_Number n in l)
                 {
-                    double d = 0;
-                    n.CastTo<double>(out d);
-                    doubles.Add(d);
+                    // There is signature mismatch in IGH_GOO and GH_GOO CastTo method that GH_NUMBER modifies. 
+                    //cn.CastTo<double>(out d);
+                    // doubles.Add(d);
+
+                    if (GH_Convert.ToDouble(n, out double d, GH_Conversion.Both))
+                    {
+                        doubles.Add(d);
+                    }
+
                 }
                 list.Add(doubles);
             }
@@ -461,22 +551,56 @@ namespace Cluster
         private void readSlidersList()
         {
             this.VarsList.Clear();
-            this.SlidersList = new List<GH_NumberSlider>();
+            this.SlidersList.Clear();
+            
+            // Add debug message to help troubleshoot
+            this.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, $"Reading {this.Params.Input[0].Sources.Count} sliders");
+            
             int nVars = this.Params.Input[0].Sources.Count;
             for (int i = 0; i < nVars; i++)
             {
-                this.SlidersList.Add(this.Params.Input[0].Sources[i] as GH_NumberSlider);
+                var sliderParam = this.Params.Input[0].Sources[i] as GH_NumberSlider;
+                if (sliderParam != null)
+                {
+                    this.SlidersList.Add(sliderParam);
+                    
+                    // Add debug for slider values
+                    this.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, 
+                        $"Slider {i}: Min={sliderParam.Slider.Minimum}, Max={sliderParam.Slider.Maximum}, Value={sliderParam.Slider.Value}");
+                }
+                else
+                {
+                    // If not a slider, get the value directly
+                    double value = 0.0;
+                    if (this.Params.Input[0].Sources[i].VolatileData.AllData(true).Count() > 0)
+                    {
+                        GH_Convert.ToDouble(this.Params.Input[0].Sources[i].VolatileData.AllData(true).ElementAt(0), 
+                            out value, GH_Conversion.Both);
+                        
+                        // Create a variable with default min/max if not a slider
+                        DSEVariable newVar = new DSEVariable(value - 10.0, value + 10.0, value);
+                        this.VarsList.Add(newVar);
+                        
+                        VarsVals.Add(value);
+                        MinVals.Add(value - 10.0);
+                        MaxVals.Add(value + 10.0);
+                        
+                        this.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, $"Non-slider input {i}: Value={value}");
+                    }
+                }
             }
 
             foreach (GH_NumberSlider slider in SlidersList)
             {
-                DSEVariable newVar = new DSEVariable((double)slider.Slider.Minimum, (double)slider.Slider.Maximum, (double)slider.Slider.Value);
+                DSEVariable newVar = new DSEVariable(
+                    (double)slider.Slider.Minimum, 
+                    (double)slider.Slider.Maximum, 
+                    (double)slider.Slider.Value);
                 this.VarsList.Add(newVar);
 
                 VarsVals.Add((double)slider.Slider.Value);
                 MinVals.Add((double)slider.Slider.Minimum);
                 MaxVals.Add((double)slider.Slider.Maximum);
-
             }
         }
 
@@ -490,12 +614,20 @@ namespace Cluster
             return tree;
         }
 
+        // Override this method to force recompute when inputs change
+        public override void AddedToDocument(GH_Document document)
+        {
+            base.AddedToDocument(document);
+            this.ExpireSolution(true);
+        }
 
-
-
-
-
-
+        // Ensure component refreshes when there's a change
+        public override void ExpireSolution(bool recompute)
+        {
+            // Add debug message
+            this.AddRuntimeMessage(GH_RuntimeMessageLevel.Remark, "Component solution expired - will recompute");
+            base.ExpireSolution(recompute);
+        }
 
         /// <summary>
         /// Provides an Icon for every component that will be visible in the User Interface.

@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="DesignTool.View.HistoryControl"
+       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+    xmlns:toolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit" 
+    xmlns:designmodes="clr-namespace:DesignTool.DesignModes"
+    xmlns:cntrls="clr-namespace:DesignTool.View"
+    xmlns:basics="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls" 
+    xmlns:vsm="clr-namespace:System.Windows;assembly=System.Windows"
+    >
+    <Grid Name="HistGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="15"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition ></RowDefinition>
+            <RowDefinition ></RowDefinition>
+            <RowDefinition ></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Rectangle Name="HistRect" Fill="#00BFFF" Grid.Column="0" Grid.Row="0" Grid.RowSpan="4" Margin="0 0 10 0" Visibility="Collapsed"></Rectangle>
+        <TextBlock Name="RuleName" Grid.Column="1" Grid.Row="0" ></TextBlock>
+        <StackPanel Name="ParamStack" Grid.Column="1" Grid.Row="1" Visibility="Collapsed"></StackPanel>
+    </Grid>
+
+</UserControl>

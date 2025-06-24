@@ -1,0 +1,1095 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="StructureEngine.Analysis.BaseTrussAnalysis" Collapsed="true">
+    <Position X="11" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Analysis\BaseTrussAnalysis.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Analysis.BraninTestFunction" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="77.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Analysis\BraninTestFunction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Analysis.EquivFrameAnalysis" Collapsed="true">
+    <Position X="8.75" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAQMAIAAAAAAAAAAAAAAEAAAABAAAAACAAAE=</HashCode>
+      <FileName>Analysis\EquivFrameAnalysis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StructureEngine.Analysis.RegAnalysis" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="79" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Analysis\RegAnalysis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Analysis.Results" Collapsed="true">
+    <Position X="86" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAQAA=</HashCode>
+      <FileName>Analysis\Results.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Analysis.TrussAnalysis" Collapsed="true">
+    <Position X="11" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Analysis\TrussAnalysis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StructureEngine.Analysis.TrussDispAnalysis" Collapsed="true">
+    <Position X="13.25" Y="7.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Analysis\TrussDispAnalysis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StructureEngine.GraphicStatics.ForcePolygon" Collapsed="true">
+    <Position X="73.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAEAAAEgAAEAAAAAAAAAEAAAIE=</HashCode>
+      <FileName>Analysis\GraphicStatics\ForcePolygon.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.GraphicStatics.FormDiagram" Collapsed="true">
+    <Position X="75.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAABAAAAAgCAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Analysis\GraphicStatics\FormDiagram.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.GraphicStatics.PointLoad" Collapsed="true">
+    <Position X="84.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Analysis\GraphicStatics\PointLoad.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.GraphicStatics.ProblemSetup" Collapsed="true">
+    <Position X="73.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAIAAAAAiCAAAAAAAAAACIAAAAAAAAAAABBAYAAIEGQ=</HashCode>
+      <FileName>Analysis\GraphicStatics\ProblemSetup.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Evolutionary.DiversityBooster" Collapsed="true">
+    <Position X="87.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAJEAAAAAAAAAAgAAAAgAAABAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Evolutionary\DiversityBooster.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Evolutionary.EvoParams" Collapsed="true">
+    <Position X="86" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAACAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Evolutionary\EvoParams.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Evolutionary.GramDivBooster" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="79" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Evolutionary\GramDivBooster.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Evolutionary.ParDivBooster" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="80.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABEAAAAAAAAAAgAAAAgAAABAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Evolutionary\ParDivBooster.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Evolutionary.PopulationGenerator" Collapsed="true">
+    <Position X="87.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACICAAEAAQAAAAACAgAAAQAAABAgAQAiAAAAAAA=</HashCode>
+      <FileName>Evolutionary\PopulationGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Airport.AirportAnalysis" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="73.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Airport\AirportAnalysis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.Airport.AirportGrammar" Collapsed="true">
+    <Position X="11" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Airport\AirportGrammar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Airport.AirportShape" Collapsed="true">
+    <Position X="3" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAIAAAAACCAAABgACAAAAAIAAAAAAAAAEAAgAAAAIBA=</HashCode>
+      <FileName>Grammar\Airport\AirportShape.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Airport.AirportShapeState" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="75.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAGAAAAAAgAAAEAQAAAAAAAAAAAAAAAARAAA=</HashCode>
+      <FileName>Grammar\Airport\AirportShapeState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.Airport.Rules.Rule001" Collapsed="true">
+    <Position X="46.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Airport\Rules\Rule001.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Airport.Rules.Rule002" Collapsed="true">
+    <Position X="53.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Airport\Rules\Rule002.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Airport.Rules.Rule003" Collapsed="true">
+    <Position X="60" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Airport\Rules\Rule003.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Airport.Rules.Rule004" Collapsed="true">
+    <Position X="66.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Airport\Rules\Rule004.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Airport.Rules.Rule005" Collapsed="true">
+    <Position X="3.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Airport\Rules\Rule005.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Airport.Rules.RuleA" Collapsed="true">
+    <Position X="10.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Airport\Rules\RuleA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.BaseGrammar" Collapsed="true">
+    <Position X="11" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCEAAAQIBAAAAEBAAAAAAgAAgAAAAAAAAAAAAAAAADA=</HashCode>
+      <FileName>Grammar\BaseGrammar.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.BaseRule&lt;T&gt;" Collapsed="true">
+    <Position X="37.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAABAgAAAAAAAQAAUAAGAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Grammar\BaseRule.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.BaseShape" Collapsed="true">
+    <Position X="3" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gIEEYgAACAgAAAiAUAAAAAQgAAAgMAEAGAAiAAIAIBA=</HashCode>
+      <FileName>Grammar\BaseShape.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.DoubleParameter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="75.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAABAAAAAAEAAAAAQAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\DoubleParameter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.ElementGroup" Collapsed="true">
+    <Position X="3" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gCAAAAAAAAAAgBAAAAIAAAIAEACAAAACAAAEAAAAAAA=</HashCode>
+      <FileName>Grammar\ElementGroup.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.EnumParameter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="82.5" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAQAAAAAAAAICAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\EnumParameter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.GrammarSetup" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="80.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAASAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Grammar\GrammarSetup.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.IntParameter" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="84.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAABAAAAAAEAAAAAQAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\IntParameter.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.RandomComputation" Collapsed="true">
+    <Position X="75.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAQAEAAAgAAAAAAAAAAAAAAAAAAAAAAAIAAAIAA=</HashCode>
+      <FileName>Grammar\RandomComputation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.RuleSet" Collapsed="true">
+    <Position X="75.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>Grammar\RuleSet.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.ShapeArea" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="80.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAQAAAAAAAAAAAAAAAAAIAAAAQABA=</HashCode>
+      <FileName>Grammar\ShapeArea.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.ShapeComputation" Collapsed="true">
+    <Position X="82.5" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAgAAAAAAAAAAACAQAAAAAACAAEAAAACAAAAABA=</HashCode>
+      <FileName>Grammar\ShapeComputation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.ShapeHistory" Collapsed="true">
+    <Position X="84.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACgAAAAAAAAAAAAAAAAAAAAAAEQAAAAAAAAgBA=</HashCode>
+      <FileName>Grammar\ShapeHistory.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.ShapeLine" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="86" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIAAYQAACBgAIACQAIiAABAciAAA4CAARJABAAQhBA=</HashCode>
+      <FileName>Grammar\ShapeLine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.ByXLineComparer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="84.25" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Grammar\ShapeLine.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.ShapePoint" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="87.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QBABAQBAAAAAAEAAQAAAAAAAAggAAAIAAAAAAAAQYBA=</HashCode>
+      <FileName>Grammar\ShapePoint.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.ShapePointLoad" Collapsed="true">
+    <Position X="73.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAgAAAACAAAAAAAAAAAAAAAAAAAAEAABA=</HashCode>
+      <FileName>Grammar\ShapePointLoad.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.ByXCoordComparer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="82.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Grammar\ShapePointLoad.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.BridgeAnalysis" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="79" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAIACAEAAAAAABAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\BridgeAnalysis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.BridgeGrammar" Collapsed="true">
+    <Position X="8.75" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCAAAAAAAAAAAABAgAAEAAAAAAAAACAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\BridgeGrammar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.BridgeShape" Collapsed="true">
+    <Position X="0.75" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAQAAAAGgAAABgAQAAABAAAAAAACAAAEABgAAECIBE=</HashCode>
+      <FileName>Grammar\Bridge\BridgeShape.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.BridgeShapeState" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="80.75" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABIACAAAQAAAAAAAgAAAGAwAAAAAAAIAIAAACAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\BridgeShapeState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule001" Collapsed="true">
+    <Position X="33" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule001.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule002" Collapsed="true">
+    <Position X="37.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule002.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule003" Collapsed="true">
+    <Position X="42" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule003.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule004" Collapsed="true">
+    <Position X="48.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule004.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule005" Collapsed="true">
+    <Position X="55.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule005.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule006" Collapsed="true">
+    <Position X="62.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule006.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule007" Collapsed="true">
+    <Position X="69" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule007.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule008" Collapsed="true">
+    <Position X="6" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule008.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule009" Collapsed="true">
+    <Position X="12.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule009.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule010" Collapsed="true">
+    <Position X="17.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule010.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule011" Collapsed="true">
+    <Position X="21.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule011.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule012" Collapsed="true">
+    <Position X="26.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule012.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule013" Collapsed="true">
+    <Position X="30.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule013.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule014" Collapsed="true">
+    <Position X="35.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule014.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule015" Collapsed="true">
+    <Position X="39.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule015.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule016" Collapsed="true">
+    <Position X="44.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule016.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.Rule017" Collapsed="true">
+    <Position X="51" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\Rule017.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.RuleA" Collapsed="true">
+    <Position X="57.75" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\RuleA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.RuleB" Collapsed="true">
+    <Position X="64.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\RuleB.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.RuleC" Collapsed="true">
+    <Position X="71.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\RuleC.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Bridge.Rules.RuleD" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Bridge\Rules\RuleD.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Simple.Rules.Rule001" Collapsed="true">
+    <Position X="15" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Simple\Rules\Rule001.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Simple.Rules.Rule002" Collapsed="true">
+    <Position X="19.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Simple\Rules\Rule002.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Simple.Rules.Rule003" Collapsed="true">
+    <Position X="24" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Simple\Rules\Rule003.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Simple.Rules.RuleA" Collapsed="true">
+    <Position X="28.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Simple\Rules\RuleA.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Simple.SimpleAnalysis" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="75.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQAAAAAIACAEAAAAAABAACAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Simple\SimpleAnalysis.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Grammar.Simple.SimpleGrammar" Collapsed="true">
+    <Position X="13.25" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Simple\SimpleGrammar.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Simple.SimpleShape" Collapsed="true">
+    <Position X="5.25" Y="6.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gQIAAAAACCBAABgBAAAAAAIAAAAAAAAAEAAgAAAAIBA=</HashCode>
+      <FileName>Grammar\Simple\SimpleShape.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Grammar.Simple.SimpleShapeState" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="79" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAQACAAAAAAgAAAEAQAAAAACAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\Simple\SimpleShapeState.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Logging.Generation" Collapsed="true">
+    <Position X="77.25" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAQACAAAAAQACAAAAQAAAAACAIAAAggAAgAAAAggI=</HashCode>
+      <FileName>Logging\Generation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Logging.HttpWebRequestBuilder" Collapsed="true">
+    <Position X="82.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAACAAAAAAAAIAIAAAQACACAAAACAAAAAAAAAAEAA=</HashCode>
+      <FileName>Logging\HttpWebRequestBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Logging.DefaultRequestController" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="86" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAgAAAAAAAEAAAQAAIAAAAAAAA=</HashCode>
+      <FileName>Logging\HttpWebRequestBuilder.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Logging.LoadCaseSerializer" Collapsed="true">
+    <Position X="73.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logging\LoadCaseSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Logging.MemberSerializer" Collapsed="true">
+    <Position X="79" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logging\MemberSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Logging.NodeSerializer" Collapsed="true">
+    <Position X="87.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Logging\NodeSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Logging.Session" Collapsed="true">
+    <Position X="79" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAYECAAkAAgAAAAgAEACAJECAAEAAAAEAAMCAAgKA=</HashCode>
+      <FileName>Logging\Session.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Logging.StructureSerializer" Collapsed="true">
+    <Position X="80.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAIAAAAAQAAAAAAAAAAACAAAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Logging\StructureSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.EnsembleNeuralNetRegression" Collapsed="true">
+    <Position X="3" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAACAAAEAAAAAAAAAAAAAAAAAAAAQAAAAgABABg=</HashCode>
+      <FileName>MachineLearning\EnsembleNeuralNetRegression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.ErrorMeasures" Collapsed="true">
+    <Position X="84.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BFIAEAAEAAQAADCBAAAAAABABhAIEIACEEAAAAAAQBA=</HashCode>
+      <FileName>MachineLearning\ErrorMeasures.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.ObsCompare" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="73.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>MachineLearning\ErrorMeasures.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.MathUtility" Collapsed="true">
+    <Position X="77.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIBAAAAAAAAAAACAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MachineLearning\KrigingRegression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.KrigingRegression" Collapsed="true">
+    <Position X="5.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAIBAAAAAAAAAAAAAQAAACAAAAAAAAEgABBBQBg=</HashCode>
+      <FileName>MachineLearning\KrigingRegression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.MLE" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="80.75" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACoAAAAAAAAAAAAAAAAAAAAAAAgBAAEFAgAAAAQAA=</HashCode>
+      <FileName>MachineLearning\KrigingRegression.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.Observation" Collapsed="true">
+    <Position X="75.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABAAAAAEABAAAAAAAJAAAAEBAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>MachineLearning\Observation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.RandomForestRegression" Collapsed="true">
+    <Position X="0.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAEAAAIAAAAAAAAAAAAAQAAAAAABABg=</HashCode>
+      <FileName>MachineLearning\RandomForestRegression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.Regression" Collapsed="true">
+    <Position X="3" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAEAAAAACgAAQAAAEEEAEAAABABg=</HashCode>
+      <FileName>MachineLearning\Regression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.Sampling" Collapsed="true">
+    <Position X="77.25" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gEgAAAQAQABIAgAAAAAkAABIAAAAgEAAABAAQCQgEgA=</HashCode>
+      <FileName>MachineLearning\Sampling.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.DoubleIntComparer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="73.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>MachineLearning\Sampling.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.PhiqCompararer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="82.5" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>MachineLearning\Sampling.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.MMComparer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="82.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>MachineLearning\Sampling.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.SimpleSearch" Collapsed="true">
+    <Position X="77.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAgAAAAAAAAAAAAAYAQAAAAIQAAACABAAAgEAAA=</HashCode>
+      <FileName>MachineLearning\SimpleSearch.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.PopComparer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="86" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>MachineLearning\SimpleSearch.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.RegressionTest" Collapsed="true">
+    <Position X="84.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAQAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>MachineLearning\SurrogateModelBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.RegressionReport" Collapsed="true">
+    <Position X="82.5" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAABAAAAAAAAAAAAAgAAAACABA=</HashCode>
+      <FileName>MachineLearning\SurrogateModelBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.SurrogateModelBuilder" Collapsed="true">
+    <Position X="84.25" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAIAAQAKgACAAQAAAAEAAUAAAAAAAABAAAAABAQA=</HashCode>
+      <FileName>MachineLearning\SurrogateModelBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.ValidationResult" Collapsed="true">
+    <Position X="87.75" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAQAAAAAAAAAAAAAQAAAAAAgAAAAAAAA=</HashCode>
+      <FileName>MachineLearning\ValidationResult.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.Testing.RegCase" Collapsed="true">
+    <Position X="80.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAIAAAAAAAAEIAAAAAAAAAIIkEACAAAAAAAAABA=</HashCode>
+      <FileName>MachineLearning\Testing\ParametricStudy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.MachineLearning.Testing.ParametricStudy" Collapsed="true">
+    <Position X="79" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAACAAAAAAEAAAAAACAAAAAAAAAAAI=</HashCode>
+      <FileName>MachineLearning\Testing\ParametricStudy.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Model.BaseDesign" Collapsed="true">
+    <Position X="9.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgIgBAAAkAAACAGAAAAAQAAAAgAAAAAAAAEAAAAAA=</HashCode>
+      <FileName>Model\BaseDesign.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Model.BraninObject" Collapsed="true">
+    <Position X="8.5" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIEEIAAACAgAAAiAAAAAAAIgAQAgAACACAAAAAIAIAA=</HashCode>
+      <FileName>Model\BraninObject.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StructureEngine.Model.ComputedMember" Collapsed="true">
+    <Position X="0.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAwAAAAAAAAAAAACAAABAiAAEAAAQAAAAAAAIAI=</HashCode>
+      <FileName>Model\ComputedMember.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Model.ComputedStructure" Collapsed="true">
+    <Position X="10.75" Y="12.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAEEIAAACAgBgAiAAAAgiEEgAkAAAgAAKAIAEIIAYAA=</HashCode>
+      <FileName>Model\ComputedStructure.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StructureEngine.Model.CoordVar" Collapsed="true">
+    <Position X="3.5" Y="11.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAGAIAAAABAAAAkIEAIIGAAAAAgAAAAACAAgAAAAIAA=</HashCode>
+      <FileName>Model\CoordVar.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="StructureEngine.Model.DOF" Collapsed="true">
+    <Position X="3.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAABAIAAAAAAAAAAAAAQAEAAQAgIAA=</HashCode>
+      <FileName>Model\DOF.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Model.Load" Collapsed="true">
+    <Position X="86" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAIgAAAAABA=</HashCode>
+      <FileName>Model\Load.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Model.LoadCase" Collapsed="true">
+    <Position X="87.75" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAEAAAAAAAACAAAAAAAAQAAAAAAAAAAABAAAAAABA=</HashCode>
+      <FileName>Model\LoadCase.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Model.Material" Collapsed="true">
+    <Position X="75.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAABAAABAAAAAAAAAAAQBAAAAAAAAAAAAAgAAAAA=</HashCode>
+      <FileName>Model\Material.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Model.Member" Collapsed="true">
+    <Position X="0.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BEAAAAgAAAAAAACAAEAAAABAAiAAEAAAAEAAAQAAIAA=</HashCode>
+      <FileName>Model\Member.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Model.Node" Collapsed="true">
+    <Position X="84.25" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAAAAAAAIADAACAAAAAAAAAAAAAAEAAkAEAAAAAYAE=</HashCode>
+      <FileName>Model\Node.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Model.ParametricRelation" Collapsed="true">
+    <Position X="77.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAgQAACAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\ParametricRelation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Model.RectangularSection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="77.25" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAgAAAQAAAAAAAAAQAAAAAAAAAIQAAAAgAIAA=</HashCode>
+      <FileName>Model\RectangularSection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Model.RodSection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="87.75" Y="5.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAgAAAQAAAAAAAAAQAAAAAAAAAIQAAAAgAIAA=</HashCode>
+      <FileName>Model\RodSection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Model.RoundTubeSection" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="73.75" Y="6.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAgAAAQAAAAAAAAAQAAAAAAAAAIQAAAAgAIAA=</HashCode>
+      <FileName>Model\RoundTubeSection.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Model.Structure" Collapsed="true">
+    <Position X="10.75" Y="10.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BMAgAAAAIIAACEEAAgAAAEJAAgMwSoQAUEAFGBAQIAA=</HashCode>
+      <FileName>Model\Structure.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Model.StructureSetup" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="82.5" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAQAEAgAAAAAEBAAABAFAAACEAAAAASBAAIgAAAAEI=</HashCode>
+      <FileName>Model\StructureSetup.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Serialization.DXFMaker" Collapsed="true">
+    <Position X="80.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAIQAAAAAQAAAAAAAABAAAAAAAACAiAA=</HashCode>
+      <FileName>Serialization\DXFMaker.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Serialization.FileSerializer" Collapsed="true">
+    <Position X="87.75" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIgAAAAAAAAAAAAAEACAAgCAgYgABIAAAAAEAKBAAE=</HashCode>
+      <FileName>Serialization\FileSerializer.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Serialization.NodeComparer" Collapsed="true" BaseTypeListCollapsed="true">
+    <Position X="86" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAA=</HashCode>
+      <FileName>Serialization\FileSerializer.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" Collapsed="true" />
+  </Class>
+  <Class Name="StructureEngine.Test.DSGenerator" Collapsed="true">
+    <Position X="77.25" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQIEEAAAAAAIAAAAAAAAAAAAAAACAAAAAAAAAAA=</HashCode>
+      <FileName>Test\DSGenerator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Test.DSPlotter2D" Collapsed="true">
+    <Position X="79" Y="1.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAAAAAAAAAAAAAgAAAAAAAAAAAQAAAAAAAAIA=</HashCode>
+      <FileName>Test\DSPlotter2D.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="StructureEngine.Utilities" Collapsed="true">
+    <Position X="86" Y="7.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Utilities.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Interface Name="StructureEngine.Analysis.IAnalysis" Collapsed="true">
+    <Position X="73.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Analysis\IAnalysis.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Evolutionary.IDivBooster" Collapsed="true">
+    <Position X="75.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Evolutionary\IDivBooster.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Grammar.IElement" Collapsed="true">
+    <Position X="77.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQABA=</HashCode>
+      <FileName>Grammar\IElement.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Grammar.IElementGroup" Collapsed="true">
+    <Position X="0.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAAAAgAAAAAIAAAIAEACAAAACAAAEAAAAAAA=</HashCode>
+      <FileName>Grammar\IElementGroup.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Grammar.IGrammar" Collapsed="true">
+    <Position X="80.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QCAAAAAABAAAAEBAAAAAAAAAAAAAAAAAAAAAAAAAACA=</HashCode>
+      <FileName>Grammar\IGrammar.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Grammar.IGrammarAnalysis" Collapsed="true">
+    <Position X="82.5" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\IGrammarAnalysis.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Grammar.IRule" Collapsed="true">
+    <Position X="86" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAIAABAgAAAAAAAQAAUAAGAAAAAAAAAAAAgAAAA=</HashCode>
+      <FileName>Grammar\IRule.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Grammar.IRuleParameter" Collapsed="true">
+    <Position X="87.75" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAAAAAAAAAAAAAAAAQAAAAAAAAACAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\IRuleParameter.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Grammar.IShape" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAQAAACAAAAAgAAAAAAAAAAAAAMAEAEAAiAAAAABA=</HashCode>
+      <FileName>Grammar\IShape.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Grammar.IShapeState" Collapsed="true">
+    <Position X="77.25" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAEAQAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Grammar\IShapeState.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Logging.IRequestController" Collapsed="true">
+    <Position X="84.25" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAgAAAAAAAEAAAAAAIAAAAAAAA=</HashCode>
+      <FileName>Logging\HttpWebRequestBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.MachineLearning.IFunction" Collapsed="true">
+    <Position X="79" Y="8.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>MachineLearning\IFunction.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Model.IDesign" Collapsed="true">
+    <Position X="3.5" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIEAIgAACAgAAAiAEAAAAAYgAAAgAAAACAAAAAIAIAA=</HashCode>
+      <FileName>Model\IDesign.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Model.ISection" Collapsed="true">
+    <Position X="73.75" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAgAAAQAAAAAAAAAQAAAAAAAAAIQAAAAgAIAA=</HashCode>
+      <FileName>Model\ISection.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Model.ISetup" Collapsed="true">
+    <Position X="75.5" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEA=</HashCode>
+      <FileName>Model\ISetup.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="StructureEngine.Model.IVariable" Collapsed="true">
+    <Position X="79" Y="9.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAGAIAAAABAAAAAIEAAIGAAAAAAAAAAACAAgAAAAAAA=</HashCode>
+      <FileName>Model\IVariable.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Enum Name="StructureEngine.MachineLearning.SampleType" Collapsed="true">
+    <Position X="77.25" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAgAAAAAEAAAAAAACAAAACAAAAAAAAAA=</HashCode>
+      <FileName>MachineLearning\Sampling.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="StructureEngine.Model.StructureDim" Collapsed="true">
+    <Position X="80.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAACAAAAAAAAAEAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Model\ComputedMember.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="StructureEngine.Model.MemberType" Collapsed="true">
+    <Position X="73.75" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAE=</HashCode>
+      <FileName>Model\ComputedMember.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="StructureEngine.Model.SectionType" Collapsed="true">
+    <Position X="79" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAABAAAAAAAAAAAAAgAAAAAAIAAAAAA=</HashCode>
+      <FileName>Model\ISection.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Enum Name="StructureEngine.Model.RelationType" Collapsed="true">
+    <Position X="75.5" Y="10.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ACAAAAAAAAAAAACAAAAAAAAAgAAAAAAAAAAAAAAAgAA=</HashCode>
+      <FileName>Model\ParametricRelation.cs</FileName>
+    </TypeIdentifier>
+  </Enum>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

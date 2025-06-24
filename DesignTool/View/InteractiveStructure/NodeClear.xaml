@@ -1,0 +1,25 @@
+﻿<UserControl x:Class="DesignTool.View.NodeClear"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:sys="clr-namespace:System;assembly=mscorlib"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:designmodes="clr-namespace:DesignTool.DesignModes"
+    xmlns:node="clr-namespace:DesignTool.View"
+    mc:Ignorable="d"
+    FontFamily="Tw Cen MT"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <Canvas Height="100" Width="100" Name="NodeCanvas">
+        <Canvas.Resources>
+            <designmodes:PointConverter x:Key="PointConverter" />
+        </Canvas.Resources>
+        <Path x:Name="LayoutRoot" Fill="Transparent" 
+          Stroke="Transparent">
+            <Path.Data >
+                <EllipseGeometry x:Name="ClearEllipse"
+                Center="{Binding Path=ViewModel.Center, Converter={StaticResource PointConverter}}"/>
+            </Path.Data>
+        </Path>
+    </Canvas>
+</UserControl>

@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="DesignTool.View.GrammarControls.RuleControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:designmodes="clr-namespace:DesignTool.DesignModes"
+    mc:Ignorable="d">
+    
+    <StackPanel Name="RuleStack" Margin="10 20 10 10">
+        <StackPanel.Resources>
+            <designmodes:StringFormatConverter x:Key="StringFormatConverter" />
+        </StackPanel.Resources>
+        <TextBlock Name="RuleName" FontWeight="Bold" FontSize="14"></TextBlock>
+        <StackPanel Name="ParamStack" Margin="0 0 0 15"></StackPanel>
+        <Button Name="ApplyButton" ></Button>
+    </StackPanel>
+</UserControl>

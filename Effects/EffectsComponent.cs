@@ -62,9 +62,10 @@ namespace Effects
         public bool EffectsDone;
         public int index;
         public List<double> newVars;
-        
-             
-        
+        public bool DebugLogging;
+
+
+
         public override void CreateAttributes()
         {
             base.m_attributes = new EffectsComponentAttributes(this);
@@ -81,12 +82,16 @@ namespace Effects
             pManager.AddNumberParameter("Objectives", "Obj", "One or more performance objectives", GH_ParamAccess.list);
             pManager.AddIntegerParameter("Levels", "Lev", "Number of levels.  Must be 2 or 3.", GH_ParamAccess.item, 2);
             pManager.AddNumberParameter("Level Settings", "LevSet", "Variable settings of the levels being considered", GH_ParamAccess.list);
-            pManager.AddIntegerParameter("Number of Objectives", "#Obj", "Number of objectives.  Must match length of 'Obj' input.", GH_ParamAccess.item,1);
+            pManager.AddIntegerParameter("Number of Objectives", "#Obj", "Number of objectives.  Must match length of 'Obj' input.", GH_ParamAccess.item, 1);
+            pManager.AddBooleanParameter("Debug Logging", "Debug", "Enable console debug logging for troubleshooting", GH_ParamAccess.item, false);
+            
+            // Make debug parameter optional
+            pManager[5].Optional = true;
 
         }
 
         /// <summary>
-        /// Registers all the output parameters for this component.
+        /// Registers all the output parameters for this compzonent.
         /// </summary>
         protected override void RegisterOutputParams(GH_Component.GH_OutputParamManager pManager)
         {
@@ -94,7 +99,7 @@ namespace Effects
             pManager.AddTextParameter("Average Effects", "AvgEff", "The magnitude of the average effects for each variable", GH_ParamAccess.tree);
             pManager.AddTextParameter("Raw Effects", "RawEff", "Raw effects of each variable setting", GH_ParamAccess.tree);
             pManager.AddTextParameter("Design Map + Objectives", "DM+O", "Set of design variables plus objective(s) recorded during calculations", GH_ParamAccess.tree);
-            
+
 
         }
 
@@ -105,66 +110,50 @@ namespace Effects
         /// to store data in output parameters.</param>
         protected override void SolveInstance(IGH_DataAccess DA)
         {
-
             readSlidersList();
-            // First, we need to retrieve all data from the input parameters.
-            // We'll start by declaring variables and assigning them starting values.
 
-
+            // Get input data
             List<double> variables = new List<double>();
             if (!DA.GetDataList(0, variables)) return;
-
             numVars = variables.Count;
 
-
             if (!DA.GetDataList<double>(1, this.ObjInput)) return;
-
-            //HARDCODE
             numObjs = ObjInput.Count;
 
             if (!DA.GetData(2, ref this.numLevels)) return;
-
             if (!DA.GetDataList<double>(3, this.LevelSettings)) return;
-
             if (!DA.GetData(4, ref this.numObjs)) return;
+            
+            // Read optional debug flag, default to false if not provided
+            this.DebugLogging = false;
+            DA.GetData(5, ref this.DebugLogging);
 
-
+            // During iteration, collect objective values
             if (Iterating)
             {
-                List<double> o = new List<double>();
-               
-                if (!DA.GetDataList(1, o)) { return; }
-               
-                ObjValues.Add(o);
-            }
-
-
-
-
-
-            if (EffectsDone && !Iterating)
-
-            {
-
-
-                //List<List<double>> DMEffects = ListOfListsToTree<double>(((EffectsComponentAttributes)this.m_attributes).DesignMapEffects);
-
-                
-                DA.SetDataTree(0, ListOfListsToTree<double>(((EffectsComponentAttributes)this.m_attributes).OverallEff));
-
-                for (int i = 0; i < numObjs; i++)
+                List<double> objectiveValues = new List<double>();
+                if (DA.GetDataList(1, objectiveValues))
                 {
-                    DA.SetDataTree(1, ListOfListsToTree<double>(((EffectsComponentAttributes)this.m_attributes).IndEffectsAvg[i]));
+                    ObjValues.Add(objectiveValues);
                 }
-
-                DA.SetDataTree(2, AssembleDMOTree(((EffectsComponentAttributes)this.m_attributes).DesignMapEffects, this.ObjValues));
-
-
-                //DA.SetDataTree(2, ListOfListsToTree<double>(((EffectsComponentAttributes)this.m_attributes).DesignMapEffects));
-
+                return;
             }
 
-
+            // Output results after effects calculation is done
+            if (EffectsDone && !Iterating)
+            {
+                var attrs = (EffectsComponentAttributes)this.m_attributes;
+                
+                DA.SetDataTree(0, ListOfListsToTree<double>(attrs.OverallEff));
+                
+                // Output raw effects for each objective
+                if (attrs.IndEffectsAvg.Count > 0)
+                {
+                    DA.SetDataTree(1, ListOfListsToTree<double>(attrs.IndEffectsAvg[0]));
+                }
+                
+                DA.SetDataTree(2, AssembleDMOTree(attrs.DesignMapEffects, this.ObjValues));
+            }
         }
 
 
@@ -178,8 +167,14 @@ namespace Effects
                 foreach (GH_Number n in l)
                 {
                     double d = 0;
-                    n.CastTo<double>(out d);
-                    doubles.Add(d);
+                    //There is signature mismatch in IGH_GOO and GH_GOO CastTo method that GH_NUMBER modifies. 
+                    // n.CastTo<double>(out d);
+                    // doubles.Add(d);
+
+                    if (GH_Convert.ToDouble(n, out d, GH_Conversion.Both))
+                    {
+                        doubles.Add(d);
+                    }
                 }
                 list.Add(doubles);
             }
@@ -189,6 +184,10 @@ namespace Effects
         private void readSlidersList()
         {
             this.VarsList.Clear();
+            this.VarsVals.Clear();  // Clear existing values
+            this.MinVals.Clear();   // Clear existing values
+            this.MaxVals.Clear();   // Clear existing values
+            
             this.SlidersList = new List<GH_NumberSlider>();
             int nVars = this.Params.Input[0].Sources.Count;
             for (int i = 0; i < nVars; i++)
@@ -198,13 +197,15 @@ namespace Effects
 
             foreach (GH_NumberSlider slider in SlidersList)
             {
-                DSEVariable newVar = new DSEVariable((double)slider.Slider.Minimum, (double)slider.Slider.Maximum, (double)slider.Slider.Value);
-                this.VarsList.Add(newVar);
+                if (slider != null)  // Add null check
+                {
+                    DSEVariable newVar = new DSEVariable((double)slider.Slider.Minimum, (double)slider.Slider.Maximum, (double)slider.Slider.Value);
+                    this.VarsList.Add(newVar);
 
-                VarsVals.Add((double)slider.Slider.Value);
-                MinVals.Add((double)slider.Slider.Minimum);
-                MaxVals.Add((double)slider.Slider.Maximum);
-
+                    VarsVals.Add((double)slider.Slider.Value);
+                    MinVals.Add((double)slider.Slider.Minimum);
+                    MaxVals.Add((double)slider.Slider.Maximum);
+                }
             }
         }
 
@@ -235,10 +236,59 @@ namespace Effects
             }
 
             int nSamples = ((EffectsComponentAttributes)this.m_attributes).numRows;
+            
+            // Add detailed logging only if debug is enabled
+            if (DebugLogging)
+            {
+                System.Console.WriteLine($"AssembleDMO Debug Info:");
+                System.Console.WriteLine($"  nSamples (numRows): {nSamples}");
+                System.Console.WriteLine($"  vars.Count: {vars.Count}");
+                System.Console.WriteLine($"  obj.Count: {obj.Count}");
+                System.Console.WriteLine($"  varsCopy.Count: {varsCopy.Count}");
+            }
+            
             for (int i = 0; i < nSamples; i++)
             {
-                List<double> l = varsCopy[i];
-                l.AddRange(obj[i]);
+                try
+                {
+                    if (i < varsCopy.Count && i < obj.Count)
+                    {
+                        List<double> l = varsCopy[i];
+                        l.AddRange(obj[i]);
+                    }
+                    else
+                    {
+                        if (DebugLogging)
+                        {
+                            System.Console.WriteLine($"  Warning: Skipping index {i} - varsCopy.Count: {varsCopy.Count}, obj.Count: {obj.Count}");
+                        }
+                        
+                        // If we have vars but no objectives, just keep the vars
+                        if (i < varsCopy.Count)
+                        {
+                            if (DebugLogging)
+                            {
+                                System.Console.WriteLine($"  Adding empty objectives for variable set {i}");
+                            }
+                            // Add placeholder objective values (zeros)
+                            for (int objIdx = 0; objIdx < numObjs; objIdx++)
+                            {
+                                varsCopy[i].Add(0.0);
+                            }
+                        }
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (DebugLogging)
+                    {
+                        System.Console.WriteLine($"  Error at index {i}: {ex.GetType().Name} - {ex.Message}");
+                        System.Console.WriteLine($"  Stack trace: {ex.StackTrace}");
+                    }
+                    
+                    // Continue with next iteration instead of crashing
+                    continue;
+                }
             }
 
             return varsCopy;

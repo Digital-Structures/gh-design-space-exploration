@@ -1,0 +1,35 @@
+﻿<UserControl
+	x:Class="Stepper.VariableHeaderControl" xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:d="http://schemas.microsoft.com/expression/blend/2008" xmlns:local="clr-namespace:Stepper">
+    <Grid
+		Name="HeaderGrid">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition
+				Width="Auto" />
+            <ColumnDefinition
+				Width="*" />
+            <ColumnDefinition
+				Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <Label
+			Grid.Column="0"
+			HorizontalContentAlignment="Center"
+			HorizontalAlignment="Left"
+			Margin="20,0,0,0"
+			FontSize="14"
+			Foreground="{DynamicResource BackgroundHueDarkSubtextForegroundBrush}">Name</Label>
+        <Label
+			Grid.Column="1"
+			HorizontalContentAlignment="Center"
+			HorizontalAlignment="Right"
+			FontSize="14"
+			Foreground="{DynamicResource BackgroundHueDarkSubtextForegroundBrush}">Value</Label>
+        <Label
+			Grid.Column="2"
+			HorizontalContentAlignment="Center"
+			HorizontalAlignment="Right"
+			Width="245"
+			Margin="30,0,5,0"
+			FontSize="14"
+			Foreground="{DynamicResource BackgroundHueDarkSubtextForegroundBrush}">Bounds</Label>
+    </Grid>
+</UserControl>

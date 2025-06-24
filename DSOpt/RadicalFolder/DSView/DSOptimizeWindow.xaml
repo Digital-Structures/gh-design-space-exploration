@@ -1,0 +1,91 @@
+﻿<Window x:Class="DSOptimization.DSOptimizeWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DSOptimization"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:Converters="clr-namespace:MaterialDesignThemes.Wpf.Converters;assembly=MaterialDesignThemes.Wpf" 
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        xmlns:nlopt="clr-namespace:NLoptNet;assembly=NLoptNet"
+        mc:Ignorable="d"
+        Title="DS Optimization Tools" Height="600" Width="1000"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="12"
+        FontFamily="Global User Interface"
+        Closing="Window_Closing"
+        >
+    <Window.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MaterialDesignColors;component/Themes/MaterialDesignColor.BlueGrey.Primary.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush1" Color="{StaticResource Primary700}" Opacity="1"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush2" Color="{StaticResource Primary800}" Opacity="1"/>
+            <SolidColorBrush x:Key="PrimaryHueDarkBrush3" Color="{StaticResource Primary900}" Opacity="1"/>
+            
+            
+        </ResourceDictionary>
+        
+    </Window.Resources>
+      
+    
+    <Grid Background="{StaticResource PrimaryHueDarkBrush3}">
+        <TabControl Background="{StaticResource PrimaryHueDarkBrush2}" SelectionChanged="TabControl_SelectionChanged">
+            <TabControl.Resources>
+                <Style TargetType="TabItem">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="TabItem">
+                                <Border Name="Border" BorderThickness="1,1,1,0" BorderBrush="Transparent" CornerRadius="4,4,0,0" Margin="3,0">
+                                    <ContentPresenter x:Name="ContentSite"
+                                        VerticalAlignment="Center"
+                                        HorizontalAlignment="Center"
+                                        ContentSource="Header"
+                                        Margin="10,2"/>
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="IsSelected" Value="True">
+                                        <Setter TargetName="Border" Property="Background" Value="{StaticResource PrimaryHueDarkBrush2}" />
+                                    </Trigger>
+                                    <Trigger Property="IsSelected" Value="False">
+                                        <Setter TargetName="Border" Property="Background" Value="{StaticResource PrimaryHueDarkBrush1}" />
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style TargetType="TabControl">
+                    <Setter Property="BorderThickness">
+                        <Setter.Value>
+                            0
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+                <Style x:Key="TabItemText" TargetType="{x:Type TextBlock}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="True">
+                            <Setter Property="Foreground" Value="White"/>
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsSelected, RelativeSource={RelativeSource AncestorType=TabItem}}" Value="False">
+                            <Setter Property="Foreground" Value="Black"/>
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </TabControl.Resources>
+            <TabItem Name="StepperTab" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch" Background="{StaticResource PrimaryHueDarkBrush2}">
+                <TabItem.Header>
+                    <TextBlock FontSize="18" Style="{StaticResource TabItemText}">Stepper</TextBlock>
+                </TabItem.Header>
+            </TabItem>
+
+            <TabItem Name="RadicalTab" VerticalContentAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                <TabItem.Header>
+                    <TextBlock Name="RadicalTabText" FontSize="18" Style="{StaticResource TabItemText}">Radical</TextBlock>
+                </TabItem.Header>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>

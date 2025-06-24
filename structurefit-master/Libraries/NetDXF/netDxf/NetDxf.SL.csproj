@@ -1,0 +1,174 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.50727</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{55883F72-437B-4C11-A1EB-91E96BD867CD}</ProjectGuid>
+    <ProjectTypeGuids>{A1591282-1198-4647-A2B1-27E5FF5F6F3B};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>netDxf</RootNamespace>
+    <AssemblyName>netDxf</AssemblyName>
+    <TargetFrameworkIdentifier>Silverlight</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
+    <SilverlightVersion>$(TargetFrameworkVersion)</SilverlightVersion>
+    <SilverlightApplication>false</SilverlightApplication>
+    <ValidateXaml>true</ValidateXaml>
+    <ThrowErrorsInValidation>true</ThrowErrorsInValidation>
+  </PropertyGroup>
+  <!-- This property group is only here to support building this project using the 
+       MSBuild 3.5 toolset. In order to work correctly with this older toolset, it needs 
+       to set the TargetFrameworkVersion to v3.5 -->
+  <PropertyGroup Condition="'$(MSBuildToolsVersion)' == '3.5'">
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Bin\Debug\SL5\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>Bin\Release\SL5\</OutputPath>
+    <DefineConstants>TRACE;SILVERLIGHT</DefineConstants>
+    <NoStdLib>true</NoStdLib>
+    <NoConfig>true</NoConfig>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System.Windows" />
+    <Reference Include="system" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Windows.Browser" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AciColor.cs" />
+    <Compile Include="Blocks\Block.cs" />
+    <Compile Include="Blocks\BlockEnd.cs" />
+    <Compile Include="Blocks\BlockTypeFlags.cs" />
+    <Compile Include="CodeValuePair.cs" />
+    <Compile Include="DrawingUnits.cs" />
+    <Compile Include="DxfDocument.cs" />
+    <Compile Include="DxfException.cs" />
+    <Compile Include="DxfObject.cs" />
+    <Compile Include="DxfObjectCode.cs" />
+    <Compile Include="DxfReader.cs" />
+    <Compile Include="DxfWriter.cs" />
+    <Compile Include="Entities\AlignedDimension.cs" />
+    <Compile Include="Entities\Angular2LineDimension.cs" />
+    <Compile Include="Entities\Angular3PointDimension.cs" />
+    <Compile Include="Entities\Arc.cs" />
+    <Compile Include="Entities\Attribute.cs" />
+    <Compile Include="Entities\AttributeDefinition.cs" />
+    <Compile Include="Entities\Circle.cs" />
+    <Compile Include="Entities\DiametricDimension.cs" />
+    <Compile Include="Entities\Dimension.cs" />
+    <Compile Include="Entities\DimensionType.cs" />
+    <Compile Include="Entities\Ellipse.cs" />
+    <Compile Include="Entities\EndSequence.cs" />
+    <Compile Include="Entities\EntityObject.cs" />
+    <Compile Include="Entities\Face3d.cs" />
+    <Compile Include="Entities\Hatch.cs" />
+    <Compile Include="Entities\HatchBoundaryPath.cs" />
+    <Compile Include="Entities\HatchGradientPattern.cs" />
+    <Compile Include="Entities\HatchPattern.cs" />
+    <Compile Include="Entities\HatchPatternLineDefinition.cs" />
+    <Compile Include="Entities\Image.cs" />
+    <Compile Include="Entities\ImageClippingBoundary.cs" />
+    <Compile Include="Entities\ImageDisplayFlags.cs" />
+    <Compile Include="Entities\Insert.cs" />
+    <Compile Include="Entities\Line.cs" />
+    <Compile Include="Entities\LinearDimension.cs" />
+    <Compile Include="Entities\LwPolyline.cs" />
+    <Compile Include="Entities\LwPolylineVertex.cs" />
+    <Compile Include="Entities\MLine.cs" />
+    <Compile Include="Entities\MLineVertex.cs" />
+    <Compile Include="Entities\MText.cs" />
+    <Compile Include="Entities\MTextAttachmentPoint.cs" />
+    <Compile Include="Entities\MTextFormattingOptions.cs" />
+    <Compile Include="Entities\MTextLineSpacingStyle.cs" />
+    <Compile Include="Entities\OrdinateDimension.cs" />
+    <Compile Include="Entities\OrdinateDimensionAxis.cs" />
+    <Compile Include="Entities\Point.cs" />
+    <Compile Include="Entities\PolyfaceMesh.cs" />
+    <Compile Include="Entities\PolyfaceMeshFace.cs" />
+    <Compile Include="Entities\PolyfaceMeshVertex.cs" />
+    <Compile Include="Entities\Polyline.cs" />
+    <Compile Include="Entities\PolylineSmoothType.cs" />
+    <Compile Include="Entities\PolylineTypeFlags.cs" />
+    <Compile Include="Entities\PolylineVertex.cs" />
+    <Compile Include="Entities\RadialDimension.cs" />
+    <Compile Include="Entities\Solid.cs" />
+    <Compile Include="Entities\Spline.cs" />
+    <Compile Include="Entities\SplineTypeFlags.cs" />
+    <Compile Include="Entities\SplineVertex.cs" />
+    <Compile Include="Entities\Text.cs" />
+    <Compile Include="Entities\TextAligment.cs" />
+    <Compile Include="Entities\Vertex.cs" />
+    <Compile Include="Entities\VertexTypeFlags.cs" />
+    <Compile Include="Header\AttMode.cs" />
+    <Compile Include="Header\DxfVersion.cs" />
+    <Compile Include="Header\HeaderVariable.cs" />
+    <Compile Include="Header\HeaderVariableCode.cs" />
+    <Compile Include="Header\HeaderVariables.cs" />
+    <Compile Include="Header\PointShape.cs" />
+    <Compile Include="Lineweight.cs" />
+    <Compile Include="MathHelper.cs" />
+    <Compile Include="Matrix3.cs" />
+    <Compile Include="Objects\DictionaryObject.cs" />
+    <Compile Include="Objects\Group.cs" />
+    <Compile Include="Objects\ImageDef.cs" />
+    <Compile Include="Objects\ImageDefReactor.cs" />
+    <Compile Include="Objects\MLineStyle.cs" />
+    <Compile Include="Objects\MLineStyleElement.cs" />
+    <Compile Include="Objects\RasterVariables.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SLHacks.cs" />
+    <Compile Include="StringCode.cs" />
+    <Compile Include="StringEnum.cs" />
+    <Compile Include="SubclassMarker.cs" />
+    <Compile Include="Symbols.cs" />
+    <Compile Include="Tables\ApplicationRegistry.cs" />
+    <Compile Include="Tables\BlockRecord.cs" />
+    <Compile Include="Tables\DimensionStyle.cs" />
+    <Compile Include="Tables\Layer.cs" />
+    <Compile Include="Tables\LineType.cs" />
+    <Compile Include="Tables\TableObject.cs" />
+    <Compile Include="Tables\TextStyle.cs" />
+    <Compile Include="Tables\View.cs" />
+    <Compile Include="Tables\ViewPort.cs" />
+    <Compile Include="Vector2.cs" />
+    <Compile Include="Vector3.cs" />
+    <Compile Include="XData.cs" />
+    <Compile Include="XDataCode.cs" />
+    <Compile Include="XDataRecord.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{A1591282-1198-4647-A2B1-27E5FF5F6F3B}">
+        <SilverlightProjectProperties />
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

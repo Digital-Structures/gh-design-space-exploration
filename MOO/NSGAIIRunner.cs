@@ -7,7 +7,8 @@ using JMetalCSharp.Utils;
 using System;
 using System.Collections.Generic;
 using JMetalCSharp.Problems.Kursawe;
-
+using log4net.Config;
+using log4net;
 namespace MOO
 {
     /// <summary>
@@ -19,6 +20,8 @@ namespace MOO
     /// </summary>
     public class NSGAIIRunner
     {
+        private static readonly ILog logger = LogManager.GetLogger(typeof(NSGAIIRunner));
+
         MOO comp;
         /// <summary>
         /// Usage: three options 
@@ -119,11 +122,15 @@ namespace MOO
             // Result messages 
             //logger.Info("Total execution time: " + estimatedTime + "ms");
             //logger.Info("Variables values have been writen to file VAR");
+           
+            
+            XmlConfigurator.Configure(new System.IO.FileInfo("log4net.config"));
 
-            //population.PrintVariablesToFile(@"C:\Users\Jonathas\Desktop\text.txt");
-            population.PrintVariablesToFile(@"" + comp.fileName + "VAR-" + comp.fileName);
-            //logger.Info("Objectives values have been writen to file FUN");
-            population.PrintObjectivesToFile(@"" + comp.fileName + "OBJ-" + comp.fileName);
+            population.PrintVariablesToFile(@"C:\logs\logs-VAR.txt");
+            logger.Info($"Variables have been written to file {comp.fileName}VAR-{comp.fileName}");
+            
+            population.PrintObjectivesToFile(@"C:\logs\logs-OBJ.txt");
+            logger.Info($"Objectives values have been written to file {comp.fileName}OBJ-{comp.fileName}");
             // Saving all solutions to file
 
 

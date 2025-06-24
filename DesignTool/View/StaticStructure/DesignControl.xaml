@@ -1,0 +1,39 @@
+﻿<UserControl x:Class="DesignTool.View.StaticStructure.DesignControl"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:designmodes="clr-namespace:DesignTool.DesignModes"
+    mc:Ignorable="d"
+    FontFamily="Tw Cen MT"
+    FontSize="11"
+    DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <Grid Name="Picture" HorizontalAlignment="Center" VerticalAlignment="Center" MouseEnter="Picture_MouseEnter" 
+          MouseLeave="Picture_MouseLeave" MouseLeftButtonDown="Picture_MouseLeftButtonDown" Background="Transparent">
+        <Grid.Resources>
+            <designmodes:BoolVisConverter x:Key="BoolVisConverter" />
+            <designmodes:ScoreConverter x:Key="ScoreConverter" StaticScore="0"/>
+        </Grid.Resources>
+        <Border Name="ScoreRec" Background="White" Canvas.ZIndex="10" Height="12" Width="40" HorizontalAlignment="Center" VerticalAlignment="Bottom" 
+                Visibility="{Binding Path=MyBehavior.ScoreVis, Converter={StaticResource BoolVisConverter}}">
+            <TextBlock Name="score" HorizontalAlignment="Center" VerticalAlignment="Center"
+                   Text="{Binding Path=MyParent.ViewModel.BaseScore, Converter={StaticResource ScoreConverter}}"
+                   />
+        </Border>
+        <ContentControl VerticalAlignment="Top" HorizontalAlignment="Left"
+                Height="20" Width="20" Name="SetBaseButton" MouseLeftButtonDown="SetBaseButton_Click"
+                ToolTipService.ToolTip="Set as Base Design" Canvas.ZIndex="10" Opacity="0.6"
+                Visibility="{Binding Path=ViewModel.SetBaseVis, Converter={StaticResource BoolVisConverter}}"
+                        MouseEnter="SetBaseButton_MouseEnter" MouseLeave="SetBaseButton_MouseLeave">
+            <Image Source="../../Assets/Icons/setbase.png" />
+        </ContentControl>
+        <ContentControl VerticalAlignment="Top" HorizontalAlignment="Right"
+                Height="20" Width="20" Name="SetRefButton" MouseLeftButtonDown="SetRefButton_Click"
+                ToolTipService.ToolTip="Select as Design to be Refined" Canvas.ZIndex="10" Opacity="0.6"
+                Visibility="{Binding Path=ViewModel.SelectVis, Converter={StaticResource BoolVisConverter}}"
+                        MouseEnter="SetRefButton_MouseEnter" MouseLeave="SetBaseButton_MouseLeave">
+            <Image Source="../../Assets/Icons/setrefine.png" />
+        </ContentControl>
+    </Grid>
+</UserControl>
